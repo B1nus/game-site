@@ -6,8 +6,5 @@ p browse
 ul 
     - @games.each do |game|
         li
-            - if game["game_url"] != nil
-                a href='/games/#{game["id"]}' #{game}
-            - elsif game["foreign_url"] != nil 
-                / This is not my game, warn the user
-                a href='/warning/#{game["id"]}' #{game}
+            h2 #{game['name']}
+            a href="#{game['url']}" #{game}
