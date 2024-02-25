@@ -14,9 +14,9 @@
 div style="width: 100%; display: grid; grid-template-columns: 1 1; grid-template-rows: 1;"
 
 form action="/games/#{@game_id}/update" method="post"
-    <select name="tags_selection" id="tags" multiple>
+    <select name="tags_selection[]" id="tags" multiple>
         - @tags.each do |tag|
-            option value=tag["tag_name"] = tag["tag_name"]
+            option value=tag['id'] #{tag["tag_name"]}
     </select>
 
     button type="submit" Apply changes
