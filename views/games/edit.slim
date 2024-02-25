@@ -12,17 +12,13 @@
 / Resterand borde vara simple input boxes.
 
 div style="width: 100%; display: grid; grid-template-columns: 1 1; grid-template-rows: 1;"
-    div
-        h2 Applied tags
-        - @applied_tags.each do |applied_tag|
-            == slim :"tags/show", locals: {tag:applied_tag}
-    div
-        / Kanske borde vis alla tags istället för bara de som är kvar.
-        h2 Available tags
-        - @available_tags.each do |available_tag|
-            == slim :"tags/show", locals: {tag:available_tag}
 
-form action="/games/#{@game_id}/update" method="post" 
+form action="/games/#{@game_id}/update" method="post"
+    select name="tags" id="tags" multiple="multiple"
+        - @tags.each do |tag|
+            option = tag["tag_name"]
+	        == slim :"tags/show",locals: {tag:tag}
+
     button type="submit" Apply changes
 
 / Fin hantering av källkods och build fil uppladdning. (Ingen aning hur ännu, gör detta senare)

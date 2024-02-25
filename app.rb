@@ -160,6 +160,12 @@ get "/games/:id/edit" do
     @available_tags = database_game_available_tags(@game_id)
     @applied_tags = database_game_applied_tags(@game_id)
 
+    # Samla alla tags i en lista
+    @tags = database_tags()
+    
+
+    p @tags
+
     slim(:"games/edit")
 end
 
@@ -168,3 +174,5 @@ end
 # Domän check i app.rb.
 # Ta bort länken till scratch see inside. Gör så det är till servern istället
 # Restful routes för användare? Är inte /register bättre än /users/new?
+#
+# Regex validering på några fält. Även med tid för A nivå.
