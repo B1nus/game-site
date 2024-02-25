@@ -14,10 +14,10 @@
 div style="width: 100%; display: grid; grid-template-columns: 1 1; grid-template-rows: 1;"
 
 form action="/games/#{@game_id}/update" method="post"
-    select name="tags" id="tags" multiple="multiple"
+    <select name="tags_selection" id="tags" multiple>
         - @tags.each do |tag|
-            option = tag["tag_name"]
-	        == slim :"tags/show",locals: {tag:tag}
+            option value=tag["tag_name"] = tag["tag_name"]
+    </select>
 
     button type="submit" Apply changes
 
