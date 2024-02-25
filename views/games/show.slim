@@ -4,14 +4,19 @@
 
 - if @game["game_url"] != nil
   - url = @game["game_url"]
-- elsif @game["foreign_url"] != nil
+- elsif @game["embedded_url"] != nil
   - url = @game["embedded_url"]
 
-/ Set iframe resolution to maximum if there is no size specified
+/ Set iframe width to 100% if there is nothing specified
 - @game["resolution_width"] = "100%" if @game["resolution_width"] == nil
-- @game["resolution_height"] = "100%" if @game["resolution_height"] == nil
-div style="height:100vh;"
-  iframe src=url style="width: #{@game['resolution_width']}; height: #{@game['resolution_height']};" frameborder="0" allow="gamepad *;"
+- if @game["resolution_height"] == nil
+    / Add a div to make the game be big
+    div style="height:100vh;"
+      iframe src=url style="width: #{@game['resolution_width']}; height: 100%;" frameborder="0" allow="gamepad *;"
+- else
+    / Add a div to fix a weird styling bug
+    div
+      iframe src=url style="width: #{@game['resolution_width']}; height: #{@game['resolution_height']};" frameborder="0" allow="gamepad *;"
 
 / Add a button to go to the original website
 - if @game["foreign_url"] != nil

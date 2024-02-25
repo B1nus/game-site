@@ -43,7 +43,6 @@ get('/warning/:game_id') do
     slim(:"warning")
 end
 
-# Restful routes viktigt? (blir simplare utan dem i mitt fall)
-# Domänbeskrivning var?
-# Yardoc?
+# Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
+# Domän check i app.rb eller model.rb?
 # Ta bort länken till scratch see inside. Gör så det är till servern istället
