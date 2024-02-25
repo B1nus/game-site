@@ -23,12 +23,23 @@ def database_game_with_id(game_id)
     return db.execute("SELECT * FROM game WHERE id = ?", game_id).first
 end
 
-def database_game_tags(game_id)
+def database_game_applied_tags(game_id)
     db = connect_to_default_database()
 
-    return db.execute("SELECT tag.id as tag_id, tag.name as tag_name, tag.tag_purpose_id as tag_purpose_id FROM game_tag_rel
-    LEFT JOIN tag ON game_tag_rel.tag_id = tag.id
+    return db.execute("SELECT tag.id as tag_id, tag.name as tag_name, tag.tag_purpose_id, tag_purpose.name as tag_purpose_name FROM game_tag_rel
+    RIGHT JOIN tag ON game_tag_rel.tag_id = tag.id
+    LEFT JOIN tag_purpose ON tag_purpose.id = tag_purpose_id
     WHERE game_id = ?", game_id)
+end
+
+def database_game_available_tags(game_id)
+    db = connect_to_default_database()
+
+    return db.execute("SELECT t.id as tag_id, t.name as tag_name, tag_purpose_id, tag_purpose.name as tag_purpose_name
+    FROM tag t
+    LEFT JOIN game_tag_rel gtr ON t.id = gtr.tag_id AND gtr.game_id = ?
+    LEFT JOIN tag_purpose ON tag_purpose.id = tag_purpose_id
+    WHERE gtr.game_id IS NULL;", game_id)
 end
 
 def database_game_tag_purposes(game_id)
@@ -43,14 +54,14 @@ end
 def database_tags()
     db = connect_to_default_database()
 
-    return db.execute("SELECT *, tag.id as id, tag.name as name, tag_purpose.name as tag_purpose_name FROM tag
+    return db.execute("SELECT *, tag.id as id, tag.name as tag_name, tag_purpose.name as tag_purpose_name FROM tag
     LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id")
 end
 
 def database_tag_with_id(tag_id)
     db = connect_to_default_database()
 
-    return db.execute("SELECT *, tag.id as id, tag.name as name, tag_purpose.name as tag_purpose_name FROM tag
+    return db.execute("SELECT *, tag.id as id, tag.name as tag_name, tag_purpose.name as tag_purpose_name FROM tag
     LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id
     WHERE tag.id = ?", tag_id).first
 end

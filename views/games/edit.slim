@@ -11,11 +11,13 @@
 
 / Resterand borde vara simple input boxes.
 
-div style="display:grid; grid-columns: 1 1;"
+div style="display: grid; grid-template-columns: 1 1; grid-template-rows: 1;"
     div
+        h2 Applied tags
         - @applied_tags.each do |applied_tag|
             == slim :"tags/show", locals: {tag:applied_tag}
     div
+        h2 Available tags
         - @available_tags.each do |available_tag|
             == slim :"tags/show", locals: {tag:available_tag}
 

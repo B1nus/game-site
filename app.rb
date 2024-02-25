@@ -121,8 +121,8 @@ end
 get "/games/:id/edit" do
     game_id = params[:id]
 
-    @available_tags = []
-    @applied_tags = database_game_tags(game_id)
+    @available_tags = database_game_available_tags(game_id)
+    @applied_tags = database_game_applied_tags(game_id)
 
     slim(:"games/edit")
 end

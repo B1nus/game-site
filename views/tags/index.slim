@@ -15,8 +15,7 @@ blockquote
 ul
     - @tags.each do |tag|
         li style="display: flex; flex-direction: row; gap: 10px;"
-            b #{tag['name']}
-            i #{tag['tag_purpose_name']}  
+            == slim :"tags/show", locals:{tag:tag}
             a href="/tags/#{tag['id']}/edit" edit
             form action="tags/#{tag['id']}/delete" method="post"
                 button type="submit" delete
