@@ -2,7 +2,7 @@ require 'sinatra'
 require 'slim'
 require 'sqlite3'
 require 'sinatra/reloader'
-require "./helper_functions"
+require "./model"
 
 # Länk för att komma in på hemsidan snabbt (:
 p "http://localhost:4567/"
@@ -46,3 +46,4 @@ end
 # Restful routes viktigt? (blir simplare utan dem i mitt fall)
 # Domänbeskrivning var?
 # Yardoc?
+# Ta bort länken till scratch see inside. Gör så det är till servern istället
