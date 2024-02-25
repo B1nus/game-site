@@ -66,3 +66,12 @@ def delete_tag(tag_id)
 
     db.execute("DELETE FROM tag WHERE id = ?", tag_id)
 end
+
+def database_tag_purposes()
+    db = connect_to_default_database()
+
+    return db.execute("SELECT * FROM tag_purpose")
+end
+
+# CRUD på tag purposes
+# lägg in /tag_purpose/index.slim i edit och new av tags (så man kan se vad tag_purpose id står för)

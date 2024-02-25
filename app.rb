@@ -17,7 +17,8 @@ get('/games') do
     @games = database_games() # Alla attribut från alla spel är publika!!!
 
     @games.each do |game|
-        if database_game_tags(game["id"]).include?({"name"=>"warn_for_foreign"})
+        # Kolla efter en tag som varnar för tredjeparts hemsida
+        if database_game_tag_purposes(game["id"]).include?({"name"=>"warn_for_foreign"})
             game["url"] = "/warning/#{game["id"]}"
         else
             game["url"] = "/games/#{game["id"]}"
@@ -34,6 +35,7 @@ get('/games/:game_id') do
     slim(:"games/show")
 end
 
+# Varning för att jag inte äger spelet
 get('/warning/:game_id') do
     game = database_game_with_id(params[:game_id])
 
@@ -43,9 +45,13 @@ get('/warning/:game_id') do
     slim(:"warning")
 end
 
-# Form to add a new tag. ADMIN
+# Formulär för att lägga till en ny tag. ADMIN
 get "/tags/new" do 
     # ONLY AS ADMIN
+
+    # För att se vad tag purpose id:n står för
+    @tag_purposes = database_tag_purposes()
+
     slim(:"tags/new")
 end
 
@@ -70,6 +76,9 @@ get "/tags/:id/edit" do
     # För att placera föregående värden
     @tag_name = tag["name"]
     @tag_purpose_id = tag["tag_purpose_id"]
+
+    # För att se vad tag purpose id:n står för
+    @tag_purposes = database_tag_purposes()
 
     slim(:"tags/edit")
 end
@@ -109,7 +118,7 @@ post "/tags/:id/delete" do
     redirect "/tags"
 end
 
-
 # Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
 # Domän check i app.rb.
 # Ta bort länken till scratch see inside. Gör så det är till servern istället
+# Restful routes för användare? Är inte /register bättre än /users/new?

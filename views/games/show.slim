@@ -18,11 +18,11 @@
 
 / Add a button to go to the original website
 - if @game["foreign_url"] != nil
-  button onclick="window.open('#{@game["foreign_url"]}','_blank');" title="Go to the original website"
-    i class="fa-solid fa-link"
+  button onclick="window.open('#{@game["foreign_url"]}','_blank');" title="Go to the original website" class="game-icon-buttons"
+    img src="/img/link.png" alt="Link to the original website" width="100%"
 / Add a button to go to the source code
 - if @game["source_code_url"] != nil
-  button onclick="window.open('#{@game["source_code_url"]}','_blank');" title="Look at the source code"
-    i class="fa-solid fa-code"
+  button onclick="window.open('#{@game["source_code_url"]}','_blank');" title="Look at the source code" class="game-icon-buttons"
+    img src="/img/coding.png" alt="Link to the source code" width="100%"
 
 / Ändra länk sakerna till en separat table?
