@@ -23,6 +23,14 @@ def database_game_with_id(game_id)
     return db.execute("SELECT * FROM game WHERE id = ?", game_id).first
 end
 
+def database_game_tags(game_id)
+    db = connect_to_default_database()
+
+    return db.execute("SELECT tag.id as tag_id, tag.name as tag_name, tag.tag_purpose_id as tag_purpose_id FROM game_tag_rel
+    LEFT JOIN tag ON game_tag_rel.tag_id = tag.id
+    WHERE game_id = ?", game_id)
+end
+
 def database_game_tag_purposes(game_id)
     db = connect_to_default_database()
 

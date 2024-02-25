@@ -11,6 +11,12 @@
 
 / Resterand borde vara simple input boxes.
 
-
+div style="display:grid; grid-columns: 1 1;"
+    div
+        - @applied_tags.each do |applied_tag|
+            == slim :"tags/show", locals: {tag:applied_tag}
+    div
+        - @available_tags.each do |available_tag|
+            == slim :"tags/show", locals: {tag:available_tag}
 
 / Fin hantering av källkods och build fil uppladdning. (Ingen aning hur ännu, gör detta senare)

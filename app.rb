@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'slim'
-require 'sqlite3'
 require 'sinatra/reloader'
 require "./model"
 
@@ -95,7 +94,7 @@ post "/tags/:id/update" do
     redirect "/tags"
 end
 
-# Display all tags. ADMIN
+# Display all tags. ADMIN (bara admin på grund utav edit och delete knappen)
 get "/tags" do
     @tags = database_tags()
 
@@ -106,7 +105,7 @@ end
 get "/tags/:id" do
     @tag = database_tag_with_id(params[:id])
     
-    slim(:"tags/show")
+    slim(:"tags/show", locals:{tag:@tag})
 end
 
 # Ta bort en tag. ADMIN
@@ -117,6 +116,17 @@ post "/tags/:id/delete" do
     
     redirect "/tags"
 end
+
+# Redigera ett spel genom formulär m.m. ADMIN (följer inte restful routes )
+get "/games/:id/edit" do
+    game_id = params[:id]
+
+    @available_tags = []
+    @applied_tags = database_game_tags(game_id)
+
+    slim(:"games/edit")
+end
+
 
 # Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
 # Domän check i app.rb.
