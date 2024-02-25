@@ -1,0 +1,6 @@
+// sök efter spel. Tillgänglig för alla
+p browse
+ul 
+    - games.each do |game|
+        li
+            a href='/games/#{game["id"]}' #{game}
