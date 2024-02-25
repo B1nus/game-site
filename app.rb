@@ -14,35 +14,27 @@ end
 
 # Visa sidan där man kan söka efter spel
 get('/games') do
-    db = connect_to_default_database()
-
-    @games = db.execute("SELECT * FROM game") # Alla attribut från alla spel är publika!!!
+    @games = get_games() # Alla attribut från alla spel är publika!!!
 
     slim(:"games/index")
 end
 
 # Spela ett spel
 get('/games/:game_id') do
-    db = connect_to_default_database()
-
-    game_id = params[:game_id]
-
-    @game = db.execute("SELECT * FROM game WHERE id = ?", game_id).first # Alla attribut från alla spel är publika!!!
+    @game = database_game_by_id(params[:game_id]) # Alla attribut från alla spel är publika!!!
 
     slim(:"games/show")
 end
 
 get('/warning/:game_id') do
-    db = connect_to_default_database()
+    game = database_game_by_id(params[:game_id])
 
-    game_id = params[:game_id]
-
-    @foreign_url = db.execute("SELECT * FROM game WHERE id = ?", game_id).first["foreign_url"]
+    @foreign_url = game["foreign_url"]
     @indigenous_url = "/games/" + game_id.to_s
 
     slim(:"warning")
 end
 
 # Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
-# Domän check i app.rb eller model.rb?
+# Domän check i app.rb.
 # Ta bort länken till scratch see inside. Gör så det är till servern istället
