@@ -1,0 +1,8 @@
+/ 
+/ Endast tillgänglig för admin
+/ 
+
+form action="/tags/#{@tag_id}/update" method="post" 
+    input type="text" name="tag_name" value="#{@tag_name}"
+    input type="number" name="tag_purpose_id" value=@tag_purpose_id
+    input type="submit" value="Change"

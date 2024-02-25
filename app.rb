@@ -29,13 +29,13 @@ end
 
 # Spela ett spel
 get('/games/:game_id') do
-    @game = database_game_by_id(params[:game_id]) # Alla attribut från alla spel är publika!!!
+    @game = database_game_with_id(params[:game_id]) # Alla attribut från alla spel är publika!!!
 
     slim(:"games/show")
 end
 
 get('/warning/:game_id') do
-    game = database_game_by_id(params[:game_id])
+    game = database_game_with_id(params[:game_id])
 
     @foreign_url = game["foreign_url"]
     @indigenous_url = "/games/" + game["id"].to_s
@@ -43,27 +43,70 @@ get('/warning/:game_id') do
     slim(:"warning")
 end
 
-# Display all tags.
-get "/tags" do
-    @tags = database_tags()
-
-    p "Tags: #{@tags}"
-
-    slim(:"tags/index")
-end
-
-# Add a new tag.
+# Form to add a new tag. ADMIN
 get "/tags/new" do 
     # ONLY AS ADMIN
     slim(:"tags/new")
 end
 
-post "/tags/:id/update" do
+# Add a new tag. ADMIN
+post "/tags" do
     # ONLY AS ADMIN
     tag_name = params[:tag_name]
     tag_purpose_id = params[:tag_purpose_id]
 
     database_create_tag(tag_name, tag_purpose_id)
+
+    redirect "/tags"
+end
+
+# Formulär för att ändra en tag. ADMIN
+get "/tags/:id/edit" do
+    # ONLY AS ADMIN
+    @tag_id = params[:id]
+
+    tag = database_tag_with_id(@tag_id)
+
+    # För att placera föregående värden
+    @tag_name = tag["name"]
+    @tag_purpose_id = tag["tag_purpose_id"]
+
+    slim(:"tags/edit")
+end
+
+# Ändra en tag. ADMIN
+post "/tags/:id/update" do
+    # ONLY AS ADMIN
+    tag_id = params[:id]
+    tag_name = params[:tag_name]
+    tag_purpose_id = params[:tag_purpose_id]
+
+    database_edit_tag(tag_id, tag_name, tag_purpose_id)
+
+    redirect "/tags"
+end
+
+# Display all tags. ADMIN
+get "/tags" do
+    @tags = database_tags()
+
+    slim(:"tags/index")
+end
+
+# Visa en tag. (FÅR INTE VARA FÖRE ROUTEN /tags/new!!!)
+get "/tags/:id" do
+    @tag = database_tag_with_id(params[:id])
+    
+    slim(:"tags/show")
+end
+
+# Ta bort en tag. ADMIN
+post "/tags/:id/delete" do
+    tag_id = params[:id]
+
+    delete_tag(tag_id)
+    
+    redirect "/tags"
 end
 
 
