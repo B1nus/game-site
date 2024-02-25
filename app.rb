@@ -4,6 +4,7 @@ require 'sqlite3'
 require 'sinatra/reloader'
 require "./helper_functions"
 
+# Länk för att komma in på hemsidan snabbt (:
 p "http://localhost:4567/"
 
 # Återkoppla användaren till browse sidan som fungerar som index sida
@@ -15,23 +16,32 @@ end
 get('/games') do
     db = connect_to_default_database()
 
-    games = db.execute("SELECT * FROM game")
+    @games = db.execute("SELECT * FROM game") # Alla attribut från alla spel är publika!!!
 
-    slim(:"games/index", locals:{games:games})
+    slim(:"games/index")
 end
 
 # Spela ett spel
-get('/games/:id') do
+get('/games/:game_id') do
     db = connect_to_default_database()
 
-    game_id = params[:id]
+    game_id = params[:game_id]
 
-    game = db.execute("SELECT * FROM game WHERE id = ?", game_id).first
+    @game = db.execute("SELECT * FROM game WHERE id = ?", game_id).first # Alla attribut från alla spel är publika!!!
 
-    slim(:"games/show", locals:{game:game})
+    slim(:"games/show")
 end
 
-# 
+get('/warning/:game_id') do
+    db = connect_to_default_database()
+
+    game_id = params[:game_id]
+
+    @foreign_url = db.execute("SELECT * FROM game WHERE id = ?", game_id).first["foreign_url"]
+    @indigenous_url = "/games/" + game_id.to_s
+
+    slim(:"warning")
+end
 
 # Restful routes viktigt? (blir simplare utan dem i mitt fall)
 # Domänbeskrivning var?
