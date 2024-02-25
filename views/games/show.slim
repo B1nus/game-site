@@ -16,5 +16,9 @@
 - if @game["source_code_url"] != nil
   button onclick="window.open('#{@game["source_code_url"]}','_blank');" title="Look at the source code" class="game-icon-buttons"
     img src="/img/coding.png" alt="Link to the source code" width="100%"
+/ Add a button for fullscreen (Fix the functionality and put the button in the right place sometime soon)
+- if @allow_fullscreen
+  button onclick=" document.querySelector('iframe').requestFullscreen();" title="Look at the source code" class="game-icon-buttons"
+    img src="/img/fullscreen.png" alt="Put the game in fullscreen" width="100%"
 
 / Ändra länk sakerna till en separat table?

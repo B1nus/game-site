@@ -49,10 +49,11 @@ get('/games/:game_id') do
     if game_iframe_size_string != nil
         @iframe_size_css = game_iframe_size_string
     else
+        # Standard storlek på iframe om inget specifieras
         @iframe_size_css = "width: 800px; height: 550px;"
     end
 
-    p @iframe_size_css
+    @allow_fullscreen = database_game_tag_purposes(game_id).include?({"name"=>"game_supports_fullscreen"})
 
     slim(:"games/show")
 end
