@@ -3,21 +3,21 @@ require 'slim'
 require 'sinatra/reloader'
 require "./model"
 
-# Länk för att komma in på hemsidan snabbt (:
+# Länk för att komma in på hemsidan snabbt under testning (:
 p "http://localhost:4567/"
 
-# Återkoppla användaren till browse sidan som fungerar som index sida
+# Återkoppla användaren till browse sidan som fungerar som landing page
 get('/') do
-    redirect('/games')
+    redirect('/games/')
 end
 
-# Visa sidan där man kan söka efter spel
-get('/games') do
+# Sidan där man utforskar spel
+get('/games/') do
     @games = database_games() # Alla attribut från alla spel är publika!!!
 
     @games.each do |game|
         # Kolla efter en tag som varnar för tredjeparts hemsida
-        if database_game_tag_purposes(game["id"]).include?({"name"=>"warn_for_foreign"})
+        if database_game_tag_purposes(game["id"]).include?({"name"=>"warn_for_stolen_game"})
             game["url"] = "/warning/#{game["id"]}"
         else
             game["url"] = "/games/#{game["id"]}"
@@ -25,13 +25,6 @@ get('/games') do
     end
 
     slim(:"games/index")
-end
-
-# Spela ett spel
-get('/games/:game_id') do
-    @game = database_game_with_id(params[:game_id]) # Alla attribut från alla spel är publika!!!
-
-    slim(:"games/show")
 end
 
 # Varning för att jag inte äger spelet
@@ -44,7 +37,14 @@ get('/warning/:game_id') do
     slim(:"warning")
 end
 
-# Formulär för att lägga till en ny tag. ADMIN
+# Spela ett spel
+get('/games/:game_id') do
+    @game = database_game_with_id(params[:game_id]) # Alla attribut från alla spel är publika!!!
+
+    slim(:"games/show")
+end
+
+# [ADMIN] Formulär för att lägga till en ny tag.
 get "/tags/new" do 
     # ONLY AS ADMIN
 
@@ -54,7 +54,7 @@ get "/tags/new" do
     slim(:"tags/new")
 end
 
-# Add a new tag. ADMIN
+# [ADMIN] Add a new tag.
 post "/tags" do
     # ONLY AS ADMIN
     tag_name = params[:tag_name]
@@ -62,10 +62,10 @@ post "/tags" do
 
     database_create_tag(tag_name, tag_purpose_id)
 
-    redirect "/tags"
+    redirect "/tags/"
 end
 
-# Formulär för att ändra en tag. ADMIN
+# [ADMIN] Formulär för att ändra en tag.
 get "/tags/:id/edit" do
     # ONLY AS ADMIN
     @tag_id = params[:id]
@@ -73,7 +73,7 @@ get "/tags/:id/edit" do
     tag = database_tag_with_id(@tag_id)
 
     # För att placera föregående värden
-    @tag_name = tag["name"]
+    @tag_name = tag["tag_name"]
     @tag_purpose_id = tag["tag_purpose_id"]
 
     # För att se vad tag purpose id:n står för
@@ -82,7 +82,7 @@ get "/tags/:id/edit" do
     slim(:"tags/edit")
 end
 
-# Ändra en tag. ADMIN
+# [ADMIN] Ändra en tag.
 post "/tags/:id/update" do
     # ONLY AS ADMIN
     tag_id = params[:id]
@@ -94,8 +94,8 @@ post "/tags/:id/update" do
     redirect "/tags"
 end
 
-# Display all tags. ADMIN (bara admin på grund utav edit och delete knappen)
-get "/tags" do
+# [ADMIN] Display all tags. (admin på grund utav edit och delete knappen)
+get "/tags/" do
     @tags = database_tags()
 
     slim(:"tags/index")
@@ -108,7 +108,7 @@ get "/tags/:id" do
     slim(:"tags/show", locals:{tag:@tag})
 end
 
-# Ta bort en tag. ADMIN
+# [ADMIN] Ta bort en tag. 
 post "/tags/:id/delete" do
     tag_id = params[:id]
 
@@ -117,12 +117,33 @@ post "/tags/:id/delete" do
     redirect "/tags"
 end
 
-# Redigera ett spel genom formulär m.m. ADMIN (följer inte restful routes )
-get "/games/:id/edit" do
-    game_id = params[:id]
+# Visa listan för tag syften
+get "/tag-purposes/" do
+    @tag_purposes = database_tag_purposes()
 
-    @available_tags = database_game_available_tags(game_id)
-    @applied_tags = database_game_applied_tags(game_id)
+    slim(:"tag-purposes/index")
+end
+
+# Formulär för att skapa ett nytt tag syfte
+get "/tag-purposes/new" do    
+    slim(:"tag-purposes/new")
+end
+
+# [ADMIN] Skapa ett nytt tag Syfte
+post "/tag-purposes" do
+    @tag_purpose_name = params[:tag_purpose_name]
+
+    database_create_tag_purpose(@tag_purpose_name)
+    
+    redirect("/tag-purposes/")
+end
+
+# [ADMIN] Redigera ett spel genom formulär m.m. (följer inte restful routes )
+get "/games/:id/edit" do
+    @game_id = params[:id]
+
+    @available_tags = database_game_available_tags(@game_id)
+    @applied_tags = database_game_applied_tags(@game_id)
 
     slim(:"games/edit")
 end

@@ -61,7 +61,7 @@ end
 def database_tag_with_id(tag_id)
     db = connect_to_default_database()
 
-    return db.execute("SELECT *, tag.id as id, tag.name as tag_name, tag_purpose.name as tag_purpose_name FROM tag
+    return db.execute("SELECT tag.id as id, tag.name as tag_name, tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag
     LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id
     WHERE tag.id = ?", tag_id).first
 end
@@ -86,10 +86,18 @@ def delete_tag(tag_id)
     db.execute("DELETE FROM tag WHERE id = ?", tag_id)
 end
 
+# Lista över alla tag syften
 def database_tag_purposes()
     db = connect_to_default_database()
 
     return db.execute("SELECT * FROM tag_purpose")
+end
+
+# Lägg till ett tag syfte
+def database_create_tag_purpose(tag_purpose_name)
+    db = connect_to_default_database()
+
+    db.execute("INSERT INTO tag_purpose (name) VALUES (?)", tag_purpose_name)
 end
 
 # CRUD på tag purposes
