@@ -39,7 +39,20 @@ end
 
 # Spela ett spel
 get('/games/:game_id') do
-    @game = database_game_with_id(params[:game_id]) # Alla attribut från alla spel är publika!!!
+    game_id = params[:game_id]
+
+    # Alla attribut från alla spel är publika!!!
+    @game = database_game_with_id(game_id)
+    
+    # Ganska dumt att bara ta den första. Men kommer fungera så....
+    game_iframe_size_string = database_game_iframe_size(game_id).first
+    if game_iframe_size_string != nil
+        @iframe_size_css = game_iframe_size_string
+    else
+        @iframe_size_css = "width: 800px; height: 550px;"
+    end
+
+    p @iframe_size_css
 
     slim(:"games/show")
 end
@@ -142,6 +155,7 @@ end
 get "/games/:id/edit" do
     @game_id = params[:id]
 
+    # Kanske borde vis alla tags istället för bara de som är kvar.
     @available_tags = database_game_available_tags(@game_id)
     @applied_tags = database_game_applied_tags(@game_id)
 

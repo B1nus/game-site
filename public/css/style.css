@@ -2,3 +2,10 @@
     width: 35px;
     height: 35px;
 }
+
+.game-tags {
+    padding: 3px;
+    border-radius: 100px;
+    background-color: lightgray;
+    height: 20px;
+}

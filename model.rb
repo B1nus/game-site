@@ -23,6 +23,16 @@ def database_game_with_id(game_id)
     return db.execute("SELECT * FROM game WHERE id = ?", game_id).first
 end
 
+def database_game_iframe_size(game_id)
+    db = connect_to_default_database()
+
+    return db.execute('SELECT tag.name as tag_name
+    FROM game_tag_rel
+    INNER JOIN tag ON tag.id = tag_id
+    INNER JOIN tag_purpose ON tag_purpose_id = tag_purpose.id
+    WHERE game_id = ? AND tag_purpose.name = "iframe_size"', game_id).map { |e| e = e["tag_name"] }
+end
+
 def database_game_applied_tags(game_id)
     db = connect_to_default_database()
 

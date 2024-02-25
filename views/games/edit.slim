@@ -17,6 +17,7 @@ div style="width: 100%; display: grid; grid-template-columns: 1 1; grid-template
         - @applied_tags.each do |applied_tag|
             == slim :"tags/show", locals: {tag:applied_tag}
     div
+        / Kanske borde vis alla tags istället för bara de som är kvar.
         h2 Available tags
         - @available_tags.each do |available_tag|
             == slim :"tags/show", locals: {tag:available_tag}

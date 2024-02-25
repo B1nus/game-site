@@ -3,16 +3,8 @@
 / 
 
 / Set iframe width to 100% if there is nothing specified
-- @game["resolution_width"] = "60vw" if @game["resolution_width"] == nil
 - if @game['embedded_url'] != nil
-  - if @game["resolution_height"] == nil
-      / Add a div to make the game be big
-      div style="height:75vh;"
-        iframe src="#{@game['embedded_url']}" style="width: #{@game['resolution_width']}; height: 100%;" frameborder="0" allow="gamepad *;"
-  - else
-      / Add a div to fix a weird styling bug
-      div
-        iframe src="#{@game['embedded_url']}" style="width: #{@game['resolution_width']}; height: #{@game['resolution_height']};" frameborder="0" allow="gamepad *;"
+  iframe#iframe src="#{@game['embedded_url']}" style=@iframe_size_css frameborder="0" allow="gamepad *; fullscreen;"
 - else 
   p There is no game here
 
