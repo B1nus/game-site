@@ -131,5 +131,5 @@ Eleven validerar och escapar användarinput
 
 ### A-nivå
 
-Eleven har ett inloggninssystem med hashade lösenord i databasen. Eleven säkrar upp routes och implementerar t.ex logging kring inloggningsförsök och cool-down eller liknande vid hackningsförsök. Eventuellt implementerar eleven "strong params" mha black/whitelist.
-Eleven kan även använda sig av Sinatras CSRF-funktionalitet
+Eleven har ett inloggninssystem med hashade lösenord i databasen. Eleven säkrar upp routes och implementerar t.ex logging kring inloggningsförsök och cool-down eller liknande vid hackningsförsök. Eventuellt implementerar eleven "strong params" mha black/whitelist (valbart).
+Eleven kan även använda sig av Sinatras CSRF-funktionalitet(valbart).
