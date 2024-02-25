@@ -4,6 +4,8 @@ require 'sqlite3'
 require 'sinatra/reloader'
 require "./helper_functions"
 
+p "http://localhost:4567/"
+
 # Återkoppla användaren till browse sidan som fungerar som index sida
 get('/') do
     redirect('/games')
@@ -25,13 +27,8 @@ get('/games/:id') do
     game_id = params[:id]
 
     game = db.execute("SELECT * FROM game WHERE id = ?", game_id).first
-    game_url = game["foreign_url"]
-    foreign_url = game["foreign_url"]
-    resolution = {width:game["resolution_width"], height:game["resolution_width"]}
 
-    puts "game_id: #{game_id} game_url: #{game_url} foreign: #{foreign_url}"
-
-    slim(:"games/show", locals:{game_url:game_url, foreign_url:foreign_url, resolution:resolution})
+    slim(:"games/show", locals:{game:game})
 end
 
 # 

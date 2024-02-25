@@ -1,20 +1,21 @@
-// Spela ett spel. Tillgänglig för alla
-- url = ""
-- resolution_string = {width:"100%", height:"100%"}
-- if game_url != nil
-    - url = game_url
-- if foreign_url != nil
-    - url = foreign_url
-    p this is a foreign url, being embeded. Note to self: Add a link to the right foreign website, do not have it on your own website.
-- if resolution[:width] != nil
-    - resolution_string[:width] = resolution[:width]
-- if resolution[:height] != nil
-    - resolution_string[:height] = resolution[:height]
-- resolution_string = "width: #{resolution_string[:width]}; height: #{resolution_string[:height]};"
-iframe src=url style=resolution_string frameborder="0" allow="gamepad *;"
+/ 
+/ Spela ett spel. Tillgänglig för alla
+/ 
 
-// Ge alla spel i databasen 100% som default
-// Strunta i nil checking.
-// Ändra länk sakerna till en separat table?
+- if game["game_url"] != nil
+  p #{game["game_url"]}
+  - url = game_url
+- elsif game["foreign_url"] != nil
+  / Gör det tydligt för användaren att spelet är från en annan hemsida. En knapp för att gå in på embeded till exempel.
+  - url = game["embedded_url"]
+  p style="margin: 100px 0;"
+    |> WARNING. This game is from another website. Play an embedded version here or go to the
+    a href=game["foreign_url"] target="_blank" original website
 
-// Gör det tydligt för användaren att länken är från en annan hemsida. En knapp för att gå in på embeded till exempel.
+/ Set iframe resolution to maximum if there is no size specified
+- game["resolution_width"] = "100%" if game["resolution_width"] == nil
+- game["resolution_height"] = "100%" if game["resolution_height"] == nil
+
+iframe src=url width=game['resolution_height'] height=game['resolution_height'] frameborder="0" allow="gamepad *;"
+
+/ Ändra länk sakerna till en separat table?
