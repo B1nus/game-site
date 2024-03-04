@@ -2,6 +2,7 @@ require 'sinatra'
 require 'slim'
 require 'sinatra/reloader'
 require "./model"
+require "erb"
 
 # Länk för att komma in på hemsidan snabbt under testning (:
 p "http://localhost:4567/"
@@ -65,7 +66,7 @@ get "/tags/new" do
     # För att se vad tag purpose id:n står för
     @tag_purposes = database_tag_purposes()
 
-    slim(:"tags/new")
+    erb(:"tags/new")
 end
 
 # [ADMIN] Add a new tag.
@@ -93,7 +94,7 @@ get "/tags/:id/edit" do
     # För att se vad tag purpose id:n står för
     @tag_purposes = database_tag_purposes()
 
-    slim(:"tags/edit")
+    erb(:"tags/edit")
 end
 
 # [ADMIN] Ändra en tag.
@@ -105,7 +106,7 @@ post "/tags/:id/update" do
 
     database_edit_tag(tag_id, tag_name, tag_purpose_id)
 
-    redirect "/tags"
+    redirect "/tags/"
 end
 
 # [ADMIN] Display all tags. (admin på grund utav edit och delete knappen)
@@ -128,7 +129,7 @@ post "/tags/:id/delete" do
 
     delete_tag(tag_id)
     
-    redirect "/tags"
+    redirect "/tags/"
 end
 
 # Visa listan för tag syften
@@ -163,7 +164,7 @@ get "/games/:id/edit" do
     # Samla alla tags i en lista
     @tags = database_tags()
     
-    slim(:"games/edit")
+    erb(:"games/edit")
 end
 
 set :request_method_override, true
