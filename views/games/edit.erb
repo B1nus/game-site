@@ -1,7 +1,6 @@
-<%# %>
-<%# redigera ett spel. Endast tillgänglig för admin %>
-<%# %>
-
+<%#
+  redigera ett spel. Endast tillgänglig för admin
+ %>
 
 <%# Hmmm, hur ska tag editorn se ut? %>
 <%# Hmmm, hur ska jag visa tags till spelen? Ska jag embedda till en /tags/:game_id sida? %>
@@ -16,7 +15,7 @@
     <form action="/games/<%=@game_id%>/update" method="post">
     
         <h2>Tags</h2>
-        <select name="tags_selection[]" id="tags" multiple=true>
+        <select name="tags_selection[]" multiple=true>
             <% @tags.each do |tag| %>.
                 <option value="<%=tag['tag_id']%>" <%= @applied_tags.include?(tag) ? "selected" : "" %>>
                     <%=tag['tag_name']%>
