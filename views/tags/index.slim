@@ -17,7 +17,7 @@ ul
         li style="display: flex; flex-direction: row; gap: 10px;"
             == slim :"tags/show", locals:{tag:tag}
             a href="/tags/#{tag['tag_id']}/edit" edit
-            form action="tags/#{tag['tag_id']}/delete" method="post"
+            form action="/tags/#{tag['tag_id']}/delete" method="post"
                 button type="submit" delete
     
     / p #{@tags} Bra för debugging!
