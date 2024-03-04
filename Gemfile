@@ -7,5 +7,5 @@ gem 'rack'
 gem 'slim'
 gem 'sinatra-reloader'
 gem 'sqlite3'
+gem 'erb'
 
-gem "rackup", "~> 2.1"
