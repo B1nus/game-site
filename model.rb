@@ -64,7 +64,7 @@ end
 def database_tags()
     db = connect_to_default_database()
 
-    return db.execute("SELECT *, tag.id as id, tag.name as tag_name, tag_purpose.name as tag_purpose_name FROM tag
+    return db.execute("SELECT tag.id as tag_id, tag.name as tag_name, tag.tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag
     LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id")
 end
 
