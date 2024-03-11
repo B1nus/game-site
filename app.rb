@@ -8,6 +8,8 @@ require 'sinatra/flash'
 # Länk för att komma in på hemsidan snabbt under testning (:
 p "http://localhost:4567/"
 
+enable :sessions
+
 # Återkoppla användaren till browse sidan som fungerar som landing page
 get('/') do
     redirect('/games/')
@@ -189,26 +191,33 @@ post "/register" do
     password = params[:password]
 
     # Registrerings validering
-    # TODO! se till att username är unikt
+    flash_msg = ""
     if username.length == 0
-        return "You need to type a username"
+        flash_msg = "You need to type a username"
     elsif username == "admin"
-        return "Lmao, bro really though he could become an admin"
+        flash_msg = "Lmao, bro really though he could become an admin"
     elsif database_does_user_exist?(username)
-        return "Username taken, choose another username"
+        flash_msg = "Username taken, choose another username"
     elsif password.length == 0
-        return "You need to type a password"
+        flash_msg = "You need to type a password"
     elsif password.length < 8
-        return "Your password needs to be at least 8 characters long"
+        flash_msg = "Your password needs to be at least 8 characters long"
     elsif not password =~ /[A-Z]/
-        return "Your password needs a capital letter"
+        flash_msg = "Your password needs a capital letter"
     elsif not password =~ /[0-9]/
-        return "Your password needs a number"
+        flash_msg = "Your password needs a number"
     elsif not password =~ /[#?!@$ %^&*-]/
-        return "Your password needs one special character: #?!@$ %^&*-"
+        flash_msg = "Your password needs one special character: #?!@$ %^&*-"
     end
 
-    "Register route was successfull"
+    if flash_msg == ""
+        # Inga fel hittades
+        "Register route was successfull"
+    else 
+        # fel hittades
+        flash[:notice] = flash_msg
+        redirect('/register')
+    end
 end
 
 # Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel

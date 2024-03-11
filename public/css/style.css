@@ -9,3 +9,13 @@
     background-color: lightgray;
     height: 20px;
 }
+
+.notice {
+ background:rgba(100,100,100,0.1);
+ width:60vw;
+ padding:50px;
+ position:fixed;
+ font-size:4rem;
+ font-family:Arial, Helvetica, sans-serif;
+}
+
