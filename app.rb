@@ -177,6 +177,15 @@ post "/games/:id/update" do # Hmmm, jag får bara det sista elementet i selectio
     redirect "/games/#{game_id}/edit"
 end
 
+# Visa formuläret för att registrera en användare
+get "/register" do
+    erb :"users/register" # OBS. Medveten avvikelse från restuful routes
+end
+
+# Ska lägga till validering med regex här senare
+post "/register" do
+    "Register route was successfull"
+end
 
 # Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
 # Domän check i app.rb.
