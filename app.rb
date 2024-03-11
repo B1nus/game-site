@@ -188,8 +188,20 @@ post "/register" do
     username = params[:username]
     password = params[:password]
 
-    if not password =~ /[A-Z]/
+    # Registrerings validering
+    # TODO! se till att username är unikt
+    if username.length == 0
+        return "You need to type a username"
+    elsif password.length == 0
+        return "You need to type a password"
+    elsif password.length < 8
+        return "Your password needs to be at least 8 characters long"
+    elsif not password =~ /[A-Z]/
         return "Your password needs a capital letter"
+    elsif not password =~ /[0-9]/
+        return "Your password needs a number"
+    elsif not password =~ /[#?!@$ %^&*-]/
+        return "Your password needs one special character: #?!@$ %^&*-"
     end
 
     "Register route was successfull"
