@@ -3,6 +3,7 @@ require 'slim'
 require 'sinatra/reloader'
 require "./model"
 require "erb"
+require 'sinatra/flash'
 
 # Länk för att komma in på hemsidan snabbt under testning (:
 p "http://localhost:4567/"
@@ -184,6 +185,13 @@ end
 
 # Ska lägga till validering med regex här senare
 post "/register" do
+    username = params[:username]
+    password = params[:password]
+
+    if not password =~ /[A-Z]/
+        return "Your password needs a capital letter"
+    end
+
     "Register route was successfull"
 end
 
@@ -191,5 +199,6 @@ end
 # Domän check i app.rb.
 # Ta bort länken till scratch see inside. Gör så det är till servern istället
 # Restful routes för användare? Är inte /register bättre än /users/new?
+# Cooldown för inloggningsförsök. request.ip
 #
 # Regex validering på några fält. Även med tid för A nivå.
