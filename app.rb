@@ -192,6 +192,10 @@ post "/register" do
     # TODO! se till att username är unikt
     if username.length == 0
         return "You need to type a username"
+    elsif username == "admin"
+        return "Lmao, bro really though he could become an admin"
+    elsif database_does_user_exist?(username)
+        return "Username taken, choose another username"
     elsif password.length == 0
         return "You need to type a password"
     elsif password.length < 8

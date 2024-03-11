@@ -110,5 +110,14 @@ def database_create_tag_purpose(tag_purpose_name)
     db.execute("INSERT INTO tag_purpose (name) VALUES (?)", tag_purpose_name)
 end
 
+# Kolla om användaren existerar
+def database_does_user_exist?(username)
+    db = connect_to_default_database()
+
+    count =  db.execute("SELECT count(username) FROM user where user.username = ?", username).first["count(username)"]
+
+    return count >= 1
+end
+
 # CRUD på tag purposes
 # lägg in /tag_purpose/index.slim i edit och new av tags (så man kan se vad tag_purpose id står för)
