@@ -1,6 +1,8 @@
 require 'sqlite3'
 require 'sinatra/reloader'
 
+module Model
+
 def connect_to_database(path)
     db = SQLite3::Database.new(path)
     db.results_as_hash = true
@@ -117,6 +119,8 @@ def database_does_user_exist?(username)
     count =  db.execute("SELECT count(username) FROM user where user.username = ?", username).first["count(username)"]
 
     return count >= 1
+end
+
 end
 
 # CRUD på tag purposes

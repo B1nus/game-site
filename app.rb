@@ -10,6 +10,9 @@ p "http://localhost:4567/"
 
 enable :sessions
 
+# Yardoc
+include Model
+
 # Återkoppla användaren till browse sidan som fungerar som landing page
 get('/') do
     redirect('/games/')
@@ -187,7 +190,7 @@ post "/register" do
     username = params[:username]
     password = params[:password]
 
-    # Registrerings validering
+    # Registrerings validering. (Om flash_msg är tom fann vi inga fel på registreringen)
     flash_msg = ""
     if username.length == 0
         flash_msg = "You need to type a username"
@@ -215,6 +218,10 @@ post "/register" do
         flash[:notice] = flash_msg
         redirect('/register')
     end
+end
+
+get "/login" do
+    
 end
 
 # Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
