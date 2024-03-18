@@ -1,0 +1,77 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    base64 (0.2.0)
+    multi_json (1.15.0)
+    mustermann (3.0.0)
+      ruby2_keywords (~> 0.0.1)
+    rack (3.0.9.1)
+    rack-protection (4.0.0)
+      base64 (>= 0.1.0)
+      rack (>= 3.0.0, < 4)
+    rack-session (2.0.0)
+      rack (>= 3.0.0)
+    rackup (2.1.0)
+      rack (>= 3)
+      webrick (~> 1.8)
+    ruby2_keywords (0.0.5)
+    sinatra (4.0.0)
+      mustermann (~> 3.0)
+      rack (>= 3.0.0, < 4)
+      rack-protection (= 4.0.0)
+      rack-session (>= 2.0.0, < 3)
+      tilt (~> 2.0)
+    sinatra-contrib (4.0.0)
+      multi_json (>= 0.0.2)
+      mustermann (~> 3.0)
+      rack-protection (= 4.0.0)
+      sinatra (= 4.0.0)
+      tilt (~> 2.0)
+    sinatra-flash (0.3.0)
+      sinatra (>= 1.0.0)
+    sinatra-reloader (1.0)
+      sinatra-contrib
+    slim (5.2.1)
+      temple (~> 0.10.0)
+      tilt (>= 2.1.0)
+    sqlite3 (1.7.3-x86_64-linux)
+    temple (0.10.3)
+    tilt (2.3.0)
+    webrick (1.8.1)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  rack
+  rackup
+  sinatra
+  sinatra-flash
+  sinatra-reloader
+  slim
+  sqlite3
+
+CHECKSUMS
+  base64 (0.2.0) sha256=0f25e9b21a02a0cc0cea8ef92b2041035d39350946e8789c562b2d1a3da01507
+  multi_json (1.15.0) sha256=1fd04138b6e4a90017e8d1b804c039031399866ff3fbabb7822aea367c78615d
+  mustermann (3.0.0) sha256=6d3569aa3c3b2f048c60626f48d9b2d561cc8d2ef269296943b03da181c08b67
+  rack (3.0.9.1) sha256=5426d7fe733a1e646b0249b6f9ada0f2792b6336a3bb5f0fc5af1af8c558e6d4
+  rack-protection (4.0.0) sha256=d0db6185caa46a8c0d134c2c6b4803f4f392a67b2984da311409cb505f67bbf6
+  rack-session (2.0.0) sha256=db04b2063e180369192a9046b4559af311990af38c6a93d4c600cee4eb6d4e81
+  rackup (2.1.0) sha256=6ecb884a581990332e45ee17bdfdc14ccbee46c2f710ae1566019907869a6c4d
+  ruby2_keywords (0.0.5) sha256=ffd13740c573b7301cf7a2e61fc857b2a8e3d3aff32545d6f8300d8bae10e3ef
+  sinatra (4.0.0) sha256=54f6687b1daf2cfda6cef3f5dc90f47a8d05563cae7753e77cb01f4d3615497d
+  sinatra-contrib (4.0.0) sha256=b0a586a737fae486e4552cd24a540493d4047314d55e794e041c985ad0833365
+  sinatra-flash (0.3.0) sha256=fef044da4341840dcddc6f1cc9582c2babc6932aefbf1b00cda66f3bf6f717ee
+  sinatra-reloader (1.0) sha256=d8d2ec43679b8ef48fd88c9e26ca0cc6c27fed6b988117d6be5047b651aad625
+  slim (5.2.1) sha256=72351dff7e2ff20e2d5c393cfc385bb9142cef5db059141628fd7163ac3c13e7
+  sqlite3 (1.7.3-x86_64-linux) sha256=522a3285660dec8253465880c97980e873db0d79060900be8d14194217a3ee73
+  temple (0.10.3) sha256=df3145fe6577af1e25387eb7f7122d32ed51bdb6f2e7bb0f4fbf07b66151913b
+  tilt (2.3.0) sha256=82dd903d61213c63679d28e404ee8e10d1b0fdf5270f1ad0898ec314cc3e745c
+  webrick (1.8.1) sha256=19411ec6912911fd3df13559110127ea2badd0c035f7762873f58afc803e158f
+
+RUBY VERSION
+   ruby 3.3.0.dev
+
+BUNDLED WITH
+   2.5.0.dev
