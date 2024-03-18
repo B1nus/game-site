@@ -192,6 +192,7 @@ end
 post("/register") do
   username = params[:username]
   password = params[:password]
+  password_validation = params[:password_validation]
 
   # Registrerings validering. (Om flash_msg är tom fann vi inga fel på registreringen)
   flash_msg = ""
@@ -211,6 +212,8 @@ post("/register") do
     flash_msg = "Your password needs a number"
   elsif not password =~ /[#?!@$ %^&*-]/
     flash_msg = "Your password needs one special character: #?!@$ %^&*-"
+  elsif password != password_validation
+    flash_msg = "Your password's don't match"
   end
 
   if flash_msg == ""
