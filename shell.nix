@@ -7,5 +7,6 @@ pkgs.mkShell
     ruby_3_3
     cmake
     sqlitebrowser
+    rubyfmt
   ];
 }
