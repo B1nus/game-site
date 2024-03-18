@@ -227,6 +227,19 @@ post("/register") do
 end
 
 get("/login") do
+  erb(:"users/login")
+end
+
+# Attempts to login
+#
+# @params [String] username, The username
+# @params [String] password, The password
+#
+# @see Model#login
+post("/login") do
+  # Glöm inte spam protection
+  username = params[:username]
+  password = params[:password]
 end
 
 # Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
