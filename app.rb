@@ -8,17 +8,20 @@ require "slim"
 # Länk för att komma in på hemsidan snabbt under testning (:
 p("http://localhost:4567/")
 
+# Tillåt sessions. Jag använder det endast för inloggning
 enable(:sessions)
 
 # Yardoc
 include(Model)
 
-# Återkoppla användaren till browse sidan som fungerar som landing page
+# Display Landing Page
+#
 get("/") do
   redirect("/games/")
 end
 
-# Sidan där man utforskar spel
+# Displays games
+#
 get("/games/") do
   # Alla attribut från alla spel är publika!!!
   @games = database_games
@@ -35,7 +38,9 @@ get("/games/") do
   slim(:"games/index")
 end
 
-# Varning för att jag inte äger spelet
+# Display a warning for games I do not own
+#
+# @params [String] game_id, The id of the game to warn for
 get("/warning/:game_id") do
   game = database_game_with_id(params[:game_id])
 
@@ -249,3 +254,10 @@ end
 # Cooldown för inloggningsförsök. request.ip
 #
 # Regex validering på några fält. Även med tid för A nivå.
+#
+# before /admin/* . Gör så för alla admin routes
+# gör en separat /admin/games/ index sida med edit och delete knappar
+# login ip sparning
+# login validering
+# login autentisering i model.rb
+# hur ska jag skilja på user och guest routes fint? Lös senare.
