@@ -170,9 +170,6 @@ get "/games/:id/edit" do
     erb(:"games/edit")
 end
 
-set :request_method_override, true
-register Rack::Multipart
-
 post "/games/:id/update" do # Hmmm, jag får bara det sista elementet i selectionen...
     game_id = params[:id]
     p params[:tags_selection]
