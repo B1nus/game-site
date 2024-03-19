@@ -14,6 +14,22 @@ enable(:sessions)
 # Yardoc
 include(Model)
 
+# Validate admin sites
+# 
+before("/admin/*") do
+  # Check if the user is logged in at all.
+  if session[:user_id].nil?
+    return "No admin for you"
+  end
+
+  # Check if the user is not the first (I am the only admin)
+  if session[:user_id] != 1
+    return "No admin for you"
+  end
+
+  # TODO! Implement a check with the database for the permission level (check for == "admin")
+end
+
 # Display Landing Page
 #
 get("/") do
