@@ -251,9 +251,6 @@ get("/login") do
   erb(:"users/login")
 end
 
-post("/login") do
-  redirect("/")
-end
 # Attempts to login
 #
 # @params [String] username, The username
