@@ -28,7 +28,7 @@ get("/games/") do
 
   @games.each do |game|
     # Kolla efter en tag som varnar för tredjeparts hemsida
-    if database_game_tag_purposes(game["id"]).include?({"name" => "warn_for_stolen_game"})
+    if database_game_tag_purposes(game["id"]).include?("warn_for_stolen_game")
       game["url"] = "/warning/#{game["id"]}"
     else
       game["url"] = "/games/#{game["id"]}"
@@ -204,7 +204,7 @@ post("/register") do
   if username.length == 0
     flash_msg = "You need to type a username"
   elsif username == "admin"
-    flash_msg = "Lmao, bro really though he could become an admin"
+    flash_msg = "Lmao, bro really though he could be admin"
   elsif database_does_user_exist?(username)
     flash_msg = "Username taken, choose another username"
   elsif password.length == 0
@@ -216,7 +216,7 @@ post("/register") do
   elsif not password =~ /[0-9]/
     flash_msg = "Your password needs a number"
   elsif not password =~ /[#?!@$ %^&*-]/
-    flash_msg = "Your password needs one special character: #?!@$ %^&*-"
+    flash_msg = "Your password needs one at least special character: #?!@$%^&*-"
   elsif password != password_validation
     flash_msg = "Your password's don't match"
   end
@@ -235,6 +235,9 @@ get("/login") do
   erb(:"users/login")
 end
 
+post("/login") do
+  redirect("/")
+end
 # Attempts to login
 #
 # @params [String] username, The username

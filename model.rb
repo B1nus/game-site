@@ -68,13 +68,15 @@ module Model
   def database_game_tag_purposes(game_id)
     db = connect_to_default_database
 
-    return db.execute(
-      "SELECT tag_purpose.name FROM game_tag_rel
+    return db
+      .execute(
+        "SELECT tag_purpose.name FROM game_tag_rel
     INNER JOIN tag ON game_tag_rel.tag_id = tag.id
     INNER JOIN tag_purpose ON tag.tag_purpose_id = tag_purpose.id
     WHERE game_id = ?",
-      game_id
-    )
+        game_id
+      )
+      .map { |e| e = e["name"] }
   end
 
   def database_tags
