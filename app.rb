@@ -231,11 +231,11 @@ post('/register') do
     flash_msg = 'You need to type a password'
   elsif password.length < 8
     flash_msg = 'Your password needs to be at least 8 characters long'
-  elsif !password =~ /[A-Z]/
+  elsif password !~ /[A-Z]/
     flash_msg = 'Your password needs a capital letter'
-  elsif !password =~ /[0-9]/
+  elsif password !~ /[0-9]/
     flash_msg = 'Your password needs a number'
-  elsif !password =~ /[#?!@$ %^&*-]/
+  elsif password !~ /[#?!@$ %^&*-]/
     flash_msg = 'Your password needs one at least special character: #?!@$%^&*-'
   elsif password != password_validation
     flash_msg = 'Your password\'s don\'t match'
