@@ -113,7 +113,7 @@ CHECKSUMS
   yard-sinatra (2.0.0.beta)
 
 RUBY VERSION
-   ruby 3.3.0.dev
+   ruby 3.3.0p0
 
 BUNDLED WITH
-   2.5.0.dev
+   2.5.3
