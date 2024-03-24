@@ -206,7 +206,7 @@ post('/games/:id/update') do
   redirect("/games/#{game_id}/edit")
 end
 
-# Displays a register form. Observe the deviation from restful
+# Displays a register form. This deviates from RESTFUL ROUTES by design
 #
 get('/register') do
   erb(:'users/register')
@@ -256,7 +256,6 @@ end
 # Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
 # Domän check i app.rb.
 # Ta bort länken till scratch see inside. Gör så det är till servern istället
-# Restful routes för användare? Är inte /register bättre än /users/new?
 # Cooldown för inloggningsförsök. request.ip
 #
 # Regex validering på några fält. Även med tid för A nivå.
