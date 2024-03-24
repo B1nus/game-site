@@ -127,4 +127,27 @@ module Model
       nil
     end
   end
+
+  # Attempts to login
+  #
+  # @params [String] username The username
+  # @params [String] password The password
+  #
+  # @return [Integer] the users id, nil if the login was unsuccessful
+  def login(username, password)
+    # Funderar på att ha felmeddelanden för olika fel. Till exempel ett för om användaren inte finns, ett om lösenordet
+    # är fel. Men jag tror det är säkrare att inte ge någon extra information. Det gör hackning den lilla biten svårare.
+
+    user = database.execute('SELECT digest, id FROM user WHERE username = ?', username).first
+
+    # Username not found
+    return nil if user.nil?
+
+    password_digest = user['digest']
+
+    # Wrong password
+    return nil if BCrypt::Password.new(password_digest) != password
+
+    user['id'].to_i
+  end
 end

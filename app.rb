@@ -23,7 +23,7 @@ before('/admin/*') do
   return 'No admin for you' if session[:user_id].nil?
 
   # Check if the user is not the first (I am the only admin)
-  return 'No admin for you' if session[:user_id] != 1
+  return 'No admin for you' if session[:user_id] != 0
 
   # TODO! Implement a check with the database for the permission level (check for == 'admin')
 end
@@ -235,10 +235,13 @@ post('/register') do
   end
 end
 
+# Displays a login form
+#
 get('/login') do
   erb(:'users/login')
 end
 
+login_attempts = {}
 # Attempts to login
 #
 # @params [String] username, The username
@@ -246,11 +249,27 @@ end
 #
 # @see Model#login
 post('/login') do
-  # Glöm inte spam protection
   username = params[:username]
   password = params[:password]
 
-  # TODO! Autentisering i model.rb
+  # Cool-down
+  if login_attempts[request.ip] && Time.now.to_i - login_attempts[request.ip] < 10
+    flash[:notice] = 'You\'re logging in too much. Calm down.'
+    redirect('/login')
+  end
+
+  user_id = login(username, password)
+
+  if user_id
+    # Successful login!
+    session[:user_id] = user_id
+    redirect('/')
+  else
+    # Login failed.
+    login_attempts[request.ip] = Time.now.to_i
+    flash[:notice] = 'Invalid login credentials'
+    redirect('/login')
+  end
 end
 
 # Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
