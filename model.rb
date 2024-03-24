@@ -1,5 +1,6 @@
 require 'sqlite3'
 require 'sinatra/reloader'
+require 'bcrypt'
 
 # Model
 module Model
@@ -95,6 +96,43 @@ module Model
   # Kolla om användaren existerar
   def database_does_user_exist?(username)
     !database.execute('SELECT username FROM user where user.username = ?', username).empty?
+  end
+
+  # Attempts to create a new user
+  #
+  # @params [String] username The username
+  # @params [String] password The password
+  # @params [String] repeat_password The repeated password
+  #
+  # @return [String] the error message, nil if no error occured
+  def register_user(username, password, repeat_password)
+    error = if username.empty?
+              'You need to type a username'
+            elsif username == 'admin'
+              'Lmao, bro really though he could be admin'
+            elsif database_does_user_exist?(username)
+              'Username taken, choose another username'
+            elsif password.empty?
+              'You need to type a password'
+            elsif password.length < 8
+              'Your password needs to be at least 8 characters long'
+            elsif password !~ /[A-Z]/
+              'Your password needs a capital letter'
+            elsif password !~ /[0-9]/
+              'Your password needs a number'
+            elsif password !~ /[#?!@$ %^&*-]/
+              'Your password needs at least one special character: #?!@$%^&*-'
+            elsif password != repeat_password
+              'Your password\'s don\'t match'
+            end
+
+    unless error
+      password_digest = BCrypt::Password.create(password)
+      database.execute('INSERT INTO user (username, digest, permission_level) VALUES (?, ?, ?)',
+                       username, password_digest, 'user')
+    end
+
+    error
   end
 end
 

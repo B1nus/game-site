@@ -206,48 +206,32 @@ post('/games/:id/update') do
   redirect("/games/#{game_id}/edit")
 end
 
-# Visa formuläret för att registrera en användare
+# Displays a register form. Observe the deviation from restful
+#
 get('/register') do
-  # OBS. Medveten avvikelse från restuful routes
   erb(:'users/register')
 end
 
-# Ska lägga till validering med regex här senare
+# Attempts to register a user
+#
+# @param [String] username, The username
+# @param [String] password, The password
+# @param [String] repeat-password, The repeated password
+#
+# @see Model#register_user
 post('/register') do
   username = params[:username]
   password = params[:password]
-  password_validation = params[:password_validation]
+  repeat_password = params[:password_validation]
 
-  # TODO! Flytta till model.rb (MVC!)
-  # Registrerings validering. (Om flash_msg är tom fann vi inga fel på registreringen)
-  flash_msg = ''
-  if username.empty?
-    flash_msg = 'You need to type a username'
-  elsif username == 'admin'
-    flash_msg = 'Lmao, bro really though he could be admin'
-  elsif database_does_user_exist?(username)
-    flash_msg = 'Username taken, choose another username'
-  elsif password.empty?
-    flash_msg = 'You need to type a password'
-  elsif password.length < 8
-    flash_msg = 'Your password needs to be at least 8 characters long'
-  elsif password !~ /[A-Z]/
-    flash_msg = 'Your password needs a capital letter'
-  elsif password !~ /[0-9]/
-    flash_msg = 'Your password needs a number'
-  elsif password !~ /[#?!@$ %^&*-]/
-    flash_msg = 'Your password needs one at least special character: #?!@$%^&*-'
-  elsif password != password_validation
-    flash_msg = 'Your password\'s don\'t match'
-  end
+  error = register_user(username, password, repeat_password)
 
-  if flash_msg == ''
-    # Inga fel hittades
-    'Register route was successfull'
-  else
-    # fel hittades
-    flash[:notice] = flash_msg
+  if error
+    flash[:notice] = error
     redirect('/register')
+  else
+    flash[:notice] = 'Registration successful!'
+    redirect('/login')
   end
 end
 

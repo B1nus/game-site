@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 ruby '~>3.3.0'
 
+gem 'bcrypt', '~> 3.1'
 gem 'rack'
 gem 'rackup'
 gem 'sinatra'
