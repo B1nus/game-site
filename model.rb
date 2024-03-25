@@ -150,4 +150,21 @@ module Model
 
     user['id'].to_i
   end
+
+  # Attempts to fetch the users permission level
+  #
+  # @params [Integer] user_id, The users id
+  #
+  # @return [String] the users permission level (admin/user/guest), nil if the user wasn't found
+  def user_permission_level(user_id)
+    # Det kan vara ett säkerhetshål att vem som helst kan komma åt vem som helst permission_level.
+    # Borde inte gå i och med hur app.rb hanterar det. Men något at tänka på.
+    user = database.execute('SELECT permission_level FROM user WHERE id = ?', user_id).first
+
+    # No user found
+    return nil if user.nil?
+
+    # Borde inte kunna vara nil eftersom NN ("Not Null") är checkad i sqlite3 databasen
+    user['permission_level']
+  end
 end

@@ -19,13 +19,28 @@ include(Model)
 # Validate admin sites
 #
 before('/admin/*') do
+  user_id = session[:user_id]
+
   # Check if the user is logged in at all.
-  return 'No admin for you' if session[:user_id].nil?
+  redirect('/noadminforyou') if user_id.nil?
 
   # Check if the user is not the first (I am the only admin)
-  return 'No admin for you' if session[:user_id] != 0
+  redirect('/noadminforyou') if user_id != 0
 
-  # TODO! Implement a check with the database for the permission level (check for == 'admin')
+  # Check if the user is admin
+  redirect('/noadminforyou') if user_permission_level(user_id) != 'admin'
+end
+
+# Displays a message for non admins
+#
+get('/noadminforyou') do
+  'no admin for you'
+end
+
+# Displays a message for non integer id params
+#
+get('/notintegerparam') do
+  'that id is not a number'
 end
 
 # Display Landing Page
@@ -88,30 +103,30 @@ get('/games/:game_id') do
   slim(:'games/show')
 end
 
-# [ADMIN] Formulär för att lägga till en ny tag.
-get('/tags/new') do
-  # ONLY AS ADMIN
-
+# Displays a form for creating tags
+#
+get('/admin/tags/new') do
   # För att se vad tag purpose id:n står för
   @tag_purposes = database_tag_purposes
 
   erb(:'tags/new')
 end
 
-# [ADMIN] Add a new tag.
-post('/tags') do
-  # ONLY AS ADMIN
+post('/admin/tags') do
   tag_name = params[:tag_name]
   tag_purpose_id = params[:tag_purpose_id]
 
   database_create_tag(tag_name, tag_purpose_id)
 
-  redirect('/tags/')
+  redirect('/admin/tags/')
 end
 
-# [ADMIN] Formulär för att ändra en tag.
-get('/tags/:id/edit') do
-  # ONLY AS ADMIN
+# Displays a form for editing a tag
+#
+# @param [Integer] tag_id, the id for the tag
+#
+# @see Model#database_tag_with_id
+get('/admin/tags/:id/edit') do
   @tag_id = params[:id]
 
   tag = database_tag_with_id(@tag_id)
@@ -126,9 +141,14 @@ get('/tags/:id/edit') do
   erb(:'tags/edit')
 end
 
-# [ADMIN] Ändra en tag.
-post('/tags/:id/update') do
-  # ONLY AS ADMIN
+# Update a tag
+#
+# @param [Integer] id, the id of the tag
+# @param [String] tag_name, the new name of the tag
+# @param [Integer] tag_purpose_id, the new tag purpose id
+#
+# @see Model#database_edit_tag
+post('/admin/tags/:id/update') do
   tag_id = params[:id]
   tag_name = params[:tag_name]
   tag_purpose_id = params[:tag_purpose_id]
@@ -138,15 +158,18 @@ post('/tags/:id/update') do
   redirect('/tags/')
 end
 
-# [ADMIN] Display all tags. (admin på grund utav edit och delete knappen)
-get('/tags/') do
+# Display all tags
+#
+# @see Model#database_tags
+get('/admin/tags/') do
   @tags = database_tags
 
   slim(:'tags/index')
 end
 
-# Visa en tag. (FÅR INTE VARA FÖRE ROUTEN /tags/new!!!)
-get('/tags/:id') do
+# Display a tag
+#
+get('/admin/tags/:id') do
   @tag = database_tag_with_id(params[:id])
 
   slim(:'tags/show', locals: { tag: @tag })
