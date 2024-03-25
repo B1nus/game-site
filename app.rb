@@ -86,21 +86,49 @@ end
 get('/games/:game_id') do
   game_id = params[:game_id]
 
+  # Någon har hållt på med länkern ser jag
+  redirect('/notintegerparam') if game_id.to_i.zero?
+
   # Alla attribut från alla spel är publika!!!
   @game = database_game_with_id(game_id)
 
   # Ganska dumt att bara ta den första. Men kommer fungera så....
   game_iframe_size_string = database_game_iframe_size(game_id).first
-  if game_iframe_size_string != nil
-    @iframe_size_css = game_iframe_size_string
-  else
-    # Standard storlek på iframe om inget specifieras
-    @iframe_size_css = 'width: 800px; height: 550px;'
-  end
+  @ifram_size_css = if !game_iframe_size_string.nil?
+                      game_iframe_size_string
+                    else
+                      # Standard storlek på iframe om inget specifieras
+                      'width: 800px; height: 550px;'
+                    end
 
   @allow_fullscreen = database_game_tag_purposes(game_id).include?('game_supports_fullscreen')
 
   slim(:'games/show')
+end
+
+# Displays a form for editing a game
+#
+# @param [Integer] id, The id of the game
+get('/admin/games/:id/edit') do
+  @game_id = params[:id]
+
+  # Kanske borde vis alla tags istället för bara de som är kvar.
+  @available_tags = database_game_available_tags(@game_id)
+  @applied_tags = database_game_applied_tags(@game_id)
+
+  # Samla alla tags i en lista
+  @tags = database_tags
+
+  erb(:'games/edit')
+end
+
+# Updates an existing game and redirects to '/admin/games/'
+post('/admin/games/:id/update') do
+  # game_id = params[:id]
+  #
+  # tags_selection = params[:tags_selection]
+
+  redirect('/admin/games/')
 end
 
 # Displays a form for creating tags
@@ -155,7 +183,7 @@ post('/admin/tags/:id/update') do
 
   database_edit_tag(tag_id, tag_name, tag_purpose_id)
 
-  redirect('/tags/')
+  redirect('/admin/tags/')
 end
 
 # Display all tags
@@ -173,60 +201,45 @@ get('/admin/tags/:id') do
   @tag = database_tag_with_id(params[:id])
 
   slim(:'tags/show', locals: { tag: @tag })
+
+  # erb(:'tags/show')
+  #
+  # replace the ugly code with this sometime soon
 end
 
-# [ADMIN] Ta bort en tag.
+# Remove a tag
+#
+# @param [Integer] id, The id for the tag
 post('/tags/:id/delete') do
   tag_id = params[:id]
 
   delete_tag(tag_id)
 
-  redirect('/tags/')
+  redirect('/admin/tags/')
 end
 
-# Visa listan för tag syften
-get('/tag-purposes/') do
+# Displays all tag purposes
+#
+get('/admin/tag-purposes/') do
   @tag_purposes = database_tag_purposes
 
   slim(:'tag-purposes/index')
 end
 
-# Formulär för att skapa ett nytt tag syfte
-get('/tag-purposes/new') do
+# Displays a form for creating a tag purpose
+#
+get('/admin/tag-purposes/new') do
   slim(:'tag-purposes/new')
 end
 
-# [ADMIN] Skapa ett nytt tag Syfte
-post('/tag-purposes') do
+# Create a new tag purpose and redirect to '/admin/tag-purposes/'
+#
+post('/admin/tag-purposes') do
   @tag_purpose_name = params[:tag_purpose_name]
 
   database_create_tag_purpose(@tag_purpose_name)
 
-  redirect('/tag-purposes/')
-end
-
-# [ADMIN] Redigera ett spel genom formulär m.m. (följer inte restful routes )
-get('/games/:id/edit') do
-  @game_id = params[:id]
-
-  # Kanske borde vis alla tags istället för bara de som är kvar.
-  @available_tags = database_game_available_tags(@game_id)
-  @applied_tags = database_game_applied_tags(@game_id)
-
-  # Samla alla tags i en lista
-  @tags = database_tags
-
-  erb(:'games/edit')
-end
-
-# Hmmm, jag får bara det sista elementet i selectionen...
-post('/games/:id/update') do
-  game_id = params[:id]
-
-  tags_selection = params[:tags_selection]
-  p tags_selection
-
-  redirect("/games/#{game_id}/edit")
+  redirect('/admin/tag-purposes/')
 end
 
 # Displays a register form. This deviates from RESTFUL ROUTES by design
