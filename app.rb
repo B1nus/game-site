@@ -212,6 +212,7 @@ get('/register') do
   erb(:'users/register')
 end
 
+register_attempts = {}
 # Attempts to register a user
 #
 # @param [String] username, The username
@@ -224,7 +225,16 @@ post('/register') do
   password = params[:password]
   repeat_password = params[:password_validation]
 
+  # Cool-down
+  if register_attempts[request.ip] && Time.now.to_i - register_attempts[request.ip] < 10
+    flash[:notice] = 'You\'re registering too much. Calm down.'
+    redirect('/login')
+  end
+
   error = register_user(username, password, repeat_password)
+
+  # Stop annoying people from spam registering many accounts
+  register_attempts[request.ip] = Time.now.to_i
 
   if error
     flash[:notice] = error
