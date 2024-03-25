@@ -5,6 +5,11 @@
     <input type="password" name="password_validation" placeholder="Enter your password again">
     <button type="sumbit">Register</button>
 
+    <p>
+      Your password needs at least 8 characters, one capital letter,
+      one number and at least one special character: #?!@$%^&*-
+    </p>
+
     <%# Sinatra Flash för felmeddelanden %>
     <% if flash[:notice] %>
         <p class="notice">

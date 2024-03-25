@@ -15,7 +15,7 @@ module Model
   end
 
   def database_game_with_id(game_id)
-    databse.execute('SELECT * FROM game WHERE id = ?', game_id).first
+    database.execute('SELECT * FROM game WHERE id = ?', game_id).first
   end
 
   def database_game_iframe_size(game_id)
