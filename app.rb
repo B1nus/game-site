@@ -200,11 +200,7 @@ end
 get('/admin/tags/:id') do
   @tag = database_tag_with_id(params[:id])
 
-  slim(:'tags/show', locals: { tag: @tag })
-
-  # erb(:'tags/show')
-  #
-  # replace the ugly code with this sometime soon
+  erb(:'tags/show')
 end
 
 # Remove a tag
