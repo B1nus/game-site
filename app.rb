@@ -94,7 +94,7 @@ get('/games/:game_id') do
 
   # Ganska dumt att bara ta den första. Men kommer fungera så....
   game_iframe_size_string = database_game_iframe_size(game_id).first
-  @ifram_size_css = if !game_iframe_size_string.nil?
+  @iframe_size_css = if !game_iframe_size_string.nil?
                       game_iframe_size_string
                     else
                       # Standard storlek på iframe om inget specifieras
