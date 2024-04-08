@@ -192,7 +192,7 @@ end
 get('/admin/tags/') do
   @tags = database_tags
 
-  slim(:'tags/index')
+  erb(:'tags/index')
 end
 
 # Display a tag

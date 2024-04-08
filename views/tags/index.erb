@@ -1,0 +1,14 @@
+<a href="/tags/new">Add a new tag</a>
+
+<ul>
+  <% @tags.each do |tag| %>
+    <li style="display: flex; flex-direction: row; gap: 10px;">
+      <% @tag = tag %>
+      <%= erb(:'tags/show') %>
+      <a href=<%= "/tags/#{tag['tag_id']}/edit" %>>edit</a>
+      <form action=<%= "/tags/#{tag['tag_id']}/delete" %> method="post">
+        <button type="submit">delete</button>
+      </form>
+    </li>
+  <% end %>
+</ul>
