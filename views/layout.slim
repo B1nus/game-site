@@ -13,5 +13,7 @@ html lang="en"
             input type="button" value="search"/
             a href="/login" login
             a href="/register" register
+	    - if session[:user_id]
+	      a href="/logout" logout
 
         == yield

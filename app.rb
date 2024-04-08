@@ -314,6 +314,14 @@ post('/login') do
   end
 end
 
+# Logout a user and redirect to homepage
+#
+get('/logout') do
+  session[:user_id] = nil
+
+  redirect('/')
+end
+
 # Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
 # Domän check i app.rb.
 # Ta bort länken till scratch see inside. Gör så det är till servern istället
