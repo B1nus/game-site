@@ -102,7 +102,7 @@ get('/games/:game_id') do
 
   @allow_fullscreen = database_game_tag_purposes(game_id).include?('game_supports_fullscreen')
 
-  slim(:'games/show')
+  erb(:'games/show')
 end
 
 # Displays a form for editing a game

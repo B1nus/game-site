@@ -1,0 +1,25 @@
+<%# Spela ett spel. Tillgänglig för alla (Play a game. Available to all) %>
+
+<iframe id="iframe" src="<%= @game['embedded_url'] || '' %>" style="<%= @iframe_size_css %>" frameborder="0" allow="gamepad *; fullscreen;"></iframe>
+
+<% unless @game['embedded_url'].nil? %>
+  <p>There is no game here</p>
+<% end %>
+
+<% if @game["foreign_url"] %>
+  <button onclick="window.open('<%= @game["foreign_url"] %>','_blank');" title="Go to the original website" class="game-icon-buttons">
+    <img src="/img/link.png" alt="Link to the original website" width="100%">
+  </button>
+<% end %>
+
+<% if @game["source_code_url"] %>
+  <button onclick="window.open('<%= @game["source_code_url"] %>','_blank');" title="Look at the source code" class="game-icon-buttons">
+    <img src="/img/coding.png" alt="Link to the source code" width="100%">
+  </button>
+<% end %>
+
+<% if @allow_fullscreen %>
+  <button onclick="document.querySelector('iframe').requestFullscreen();" title="Look at the source code" class="game-icon-buttons">
+    <img src="/img/fullscreen.png" alt="Put the game in fullscreen" width="100%">
+  </button>
+<% end %>
