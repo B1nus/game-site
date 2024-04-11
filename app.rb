@@ -368,6 +368,8 @@ get('/user') do
   erb(:'users/edit')
 end
 
+# Observera att detta är en medveten avvikelse från restufl routes
+
 # Attempt to change a users username
 #
 # @params [String] username, the username
@@ -383,6 +385,8 @@ post('/user/editusername') do
 
   redirect('/user')
 end
+
+# Observera att detta är en medveten avvikelse från restufl routes
 
 # Attempt to change your password
 #
