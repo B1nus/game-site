@@ -91,6 +91,25 @@ module Model
     !database.execute('SELECT username FROM user where user.username = ?', username).empty?
   end
 
+  # Checks for password problems
+  #
+  # @retutn [String] an error message, nil if no errors were encountered
+  def validate_password(password, repeat_password)
+    if password.empty?
+      'You need to type a password'
+    elsif password.length < 8
+      'Your password needs to be at least 8 characters long'
+    elsif password !~ /[A-Z]/
+      'Your password needs a capital letter'
+    elsif password !~ /[0-9]/
+      'Your password needs a number'
+    elsif password !~ /[#?!@$ %^&*-]/
+      'Your password needs at least one special character: #?!@$%^&*-'
+    elsif password != repeat_password
+      'Your password\'s don\'t match'
+    end
+  end
+
   # Attempts to create a new user
   #
   # @params [String] username The username
@@ -105,18 +124,8 @@ module Model
       'Lmao, bro really though he could be admin'
     elsif database_does_user_exist?(username)
       'Username taken, choose another username'
-    elsif password.empty?
-      'You need to type a password'
-    elsif password.length < 8
-      'Your password needs to be at least 8 characters long'
-    elsif password !~ /[A-Z]/
-      'Your password needs a capital letter'
-    elsif password !~ /[0-9]/
-      'Your password needs a number'
-    elsif password !~ /[#?!@$ %^&*-]/
-      'Your password needs at least one special character: #?!@$%^&*-'
-    elsif password != repeat_password
-      'Your password\'s don\'t match'
+    elsif validate_password(password, repeat_password)
+      validate_password(password, repeat_password)
     else
       # No error occured. Register the user
       password_digest = BCrypt::Password.create(password)
@@ -168,4 +177,45 @@ module Model
     # Borde inte kunna vara nil eftersom NN ("Not Null") är checkad i sqlite3 databasen
     user['permission_level']
   end
+
+  # Fetch a users name
+  #
+  # @param user_id [Integer] the users id
+  # @return [String] the username
+  def database_username(user_id)
+    database.execute('SELECT user.username FROM user WHERE id = ?', user_id).first['username']
+  end
+
+  # Change a username
+  #
+  # @param user_id [Integer] the users id
+  # @param username [String] the new username
+  def change_username(user_id, username)
+    database.execute('UPDATE user SET username = ? WHERE id = ?', username, user_id)
+  end
+
+  # Change your password
+  #
+  # @param user_id [Integer] the users id
+  # @param password [String] new password
+  #
+  # @return [String] error with password, nil if password is fine
+  def change_password(user_id, password, repeat_password)
+    if validate_password(password, repeat_password)
+      validate_password(password, repeat_password)
+    else
+      database.execute('UPDATE user SET digest = ? WHERE id = ?', BCrypt::Password.create(password), user_id)
+
+      nil
+    end
+  end
+
+  # Check if a user_id exists
+  #
+  # @param user_id [Integer]
+  def user_id_exists?(user_id)
+    database.execute('SELECT id FROM user WHERE id = ?', user_id).length >= 1
+  end
+
+  # Lite raise och validering kanske kan va bra, orkar inte just no dock.
 end

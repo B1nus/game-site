@@ -1,0 +1,10 @@
+<form action="/user/editusername" method="post"> <%# purposeful deviation from restful routes %>
+  <input type="text" name="username" value=<%= @username %>>
+  <input type="submit" value="Change username">
+</form>
+
+<form action="/user/editpassword" method="post"> <%# purposeful deviation from restful routes %>
+  <input type="password" name="password">
+  <input type="password" name="repeat_password">
+  <input type="submit" value="Change password">
+</form>
