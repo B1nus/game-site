@@ -375,9 +375,9 @@ post('/user/editpassword') do
   password = params[:password]
   repeat_password = params[:repeat_password]
 
-  flash[:notice] = change_password(user_id, password, repeat_password)
+  error = change_password(user_id, password, repeat_password)
 
-  flash[:notice] ||= 'Password successfully changed!'
+  flash[:notice] = error || 'Password successfully changed!'
 
   redirect('/user')
 end
