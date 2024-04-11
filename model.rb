@@ -36,8 +36,8 @@ module Model
 
   def database_game_available_tags(game_id)
     database.execute(
-      'SELECT t.id as tag_id, t.name as tag_name, tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag LEFT
-      JOIN game_tag_rel gtr ON t.id = gtr.tag_id AND gtr.game_id = ? LEFT JOIN tag_purpose ON tag_purpose.id =
+      'SELECT tag.id as tag_id, tag.name as tag_name, tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag LEFT
+      JOIN game_tag_rel gtr ON tag.id = gtr.tag_id AND gtr.game_id = ? LEFT JOIN tag_purpose ON tag_purpose.id =
       tag_purpose_id WHERE gtr.game_id IS NULL;', game_id
     )
   end
