@@ -35,6 +35,12 @@ before('/admin/*') do
   redirect('/') unless admin?
 end
 
+# Validate user sites
+#
+before('/user*') do
+  redirect('/') unless logged_in?
+end
+
 # Maybe make a before block with cooldown? Hash with the site so login and register is handled separetely? Count login attempts?
 
 # Display Landing Page
@@ -319,8 +325,6 @@ end
 # Displays a form for editing user info
 #
 get('/user') do
-  redirect('/') unless logged_in?
-
   @user_id = session[:user_id]
   @username = database_username(@user_id)
 
@@ -335,8 +339,6 @@ end
 #
 # @see Model#change_username
 post('/user/editusername') do
-  redirect('/') unless logged_in?
-
   user_id = session[:user_id]
   username = params[:username]
 
@@ -354,8 +356,6 @@ end
 #
 # @see Model#change_password
 post('/user/editpassword') do
-  redirect('/') unless logged_in?
-
   user_id = session[:user_id]
 
   password = params[:password]
