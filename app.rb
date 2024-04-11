@@ -16,19 +16,21 @@ enable(:sessions)
 # Yardoc
 include(Model)
 
+helpers do
+  def admin?
+    user_id = session[:user_id]
+
+    # Check if the user is logged in at all.
+    return false if user_id.nil?
+
+    user_id.zero? && user_permission_level(user_id) == 'admin'
+  end
+end
+
 # Validate admin sites
 #
 before('/admin/*') do
-  user_id = session[:user_id]
-
-  # Check if the user is logged in at all.
-  redirect('/noadminforyou') if user_id.nil?
-
-  # Check if the user is not the first (I am the only admin)
-  redirect('/noadminforyou') if user_id != 0
-
-  # Check if the user is admin
-  redirect('/noadminforyou') if user_permission_level(user_id) != 'admin'
+  redirect('/noadminforyou') unless admin?
 end
 
 # Displays a message for non admins

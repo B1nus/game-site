@@ -1,0 +1,4 @@
+<% @games.each do |game| %>
+  <a href=<%= game['url] %>><%= game.to_s %></a>
+  <a href=<%= "/admin/games/#{game['id']}/edit" >>edit</a>
+  <a href="/admin/games/
