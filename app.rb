@@ -11,6 +11,9 @@ enable(:sessions)
 # Yardoc
 include(Model)
 
+# Cooldown hash
+$cooldown = {}
+
 helpers do
   def admin?
     admin = !session[:user_id].nil? && session[:user_id].zero? && user_permission_level(session[:user_id]) == 'admin'
@@ -26,6 +29,31 @@ helpers do
     flash[:notice] = 'You need to login' unless logged_in
 
     logged_in
+  end
+
+  def cooldown?
+    site = request.path_info
+    ip = request.ip
+
+    $cooldown = { site => {} } unless $cooldown[site]
+    $cooldown[site] = { ip => { count: 0, time: 0 } } unless $cooldown[site][ip]
+    $cooldown[site][ip][:count] += 1
+
+    # Alright, you can go for now
+    $cooldown[site][ip][:count] = 0 if Time.now.to_i - $cooldown[site][ip][:time] >= 5
+
+    # Calm down there sunny
+    $cooldown[site][ip][:time] = Time.now.to_i
+
+    p $cooldown
+
+    $cooldown[site][ip][:count] >= 5
+  end
+
+  def apply_cooldown(redirect_url)
+    flash[:notice] = 'Calm down there, your making to many requests'
+
+    redirect(redirect_url)
   end
 end
 
@@ -244,7 +272,6 @@ get('/register') do
   erb(:'users/register')
 end
 
-register_attempts = {}
 # Attempts to register a user
 #
 # @param [String] username, The username
@@ -253,20 +280,13 @@ register_attempts = {}
 #
 # @see Model#register_user
 post('/register') do
+  apply_cooldown('/register') if cooldown?
+
   username = params[:username]
   password = params[:password]
   repeat_password = params[:password_validation]
 
-  # Cool-down
-  if register_attempts[request.ip] && Time.now.to_i - register_attempts[request.ip] < 10
-    flash[:notice] = 'You\'re registering too much. Calm down.'
-    redirect('/login')
-  end
-
   error = register_user(username, password, repeat_password)
-
-  # Stop annoying people from spam registering many accounts
-  register_attempts[request.ip] = Time.now.to_i
 
   if error
     flash[:notice] = error
@@ -283,7 +303,6 @@ get('/login') do
   erb(:'users/login')
 end
 
-login_attempts = {}
 # Attempts to login
 #
 # @params [String] username, The username
@@ -291,14 +310,10 @@ login_attempts = {}
 #
 # @see Model#login
 post('/login') do
+  apply_cooldown('/login') if cooldown?
+
   username = params[:username]
   password = params[:password]
-
-  # Cool-down
-  if login_attempts[request.ip] && Time.now.to_i - login_attempts[request.ip] < 10
-    flash[:notice] = 'You\'re logging in too much. Calm down.'
-    redirect('/login')
-  end
 
   user_id = login(username, password)
 
@@ -308,7 +323,6 @@ post('/login') do
     redirect('/')
   else
     # Login failed.
-    login_attempts[request.ip] = Time.now.to_i
     flash[:notice] = 'Invalid login credentials'
     redirect('/login')
   end
@@ -339,6 +353,8 @@ end
 #
 # @see Model#change_username
 post('/user/editusername') do
+  apply_cooldown('/user') if cooldown?
+
   user_id = session[:user_id]
   username = params[:username]
 
@@ -356,6 +372,8 @@ end
 #
 # @see Model#change_password
 post('/user/editpassword') do
+  apply_cooldown('/user') if cooldown?
+
   user_id = session[:user_id]
 
   password = params[:password]
