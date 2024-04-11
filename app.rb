@@ -208,7 +208,7 @@ end
 # Remove a tag
 #
 # @param [Integer] id, The id for the tag
-post('/tags/:id/delete') do
+post('/admin/tags/:id/delete') do
   tag_id = params[:id]
 
   delete_tag(tag_id)
