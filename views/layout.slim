@@ -15,6 +15,7 @@ html lang="en"
             a href="/register" register
 	    - if session[:user_id]
 	      a href="/logout" logout
+	      a href="/user" profile
 	
         ==yield
 	- if flash[:notice]
