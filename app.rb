@@ -66,7 +66,7 @@ get('/games/') do
                   end
   end
 
-  slim(:'games/index')
+  erb(:'games/index')
 end
 
 # Display a warning for games I do not own
