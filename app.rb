@@ -386,4 +386,3 @@ end
 # login ip sparning
 # login validering
 # login autentisering i model.rb
-# hur ska jag skilja på user och guest routes fint? Lös senare.
