@@ -19,6 +19,13 @@
             <% end %>
         </header>
 
+        <%# Sinatra Flash för felmeddelanden %>
+        <% if flash[:notice] %>
+          <p class="notice">
+          <%= flash[:notice] %>
+          </p>
+        <% end %>
+
         <%= yield %>
     </body>
 </html>

@@ -3,11 +3,4 @@
     <input type="text" name="username" placeholder="Username">
     <input type="password" name="password" placeholder="Password">
     <button type="sumbit">Login</button>
-
-    <%# Sinatra Flash för felmeddelanden %>
-    <% if flash[:notice] %>
-        <p class="notice">
-            <%= flash[:notice] %>
-        </p>
-    <% end %>
 </form>
