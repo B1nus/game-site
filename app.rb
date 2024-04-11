@@ -25,6 +25,16 @@ helpers do
 
     user_id.zero? && user_permission_level(user_id) == 'admin'
   end
+
+  def logged_in?
+    logged_in = !session[:user_id].nil? && user_id_exists?(session[:user_id]) && session[:user_id] != 0
+
+    unless logged_in
+      flash[:notice] = 'You need to login first'
+    end
+
+    logged_in
+  end
 end
 
 # Validate admin sites
@@ -33,10 +43,33 @@ before('/admin/*') do
   redirect('/noadminforyou') unless admin?
 end
 
+# Maybe make a before block with cooldown? Hash with the site so login and register is handled separetely? Count login attempts?
+
+# NOTE, replace all of these "message sites" with flash messages, they are much more convinient
+
 # Displays a message for non admins
 #
 get('/noadminforyou') do
   'no admin for you'
+end
+
+# Displays a message if your not logged in
+#
+get('/notloggedin') do
+  'You need to login first'
+end
+
+# Displays a message if your trying to access another user
+#
+get('/wronguser') do
+  'That user id does not match yours. Stop tampering!'
+end
+
+# Displays a message if a user your trying to access does not exist
+#
+get('/nonexistentuser') do
+  'That user id does not exist'
+  # Maybe add more info as to why this might be. That is, if this can happen without tampering.
 end
 
 # Displays a message for non integer id params
@@ -323,6 +356,60 @@ get('/logout') do
 
   redirect('/')
 end
+
+# Displays a form for editing user info
+#
+get('/user') do
+  redirect('/') unless logged_in?
+
+  @user_id = session[:user_id]
+  @username = database_username(@user_id)
+
+  erb(:'users/edit')
+end
+
+# Attempt to change a users username
+#
+# @params [String] username, the username
+#
+# @see Model#change_username
+post('/user/editusername') do
+  redirect('/') unless logged_in?
+
+  user_id = session[:user_id]
+  username = params[:username]
+
+  change_username(user_id, username)
+
+  redirect('/user')
+end
+
+# Attempt to change your password
+#
+# @params [String] password, your new password
+# @params [String] repeat_password, same password another time to make sure you remember it
+#
+# @see Model#change_password
+post('/user/editpassword') do
+  redirect('/') unless logged_in?
+
+  user_id = session[:user_id]
+
+  password = params[:password]
+  repeat_password = params[:repeat_password]
+
+  flash[:notice] = change_password(user_id, password, repeat_password)
+
+  flash[:notice] ||= 'Password successfully changed!'
+
+  redirect('/user')
+end
+
+# Användare crud, Kolla rätt user_id först
+# Gillning av spel, kolla för inloggad, annars error, kolla även rätt user_id
+# kanske abtrahera user_id check som med helpers::admin?
+# /admin/games, edit å delete knapp
+# flash för lyckad loggin? flash for om du inte är inloggad istället för redirect?
 
 # Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
 # Domän check i app.rb.
