@@ -2,7 +2,7 @@
  Endast tillgänglig för admin
 %> 
 
-<form action=<%= "/tags/#{@tag_id}/update" %> method="post"> 
+<form action=<%= "/admin/tags/#{@tag_id}/update" %> method="post"> 
     <input type="text" name="tag_name" value=<%= @tag_name %>>
     <select name="tag_purpose_id">
         <% @tag_purposes.each do |tag_purpose| %>
