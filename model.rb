@@ -7,6 +7,7 @@ module Model
   def database
     db = SQLite3::Database.new('data/db.db')
     db.results_as_hash = true
+    db.execute('PRAGMA foreign_keys=ON')
     db
   end
 
