@@ -130,6 +130,28 @@ get('/games/:game_id') do
   erb(:'games/show')
 end
 
+# Display all games with edit and delete buttons
+#
+# @see Model#database_games
+get('/admin/games/') do
+  # Alla attribut från alla spel är publika!!!
+  @games = database_games
+
+  @games.each do |game|
+    # Kolla efter en tag som varnar för tredjeparts hemsida
+    should_warn = database_game_tag_purposes(game['id']).include?('warn_for_stolen_game')
+
+    # Ändra länk beroende på om tagen fanns
+    game['url'] = if should_warn
+                    "/warning/#{game['id']}"
+                  else
+                    "/games/#{game['id']}"
+                  end
+  end
+
+  erb(:'games/index-admin')
+end
+
 # Displays a form for editing a game
 #
 # @param [Integer] id, The id of the game
