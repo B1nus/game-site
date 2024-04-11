@@ -16,6 +16,6 @@ html lang="en"
 	    - if session[:user_id]
 	      a href="/logout" logout
 	
+        ==yield
 	- if flash[:notice]
 	  p.notice = flash[:notice]
-        ==yield
