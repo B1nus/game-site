@@ -1,14 +1,9 @@
 # frozen_string_literal: true
 
-require 'erb'
 require './model'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'sinatra/flash'
-require 'slim'
-
-# Länk för att komma in på hemsidan snabbt under testning (:
-p('http://localhost:4567/')
 
 # Tillåt sessions. Jag använder det endast för inloggning
 enable(:sessions)
