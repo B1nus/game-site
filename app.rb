@@ -394,6 +394,31 @@ post('/user/delete') do
   redirect('/')
 end
 
+# Display all users
+#
+# @see Model#users
+get('/admin/users/') do
+  @users = users
+
+  erb(:'users/index')
+end
+
+# Delete a user
+#
+# @see Model#delete_user
+post('/admin/users/:user_id/delete') do
+  user_id = params[:user_id].to_i
+
+  # Oh no, the admin is suicidal.
+  raise "But sir, that's suicide" if user_id.zero?
+
+  delete_user(user_id)
+
+  flash[:notice] = 'User successfully deleted'
+
+  redirect('/admin/users/')
+end
+
 # Användare crud, Kolla rätt user_id först
 # Gillning av spel, kolla för inloggad, annars error, kolla även rätt user_id
 # kanske abtrahera user_id check som med helpers::admin?

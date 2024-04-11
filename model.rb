@@ -220,6 +220,14 @@ module Model
   # Remove a user
   #
   def delete_user(user_id)
+    raise "No you don't" if user_id.zero?
+
     database.execute('DELETE FROM user WHERE id = ?', user_id)
+  end
+
+  # Return all users in an array excluding the admin
+  #
+  def users
+    database.execute('SELECT * FROM user').drop(1)
   end
 end
