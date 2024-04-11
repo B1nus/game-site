@@ -190,8 +190,14 @@ module Model
   #
   # @param user_id [Integer] the users id
   # @param username [String] the new username
+  #
+  # @return [Bool] if it was successfull or not
   def change_username(user_id, username)
+    return false if !user_id_exists?(user_id) || database_does_user_exist?(username)
+
     database.execute('UPDATE user SET username = ? WHERE id = ?', username, user_id)
+
+    true
   end
 
   # Change your password

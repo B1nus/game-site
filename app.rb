@@ -363,7 +363,7 @@ get('/user') do
   erb(:'users/edit')
 end
 
-# Observera att detta är en medveten avvikelse från restufl routes
+# Observera att detta är en medveten avvikelse från restful routes
 
 # Attempt to change a users username
 #
@@ -376,12 +376,16 @@ post('/user/editusername') do
   user_id = session[:user_id]
   username = params[:username]
 
-  change_username(user_id, username)
+  flash[:notice] = if change_username(user_id, username)
+                     'Username successfully changed!'
+                   else
+                     'Username already taken'
+                   end
 
   redirect('/user')
 end
 
-# Observera att detta är en medveten avvikelse från restufl routes
+# Observera att detta är en medveten avvikelse från restful routes
 
 # Attempt to change your password
 #
