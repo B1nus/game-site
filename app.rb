@@ -18,20 +18,17 @@ include(Model)
 
 helpers do
   def admin?
-    user_id = session[:user_id]
+    admin = !session[:user_id].nil? && session[:user_id].zero? && user_permission_level(session[:user_id]) == 'admin'
 
-    # Check if the user is logged in at all.
-    return false if user_id.nil?
+    flash[:notice] = 'No admin for you' unless admin
 
-    user_id.zero? && user_permission_level(user_id) == 'admin'
+    admin
   end
 
   def logged_in?
     logged_in = !session[:user_id].nil? && user_id_exists?(session[:user_id]) && session[:user_id] != 0
 
-    unless logged_in
-      flash[:notice] = 'You need to login first'
-    end
+    flash[:notice] = 'You need to login' unless logged_in
 
     logged_in
   end
@@ -40,43 +37,10 @@ end
 # Validate admin sites
 #
 before('/admin/*') do
-  redirect('/noadminforyou') unless admin?
+  redirect('/') unless admin?
 end
 
 # Maybe make a before block with cooldown? Hash with the site so login and register is handled separetely? Count login attempts?
-
-# NOTE, replace all of these "message sites" with flash messages, they are much more convinient
-
-# Displays a message for non admins
-#
-get('/noadminforyou') do
-  'no admin for you'
-end
-
-# Displays a message if your not logged in
-#
-get('/notloggedin') do
-  'You need to login first'
-end
-
-# Displays a message if your trying to access another user
-#
-get('/wronguser') do
-  'That user id does not match yours. Stop tampering!'
-end
-
-# Displays a message if a user your trying to access does not exist
-#
-get('/nonexistentuser') do
-  'That user id does not exist'
-  # Maybe add more info as to why this might be. That is, if this can happen without tampering.
-end
-
-# Displays a message for non integer id params
-#
-get('/notintegerparam') do
-  'that id is not a number'
-end
 
 # Display Landing Page
 #
@@ -130,11 +94,11 @@ get('/games/:game_id') do
   # Ganska dumt att bara ta den första. Men kommer fungera så....
   game_iframe_size_string = database_game_iframe_size(game_id).first
   @iframe_size_css = if !game_iframe_size_string.nil?
-                      game_iframe_size_string
-                    else
-                      # Standard storlek på iframe om inget specifieras
-                      'width: 800px; height: 550px;'
-                    end
+                       game_iframe_size_string
+                     else
+                       # Standard storlek på iframe om inget specifieras
+                       'width: 800px; height: 550px;'
+                     end
 
   @allow_fullscreen = database_game_tag_purposes(game_id).include?('game_supports_fullscreen')
 
