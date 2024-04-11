@@ -45,8 +45,6 @@ helpers do
     # Calm down there sunny
     $cooldown[site][ip][:time] = Time.now.to_i
 
-    p $cooldown
-
     $cooldown[site][ip][:count] >= 5
   end
 
@@ -68,8 +66,6 @@ end
 before('/user*') do
   redirect('/') unless logged_in?
 end
-
-# Maybe make a before block with cooldown? Hash with the site so login and register is handled separetely? Count login attempts?
 
 # Display Landing Page
 #
