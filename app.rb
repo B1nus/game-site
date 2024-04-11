@@ -382,6 +382,18 @@ post('/user/editpassword') do
   redirect('/user')
 end
 
+# Delete the current user
+#
+# @see Model#delete_user
+post('/user/delete') do
+  delete_user(session[:user_id])
+
+  session[:user_id] = nil
+  flash[:notice] = 'User successfully deleted'
+
+  redirect('/')
+end
+
 # Användare crud, Kolla rätt user_id först
 # Gillning av spel, kolla för inloggad, annars error, kolla även rätt user_id
 # kanske abtrahera user_id check som med helpers::admin?

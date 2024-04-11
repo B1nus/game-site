@@ -217,5 +217,9 @@ module Model
     database.execute('SELECT id FROM user WHERE id = ?', user_id).length >= 1
   end
 
-  # Lite raise och validering kanske kan va bra, orkar inte just no dock.
+  # Remove a user
+  #
+  def delete_user(user_id)
+    database.execute('DELETE FROM user WHERE id = ?', user_id)
+  end
 end
