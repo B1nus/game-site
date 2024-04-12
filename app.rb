@@ -156,6 +156,12 @@ get('/admin/games/') do
   erb(:'games/index-admin')
 end
 
+# Displays a form for adding a game
+#
+get('/admin/games/new') do
+  erb(:'games/new')
+end
+
 # Displays a form for editing a game
 #
 # @param [Integer] id, The id of the game
