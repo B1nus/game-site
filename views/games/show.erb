@@ -2,7 +2,7 @@
 
 <iframe id="iframe" src="<%= @game['embedded_url'] || '' %>" style="<%= @iframe_size_css %>" frameborder="0" allow="gamepad *; fullscreen;"></iframe>
 
-<% unless @game['embedded_url'].nil? %>
+<% if @game['embedded_url'].nil? %>
   <p>There is no game here</p>
 <% end %>
 
