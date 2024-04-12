@@ -83,13 +83,6 @@ get('/games/') do
   erb(:'games/index')
 end
 
-# Display a warning for games I do not own
-#
-# @params [String] game_id, The id of the game to warn for
-get('/warning/:game_id') do
-  slim :warning
-end
-
 # Spela ett spel
 get('/games/:game_id') do
   @game = game params[:game_id]
