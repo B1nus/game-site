@@ -1,0 +1,24 @@
+<form action="/admin/games" method="post">
+  <input type="text" name="name" placeholder="Game name">
+  <label for="time_created">Time created</label>
+  <input type="datetime-local" id="time_created" name="time_created">
+  <label for="time_released">Time released</label>
+  <input type="datetime-local" id="time_released" name="time_released">
+  <label for="time_changed">Time changed</label>
+  <input type="datetime-local" id="time_changed" name="time_changed">
+  <label for="game_files[]">Game folder</label>
+  <input type="file" id="game_files[]" name="game_files[]" multiple="" directory="" webkitdirectory="" mozdirectory="">
+  <label for="fullscreen">Fullscreen</label>
+  <input type="checkbox" id="fullscreen" name="fullscreen" value="Fullscreen">
+  <label for="warning">Warn for Foreign game</label>
+  <input type="checkbox" id="warning" name="warning" value="Warn for Foreign">
+  <label for="tags[]">Tags</label>
+  <select id="tags[]" name="tags[]" multiple=true>
+    <% tags.each do |tag| %>
+      <option value=<%= tag['tag_id'] %>>
+        <%= tag['tag_name'] %>
+      </option>
+    <% end %>
+  </select>
+  <input type="submit" name="Add Game">
+</form>
