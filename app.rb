@@ -12,7 +12,9 @@ enable(:sessions)
 include(Model)
 
 # Cooldown hash
-$cooldown = {}
+$requests = {}
+COOLDOWN_COUNT_LIMIT = 5 # Max number of requests
+COOLDOWN_COUND_RESET_TIME = 5 # Time when the count is reset
 
 helpers do
   def admin?
@@ -35,17 +37,17 @@ helpers do
     site = request.path_info
     ip = request.ip
 
-    $cooldown = { site => {} } unless $cooldown[site]
-    $cooldown[site] = { ip => { count: 0, time: 0 } } unless $cooldown[site][ip]
-    $cooldown[site][ip][:count] += 1
+    $requests = { site => {} } unless $requests[site]
+    $requests[site] = { ip => { count: 0, time: 0 } } unless $requests[site][ip]
+    $requests[site][ip][:count] += 1
 
     # Alright, you can go for now
-    $cooldown[site][ip][:count] = 0 if Time.now.to_i - $cooldown[site][ip][:time] >= 5
+    $requests[site][ip][:count] = 0 if Time.now.to_i - $requests[site][ip][:time] >= COOLDOWN_COUND_RESET_TIME
 
     # Calm down there sunny
-    $cooldown[site][ip][:time] = Time.now.to_i
+    $requests[site][ip][:time] = Time.now.to_i
 
-    $cooldown[site][ip][:count] >= 5
+    $requests[site][ip][:count] >= COOLDOWN_COUNT_LIMIT
   end
 
   def apply_cooldown(redirect_url)
