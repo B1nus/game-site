@@ -1,29 +1,29 @@
-<%#
-  redigera ett spel. Endast tillgänglig för admin
- %>
+<form action="/admin/games/<%= @game['id'] %>/update" method="post">
+  <input type="text" name="name" value="<%= @game['name'] %>">
+  <label for="time_created">Time created</label>
+  <input type="datetime-local" id="time_created" name="time_created" value=<%= Time.at(@game['time_created']).strftime('%Y-%m-%dT%H:%M:%S.%L') %>>
+  <label for="time_released">Time released</label>
+  <input type="datetime-local" id="time_released" name="time_released" value=<%= Time.at(@game['time_released']).strftime('%Y-%m-%dT%H:%M:%S.%L') %>>
+  <label for="time_changed">Time changed</label>
+  <input type="datetime-local" id="time_changed" name="time_changed" value=<%= Time.at(@game['time_changed']).strftime('%Y-%m-%dT%H:%M:%S.%L') %>>
+  <label for="fullscreen">Fullscreen</label>
+  <input type="checkbox" id="fullscreen" name="fullscreen" value="Fullscreen">
+  <label for="warning">Warn for Foreign game</label>
+  <input type="checkbox" id="warning" name="warning" value="Warn for Foreign">
+  <label for="tags[]">Tags</label>
+  <select id="tags[]" name="tags[]" multiple=true>
+    <% tags.each do |tag| %>
+      <option value=<%= tag['tag_id'] %> <%= 'selected' if game_tags(@game['id']).include?(tag) %>>
+        <%= tag['tag_name'] %>
+      </option>
+    <% end %>
+  </select>
+  <input type="submit" name="Update game">
+</form>
 
-<%# Hmmm, hur ska tag editorn se ut? %>
-<%# Hmmm, hur ska jag visa tags till spelen? Ska jag embedda till en /tags/:game_id sida? %>
+<form action="/admin/games/<%= @game['id'] %>/updatefiles" method="post">
+  <label for="game_files[]">Game folder</label>
+  <input type="file" id="game_files[]" name="game_files[]" multiple="" directory="" webkitdirectory="" mozdirectory="">
+  <input type="submit" name="Submit files">
+</form>
 
-<%# Fin hantering av tags. (Lista av alla tags, klicka för att lägga till tag) %>
-<%# Fin hantering av datum. (Antingen unix time eller dag-månad-år format) %>
-
-<%# Resterand borde vara simple input boxes. %>
-
-<div style="width: 100%; display: grid; grid-template-columns: 1 1; grid-template-rows: 1;">
-
-    <form action="/games/<%=@game_id%>/update" method="post">
-    
-        <h2>Tags</h2>
-        <select name="tags_selection[]" multiple=true>
-            <% @tags.each do |tag| %>.
-                <option value="<%=tag['tag_id']%>" <%= @applied_tags.include?(tag) ? "selected" : "" %>>
-                    <%=tag['tag_name']%>
-                </option>
-            <% end %>
-        </select>
-
-        <button type="submit">Apply changes</button>
-    </form>
-</div>
-<%# Fin hantering av källkods och build fil uppladdning. (Ingen aning hur ännu, gör detta senare) %>

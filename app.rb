@@ -114,16 +114,9 @@ end
 #
 # @param [Integer] id, The id of the game
 get('/admin/games/:id/edit') do
-  @game_id = params[:id]
+  @game = game params[:id]
 
-  # Kanske borde vis alla tags istället för bara de som är kvar.
-  @available_tags = database_game_available_tags(@game_id)
-  @applied_tags = database_game_applied_tags(@game_id)
-
-  # Samla alla tags i en lista
-  @tags = database_tags
-
-  erb(:'games/edit')
+  erb :'games/edit'
 end
 
 # Updates an existing game and redirects to '/admin/games/'
