@@ -67,7 +67,7 @@ module Model
     )
   end
 
-  def database_tag_with_id(tag_id)
+  def tag(tag_id)
     database.execute(
       'SELECT tag.id as id, tag.name as tag_name, tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag
       LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id WHERE tag.id = ?',
@@ -88,7 +88,7 @@ module Model
   end
 
   # Lista över alla tag syften
-  def database_tag_purposes
+  def tag_purposes
     database.execute('SELECT * FROM tag_purpose')
   end
 

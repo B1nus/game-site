@@ -68,19 +68,19 @@ end
 # Validate user sites
 #
 before('/user*') do
-  redirect('/') unless logged_in?
+  redirect '/' unless logged_in?
 end
 
 # Display Landing Page
 #
 get('/') do
-  redirect('/games/')
+  admin? ? redirect('/admin/games') : redirect('/games')
 end
 
 # Displays games
 #
-get('/games/') do
-  erb(:'games/index')
+get('/games') do
+  erb :'games/index'
 end
 
 # Spela ett spel
@@ -93,14 +93,14 @@ end
 # Display all games with edit and delete buttons
 #
 # @see Model#database_games
-get('/admin/games/') do
+get('/admin/games') do
   erb :'games/index-admin'
 end
 
 # Displays a form for adding a game
 #
 get('/admin/games/new') do
-  erb(:'games/new')
+  erb :'games/new'
 end
 
 # Displays a form for editing a game
@@ -112,22 +112,19 @@ get('/admin/games/:id/edit') do
   erb :'games/edit'
 end
 
-# Updates an existing game and redirects to '/admin/games/'
+# Updates an existing game and redirects to '/admin/games'
 post('/admin/games/:id/update') do
   # game_id = params[:id]
   #
   # tags_selection = params[:tags_selection]
 
-  redirect('/admin/games/')
+  redirect '/admin/games'
 end
 
 # Displays a form for creating tags
 #
 get('/admin/tags/new') do
-  # För att se vad tag purpose id:n står för
-  @tag_purposes = database_tag_purposes
-
-  erb(:'tags/new')
+  erb :'tags/new'
 end
 
 post('/admin/tags') do
@@ -136,7 +133,7 @@ post('/admin/tags') do
 
   database_create_tag(tag_name, tag_purpose_id)
 
-  redirect('/admin/tags/')
+  redirect '/admin/tags'
 end
 
 # Displays a form for editing a tag
@@ -145,18 +142,9 @@ end
 #
 # @see Model#database_tag_with_id
 get('/admin/tags/:id/edit') do
-  @tag_id = params[:id]
+  @tag = tag params[:id]
 
-  tag = database_tag_with_id(@tag_id)
-
-  # För att placera föregående värden
-  @tag_name = tag['tag_name']
-  @tag_purpose_id = tag['tag_purpose_id']
-
-  # För att se vad tag purpose id:n står för
-  @tag_purposes = database_tag_purposes
-
-  erb(:'tags/edit')
+  erb :'tags/edit'
 end
 
 # Update a tag
@@ -173,16 +161,13 @@ post('/admin/tags/:id/update') do
 
   database_edit_tag(tag_id, tag_name, tag_purpose_id)
 
-  redirect('/admin/tags/')
+  redirect '/admin/tags'
 end
 
 # Display all tags
 #
-# @see Model#database_tags
-get('/admin/tags/') do
-  @tags = database_tags
-
-  erb(:'tags/index')
+get('/admin/tags') do
+  erb :'tags/index'
 end
 
 # Display a tag
@@ -190,7 +175,7 @@ end
 get('/admin/tags/:id') do
   @tag = database_tag_with_id(params[:id])
 
-  erb(:'tags/show')
+  erb :'tags/show'
 end
 
 # Remove a tag
@@ -201,37 +186,23 @@ post('/admin/tags/:id/delete') do
 
   delete_tag(tag_id)
 
-  redirect('/admin/tags/')
+  redirect '/admin/tags'
 end
 
-# Displays all tag purposes
-#
-get('/admin/tag-purposes/') do
-  @tag_purposes = database_tag_purposes
-
-  slim(:'tag-purposes/index')
-end
-
-# Displays a form for creating a tag purpose
-#
-get('/admin/tag-purposes/new') do
-  slim(:'tag-purposes/new')
-end
-
-# Create a new tag purpose and redirect to '/admin/tag-purposes/'
+# Create a new tag purpose
 #
 post('/admin/tag-purposes') do
-  @tag_purpose_name = params[:tag_purpose_name]
+  tag_purpose_name = params[:tag_purpose_name]
 
-  database_create_tag_purpose(@tag_purpose_name)
+  database_create_tag_purpose(tag_purpose_name)
 
-  redirect('/admin/tag-purposes/')
+  redirect '/admin/tags'
 end
 
 # Displays a register form. This deviates from RESTFUL ROUTES by design
 #
 get('/register') do
-  erb(:'users/register')
+  erb :'users/register'
 end
 
 # Attempts to register a user
@@ -252,17 +223,17 @@ post('/register') do
 
   if error
     flash[:notice] = error
-    redirect('/register')
+    redirect '/register'
   else
     flash[:notice] = 'Registration successful!'
-    redirect('/login')
+    redirect '/login'
   end
 end
 
 # Displays a login form
 #
 get('/login') do
-  erb(:'users/login')
+  erb :'users/login'
 end
 
 # Attempts to login
@@ -272,7 +243,7 @@ end
 #
 # @see Model#login
 post('/login') do
-  apply_cooldown('/login') if cooldown?
+  apply_cooldown '/login' if cooldown?
 
   username = params[:username]
   password = params[:password]
@@ -282,11 +253,11 @@ post('/login') do
   if user_id
     # Successful login!
     session[:user_id] = user_id
-    redirect('/')
+    redirect '/'
   else
     # Login failed.
     flash[:notice] = 'Invalid login credentials'
-    redirect('/login')
+    redirect '/login'
   end
 end
 
@@ -295,7 +266,7 @@ end
 get('/logout') do
   session[:user_id] = nil
 
-  redirect('/')
+  redirect '/'
 end
 
 # Displays a form for editing user info
@@ -304,7 +275,7 @@ get('/user') do
   @user_id = session[:user_id]
   @username = database_username(@user_id)
 
-  erb(:'users/edit')
+  erb :'users/edit'
 end
 
 # Observera att detta är en medveten avvikelse från restful routes
@@ -326,7 +297,7 @@ post('/user/editusername') do
                      'Username already taken'
                    end
 
-  redirect('/user')
+  redirect '/user'
 end
 
 # Observera att detta är en medveten avvikelse från restful routes
@@ -338,7 +309,7 @@ end
 #
 # @see Model#change_password
 post('/user/editpassword') do
-  apply_cooldown('/user') if cooldown?
+  apply_cooldown '/user' if cooldown?
 
   user_id = session[:user_id]
 
@@ -349,7 +320,7 @@ post('/user/editpassword') do
 
   flash[:notice] = error || 'Password successfully changed!'
 
-  redirect('/user')
+  redirect '/user'
 end
 
 # Delete the current user
@@ -361,16 +332,16 @@ post('/user/delete') do
   session[:user_id] = nil
   flash[:notice] = 'User successfully deleted'
 
-  redirect('/')
+  redirect '/'
 end
 
 # Display all users
 #
 # @see Model#users
-get('/admin/users/') do
+get('/admin/users') do
   @users = users
 
-  erb(:'users/index')
+  erb :'users/index'
 end
 
 # Delete a user
@@ -382,11 +353,11 @@ post('/admin/users/:user_id/delete') do
   # Oh no, the admin is suicidal.
   raise "But sir, that's suicide" if user_id.zero?
 
-  delete_user(user_id)
+  delete_user user_id
 
   flash[:notice] = 'User successfully deleted'
 
-  redirect('/admin/users/')
+  redirect '/admin/users'
 end
 
 # Användare crud, Kolla rätt user_id först

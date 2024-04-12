@@ -1,5 +1,5 @@
 <ul>
-  <% @tags.each do |tag| %>
+  <% tags.each do |tag| %>
     <li style="display: flex; flex-direction: row; gap: 10px;">
       <% @tag = tag %>
       <%= erb(:'tags/show') %>
@@ -9,4 +9,12 @@
       </form>
     </li>
   <% end %>
+  <h2>New Tag</h2>
+  <%= erb :'tags/new' %>
+  <h2>New Tag Purpose</h2>
+  <p>Take great care, once made, it can't be removed. Not easily anyway</p>
+  <form action="/admin/tag-purposes" method="post">
+    <input type="text" name="tag_purpose_name">
+    <input type="submit" value="Create tag purpose">
+  </form>
 </ul>

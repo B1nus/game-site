@@ -1,12 +1,8 @@
-<%#  
- Endast tillgänglig för admin
-%> 
-
-<form action=<%= "/admin/tags/#{@tag_id}/update" %> method="post"> 
-    <input type="text" name="tag_name" value=<%= @tag_name %>>
+<form action="/admin/tags/<%= @tag['id'] %>/update" method="post"> 
+    <input type="text" name="tag_name" value=<%= @tag['tag_name'] %>>
     <select name="tag_purpose_id">
-        <% @tag_purposes.each do |tag_purpose| %>
-            <option value=<%= tag_purpose['id'] %> <%= tag_purpose['id'] == @tag_purpose_id ? "selected" : "" %>>
+        <% tag_purposes.each do |tag_purpose| %>
+            <option value=<%= tag_purpose['id'] %> <%= 'selected' if tag_purpose['id'] == @tag['tag_purpose_id'] %>>
                 <%= tag_purpose['name'] %>
             </option>
         <% end %>
