@@ -2,7 +2,7 @@
   <% games.each do |game| %>
     <li>
       <h2><%= game['name'] %></h2>
-      <a href=<%= game['url'] %>><%= game %></a>
+      <a href=<%= game['warning'] == 0 ? "/games/#{game['id']}" : "/warning/#{game['id']}" %>><%= game %></a>
     </li>
   <% end %>
 </ul>

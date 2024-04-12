@@ -80,21 +80,6 @@ end
 # Displays games
 #
 get('/games/') do
-  # Alla attribut från alla spel är publika!!!
-  @games = database_games
-
-  @games.each do |game|
-    # Kolla efter en tag som varnar för tredjeparts hemsida
-    should_warn = database_game_tag_purposes(game['id']).include?('warn_for_stolen_game')
-
-    # Ändra länk beroende på om tagen fanns
-    game['url'] = if should_warn
-                    "/warning/#{game['id']}"
-                  else
-                    "/games/#{game['id']}"
-                  end
-  end
-
   erb(:'games/index')
 end
 
@@ -102,58 +87,21 @@ end
 #
 # @params [String] game_id, The id of the game to warn for
 get('/warning/:game_id') do
-  game = database_game_with_id(params[:game_id])
-
-  @foreign_url = game['foreign_url']
-  @indigenous_url = "/games/#{game['id']}"
-
-  slim(:warning)
+  slim :warning
 end
 
 # Spela ett spel
 get('/games/:game_id') do
-  game_id = params[:game_id]
+  @game = game params[:game_id]
 
-  # Någon har hållt på med länkern ser jag
-  redirect('/notintegerparam') if game_id.to_i.zero?
-
-  # Alla attribut från alla spel är publika!!!
-  @game = database_game_with_id(game_id)
-
-  # Ganska dumt att bara ta den första. Men kommer fungera så....
-  game_iframe_size_string = database_game_iframe_size(game_id).first
-  @iframe_size_css = if !game_iframe_size_string.nil?
-                       game_iframe_size_string
-                     else
-                       # Standard storlek på iframe om inget specifieras
-                       'width: 800px; height: 550px;'
-                     end
-
-  @allow_fullscreen = database_game_tag_purposes(game_id).include?('game_supports_fullscreen')
-
-  erb(:'games/show')
+  erb :'games/show'
 end
 
 # Display all games with edit and delete buttons
 #
 # @see Model#database_games
 get('/admin/games/') do
-  # Alla attribut från alla spel är publika!!!
-  @games = database_games
-
-  @games.each do |game|
-    # Kolla efter en tag som varnar för tredjeparts hemsida
-    should_warn = database_game_tag_purposes(game['id']).include?('warn_for_stolen_game')
-
-    # Ändra länk beroende på om tagen fanns
-    game['url'] = if should_warn
-                    "/warning/#{game['id']}"
-                  else
-                    "/games/#{game['id']}"
-                  end
-  end
-
-  erb(:'games/index-admin')
+  erb :'games/index-admin'
 end
 
 # Displays a form for adding a game

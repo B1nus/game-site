@@ -8,7 +8,7 @@
   </div>
 <% end %>
 
-<iframe id="iframe" src="<%= @game['embedded_url'] || '' %>" style="<%= @iframe_size_css %>" frameborder="0" allow="gamepad *; fullscreen;"></iframe>
+<iframe id="iframe" src="<%= @game['embedded_url']%>" style="<%= game_iframe_sizes(@game['id']).first %>" frameborder="0" allow="gamepad *; fullscreen;"></iframe>
 
 <% if @game['embedded_url'].nil? %>
   <p>There is no game here</p>
@@ -26,7 +26,7 @@
   </button>
 <% end %>
 
-<% if @allow_fullscreen %>
+<% if @game['fullscreen'] == 1 %>
   <button onclick="document.querySelector('iframe').requestFullscreen();" title="Look at the source code" class="game-icon-buttons">
     <img src="/img/fullscreen.png" alt="Put the game in fullscreen" width="100%">
   </button>
