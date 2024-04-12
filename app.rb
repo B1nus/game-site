@@ -18,19 +18,21 @@ COOLDOWN_COUND_RESET_TIME = 5 # Time when the count is reset
 
 helpers do
   def admin?
-    admin = !session[:user_id].nil? && session[:user_id].zero? && user_permission_level(session[:user_id]) == 'admin'
-
-    flash[:notice] = 'No admin for you' unless admin
-
-    admin
+    if !session[:user_id].nil? && session[:user_id].zero? && user_permission_level(session[:user_id]) == 'admin'
+      true
+    else
+      flash[:notice] = 'No admin for you'
+      false
+    end
   end
 
   def logged_in?
-    logged_in = !session[:user_id].nil? && user_id_exists?(session[:user_id]) && session[:user_id] != 0
-
-    flash[:notice] = 'You need to login' unless logged_in
-
-    logged_in
+    if !session[:user_id].nil? && user_id_exists?(session[:user_id]) && session[:user_id] != 0
+      true
+    else
+      flash[:notice] = 'You need to login'
+      false
+    end
   end
 
   def cooldown?
