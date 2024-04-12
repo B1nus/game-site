@@ -1,5 +1,13 @@
 <%# Spela ett spel. Tillgänglig för alla (Play a game. Available to all) %>
 
+<% if @game['warning'] == 1 %>
+  <div id="warning" style="width: 100vw; height: 100vh;">
+    <p>WARNING! I did not make this game. Play the original game <a href=<%= @game['foreign_url'] %>>here</a>.</p>
+
+    <button onclick="document.querySelector('#warning').remove()" title="Ignore warning and play here anyway">Play here anyway</button>
+  </div>
+<% end %>
+
 <iframe id="iframe" src="<%= @game['embedded_url'] || '' %>" style="<%= @iframe_size_css %>" frameborder="0" allow="gamepad *; fullscreen;"></iframe>
 
 <% if @game['embedded_url'].nil? %>
