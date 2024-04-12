@@ -11,22 +11,30 @@ module Model
     db
   end
 
-  def database_games
+  def games
     database.execute('SELECT * FROM game')
   end
 
-  def database_game_with_id(game_id)
+  # Dictionary for a game
+  #
+  # @return [Dictionary] the game attributes for the specified id
+  def game(game_id)
     database.execute('SELECT * FROM game WHERE id = ?', game_id).first
   end
 
-  def database_game_iframe_size(game_id)
+  # Fetch all iframe sizes for a game
+  #
+  # @param game_id [Integer]
+  # @return [Array] a list of all game sizes
+  def game_iframe_sizes(game_id)
     database.execute(
       'SELECT tag.name as tag_name FROM game_tag_rel INNER JOIN tag ON tag.id = tag_id INNER JOIN tag_purpose ON
       tag_purpose_id = tag_purpose.id WHERE game_id = ? AND tag_purpose.name = \'iframe_size\'', game_id
     ).map { |e| e['tag_name'] }
   end
 
-  def database_game_applied_tags(game_id)
+  # Tags applied to a game
+  def game_tags(game_id)
     database.execute(
       'SELECT tag.id as tag_id, tag.name as tag_name, tag.tag_purpose_id, tag_purpose.name as tag_purpose_name FROM
       game_tag_rel RIGHT JOIN tag ON game_tag_rel.tag_id = tag.id LEFT JOIN tag_purpose ON tag_purpose.id =
@@ -34,7 +42,8 @@ module Model
     )
   end
 
-  def database_game_available_tags(game_id)
+  # Tags not applied to a game
+  def game_available_tags(game_id)
     database.execute(
       'SELECT tag.id as tag_id, tag.name as tag_name, tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag LEFT
       JOIN game_tag_rel gtr ON tag.id = gtr.tag_id AND gtr.game_id = ? LEFT JOIN tag_purpose ON tag_purpose.id =
@@ -42,14 +51,16 @@ module Model
     )
   end
 
-  def database_game_tag_purposes(game_id)
+  # Tag purposes for a game
+  def game_tag_purposes(game_id)
     database.execute(
       'SELECT tag_purpose.name FROM game_tag_rel INNER JOIN tag ON game_tag_rel.tag_id = tag.id INNER JOIN tag_purpose
       ON tag.tag_purpose_id = tag_purpose.id WHERE game_id = ?', game_id
     ).map { |e| e['name'] }
   end
 
-  def database_tags
+  # All tags
+  def tags
     database.execute(
       'SELECT tag.id as tag_id, tag.name as tag_name, tag.tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag
       LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id'
