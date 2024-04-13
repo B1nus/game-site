@@ -103,11 +103,7 @@ end
 # Displays a form for editing a game
 #
 # @param [Integer] id, The id of the game
-get('/admin/games/:id/edit') do
-  @game = game params[:id]
-
-  erb :'games/edit'
-end
+get '/admin/games/:id/edit' do erb :'games/edit' end
 
 # Updates an existing game and redirects to '/admin/games'
 post('/admin/games/:id/update') do
