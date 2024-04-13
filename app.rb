@@ -39,14 +39,11 @@ helpers do
     site = request.path_info
     ip = request.ip
 
-    $requests = { site => {} } unless $requests[site]
-    $requests[site] = { ip => { count: 0, time: 0 } } unless $requests[site][ip]
+    $requests[site] ||= { site => {} }
+    $requests[site][ip] ||= { count: 0, time: 0 }
     $requests[site][ip][:count] += 1
 
-    # Alright, you can go for now
     $requests[site][ip][:count] = 0 if Time.now.to_i - $requests[site][ip][:time] >= COOLDOWN_COUND_RESET_TIME
-
-    # Calm down there sunny
     $requests[site][ip][:time] = Time.now.to_i
 
     $requests[site][ip][:count] >= COOLDOWN_COUNT_LIMIT
