@@ -66,22 +66,22 @@ before '/admin/*' do admin_check end
 before '/user*' do login_check end
 
 # Guest sites
-get '/' do redirect '/games' end
-get '/games' do erb :'games/index' end
-get '/games/:id' do erb :'games/show' end
-get '/register' do erb :'users/register' end
-get '/login' do erb :'users/login' end
+get('/') { redirect '/games' }
+get('/games') { erb :'games/index' }
+get('/games/:id') { erb :'games/show' }
+get('/register') { erb :'users/register' }
+get('/login') { erb :'users/login' }
 # User site
-get '/user' do erb :'users/edit' end
+get('/user') { erb :'users/edit' }
 # Admin sites
-get '/admin/games' do erb :'games/index-admin' end
-get '/admin/games/new' do erb :'games/new' end
-get '/admin/games/:id/edit' do erb :'games/edit' end
-get '/admin/tags/new' do erb :'tags/new' end
-get '/admin/tags/:id/edit' do erb :'tags/edit', locals:{tag:tag(params[:id].to_i)} end
-get '/admin/tags/:id' do erb :'tags/show' end
-get '/admin/tags' do erb :'tags/index' end
-get '/admin/users' do erb :'users/index' end
+get('/admin/games') { erb :'games/index-admin' }
+get('/admin/games/new') { erb :'games/new' }
+get('/admin/games/:id/edit') { erb :'games/edit' }
+get('/admin/tags/new') { erb :'tags/new' }
+get('/admin/tags/:id/edit') { erb :'tags/edit', locals:{tag:tag(params[:id].to_i)} }
+get('/admin/tags/:id') { erb :'tags/show' }
+get('/admin/tags') { erb :'tags/index' }
+get('/admin/users') { erb :'users/index' }
 
 # Updates an existing game and redirects to '/admin/games'
 post '/admin/games/:id/update' do
@@ -96,9 +96,8 @@ end
 #
 # @param tag_name [String]
 # @param tag_purpose_id [Integer]
-post '/admin/tags' do
-  add_tag params[:tag_name], params[:tag_purpose_id]
-
+post('/admin/tags') do
+  add_tag(params[:name], params[:purpose_id].to_i)
   redirect '/admin/tags'
 end
 
@@ -109,26 +108,23 @@ end
 # @param [Integer] tag_purpose_id, the new tag purpose id
 #
 # @see Model#database_edit_tag
-post '/admin/tags/:id/update' do
-  update_tag params[:id], params[:name], params[:purpose_id]
-
+post('/admin/tags/:id/update') do
+  update_tag(params[:id], params[:name], params[:purpose_id])
   redirect '/admin/tags'
 end
 
 # Remove a tag
 #
 # @param [Integer] id, The id for the tag
-post '/admin/tags/:id/delete' do
-  remove_tag params[:id]
-
+post('/admin/tags/:id/delete') do
+  delete_tag(params[:id].to_i)
   redirect '/admin/tags'
 end
 
 # Create a new tag purpose
 #
-post '/admin/tag-purposes' do
-  add_tag_purpose params[:tag_purpose_name]
-
+post('/admin/tag-purposes') do
+  add_tag_purpose(params[:purpose])
   redirect '/admin/tags'
 end
 

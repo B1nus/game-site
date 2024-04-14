@@ -26,7 +26,9 @@ module Model
   def tag_purposes() database('SELECT * FROM tag_purpose') end
   def tags() database('SELECT tag.id as id, tag.name as name, tag.tag_purpose_id as purpose_id, tag_purpose.name as purpose FROM tag LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id') end
 
-  def add_tag(name, purpose_id) database('INSERT INTO tag (name, purpose_id) VALUES (?, ?)', name, purpose_id) end
+  def add_tag(name, purpose_id)
+    database('INSERT INTO tag (name, tag_purpose_id) VALUES (?, ?)', name, purpose_id)
+  end
   def add_user(username, digest) database('INSERT INTO user (username, digest, permission_level) VALUES (?, ?, ?)', username, digest, 'user') end
   def add_tag_purpose(purpose) database('INSERT INTO tag_purpose (name) VALUES (?)', purpose) end
 
