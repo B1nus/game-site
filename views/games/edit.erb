@@ -10,9 +10,9 @@
   <label for="time_changed">Time changed</label>
   <input type="datetime-local" id="time_changed" name="time_changed" value=<%= Time.at(game['time_changed']).strftime('%Y-%m-%dT%H:%M:%S.%L') %>>
   <label for="fullscreen">Fullscreen</label>
-  <input type="checkbox" id="fullscreen" name="fullscreen" value="Fullscreen">
+  <input type="checkbox" id="fullscreen" name="fullscreen" value="Fullscreen" <%= 'checked' if game['fullscreen'] == 1 %>>
   <label for="warning">Warn for Foreign game</label>
-  <input type="checkbox" id="warning" name="warning" value="Warn for Foreign">
+  <input type="checkbox" id="warning" name="warning" value="Warn for Foreign" <%= 'checked' if game['warning'] == 1 %>>
   <label for="tags[]">Tags</label>
   <select id="tags[]" name="tags[]" multiple=true>
     <% p tags %>
@@ -25,7 +25,7 @@
   <input type="submit" name="Update game">
 </form>
 
-<form action="/admin/games/<%= game['id'] %>/updatefiles" method="post">
+<form action="/admin/games/<%= game['id'] %>/files/update" method="post">
   <label for="game_files[]">Game folder</label>
   <input type="file" id="game_files[]" name="game_files[]" multiple="" directory="" webkitdirectory="" mozdirectory="">
   <input type="submit" name="Submit files">
