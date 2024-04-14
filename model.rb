@@ -14,20 +14,19 @@ module Model
   # Lite läskigt att det inte finns någon säkerhet i model.rb, jag litar på att app.rb hanterar admin och user behörigheter.
 
   # Maybe move these types of functions to a new utils.rb file?
-  def with_id(array, id) id.is_a? Integer ? with_attribute(array, 'id', id) : raise('Non integer id') end
-  def with_attribute(array, attribute, value) find_match(array) { |e| e[attribute] == value } end
-  def find_match(array, predicate) array.detect { |e| predicate.call(e) } end
+  def with_id(array, id) id.is_a?(Integer) ? with_attribute(array, 'id', id) : raise('Non integer id') end
+  def with_attribute(array, attribute, value) array.detect { |e| e[attribute] == value } end
 
   def user(id) with_id(users, id) end
   def game(id) with_id(games, id) end
   def tag(id) with_id(tags, id) end
 
   def games() database('SELECT * FROM game') end
-  def users() database('SELECT * FROM user').drop(1) end
+  def users() database('SELECT * FROM user') end
   def tag_purposes() database('SELECT * FROM tag_purpose') end
-  def tags() database('SELECT *, tag.purpose_id as purpose_id, tag_purpose.name as purpose FROM tag LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id') end
+  def tags() database('SELECT tag.id as id, tag.name as name, tag.tag_purpose_id as purpose_id, tag_purpose.name as purpose FROM tag LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id') end
 
-  def add_tag(name, purpose_id) database('INSERT INTO tag (name, purpose_id) VALUES (?, ?)', tag_name, tag_purpose_id) end
+  def add_tag(name, purpose_id) database('INSERT INTO tag (name, purpose_id) VALUES (?, ?)', name, purpose_id) end
   def add_user(username, digest) database('INSERT INTO user (username, digest, permission_level) VALUES (?, ?, ?)', username, digest, 'user') end
   def add_tag_purpose(purpose) database('INSERT INTO tag_purpose (name) VALUES (?)', purpose) end
 
@@ -38,9 +37,9 @@ module Model
   def game_iframe_sizes(id) game_tags(id).map { |tag| tag['purpose'] == 'iframe_size' ? tag['name'] : nil }.compact end
   def game_available_tags(id) tags - game_tags(id) end
   def game_tag_purposes(id) game_tags(id).map { |tag| tag['purpose_name'] } end
-  def game_tags(id) database('SELECT tag_id FROM game_tag_rel WHERE game_id = ?', id).map { |e| tag(e['tag_id']) } end
+  def game_tags(id) database('SELECT tag_id as id FROM game_tag_rel WHERE game_id = ?', id).map { |e| tag(e['id']) } end
 
-  def update_tag(id, name, purpose_id) database('UPDATE tag SET name = ?, purpose_id = ? WHERE id = ?', tag_name, tag_purpose_id, tag_id) end
+  def update_tag(id, name, purpose_id) database('UPDATE tag SET name = ?, purpose_id = ? WHERE id = ?', name, purpose_id, id) end
 
   def username(id) user(id)['username'] end
   def user_with_name(username) with_attribute(users, 'username', username) end
