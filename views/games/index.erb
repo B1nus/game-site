@@ -1,6 +1,3 @@
-<%# Check for admin priveleges %>
-<% raise 'You\'re not alllowed to be here.' if !admin? %>
-
 <% games.each do |game| %>
   <a href="/games/<%= game['id'] %>"><%= game %></a>
   <% if admin? %>
