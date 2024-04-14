@@ -78,7 +78,7 @@ get '/admin/games' do erb :'games/index-admin' end
 get '/admin/games/new' do erb :'games/new' end
 get '/admin/games/:id/edit' do erb :'games/edit' end
 get '/admin/tags/new' do erb :'tags/new' end
-get '/admin/tags/:id/edit' do erb :'tags/edit' end
+get '/admin/tags/:id/edit' do erb :'tags/edit', locals:{tag:tag(params[:id].to_i)} end
 get '/admin/tags/:id' do erb :'tags/show' end
 get '/admin/tags' do erb :'tags/index' end
 get '/admin/users' do erb :'users/index' end
@@ -110,7 +110,7 @@ end
 #
 # @see Model#database_edit_tag
 post '/admin/tags/:id/update' do
-  update_tag params[:tag_id], params[:tag_name], params[:tag_purpose_id]
+  update_tag params[:id], params[:name], params[:purpose_id]
 
   redirect '/admin/tags'
 end

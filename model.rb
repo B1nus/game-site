@@ -39,7 +39,7 @@ module Model
   def game_tag_purposes(id) game_tags(id).map { |tag| tag['purpose_name'] } end
   def game_tags(id) database('SELECT tag_id as id FROM game_tag_rel WHERE game_id = ?', id).map { |e| tag(e['id']) } end
 
-  def update_tag(id, name, purpose_id) database('UPDATE tag SET name = ?, purpose_id = ? WHERE id = ?', name, purpose_id, id) end
+  def update_tag(id, name, purpose_id) database('UPDATE tag SET name = ?, tag_purpose_id = ? WHERE id = ?', name, purpose_id, id) end
 
   def username(id) user(id)['username'] end
   def user_with_name(username) with_attribute(users, 'username', username) end

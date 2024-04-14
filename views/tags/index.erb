@@ -1,22 +1,20 @@
-<<%# Check for admin priveleges %>
+<%# Check for admin priveleges %>
 <% raise 'You\'re not alllowed to be here.' if !admin? %>
 
-ul>
-  <% tags.each do |tag| %>
-    <li style="display: flex; flex-direction: row; gap: 10px;">
-      <%= erb(:'tags/show', locals:{tag:tag}) %>
-      <a href=<%= "/admin/tags/#{tag['tag_id']}/edit" %>>edit</a>
-      <form action=<%= "/admin/tags/#{tag['tag_id']}/delete" %> method="post">
-        <button type="submit">delete</button>
-      </form>
-    </li>
-  <% end %>
-  <h2>New Tag</h2>
-  <%= erb :'tags/new' %>
-  <h2>New Tag Purpose</h2>
-  <p>Take great care, once made, it can't be removed. Not easily anyway</p>
-  <form action="/admin/tag-purposes" method="post">
-    <input type="text" name="tag_purpose_name">
-    <input type="submit" value="Create tag purpose">
-  </form>
-</ul>
+<% tags.each do |tag| %>
+  <li style="display: flex; flex-direction: row; gap: 10px;">
+    <%= erb(:'tags/show', locals:{tag:tag}) %>
+    <a href="/admin/tags/<%= tag['id'] %>/edit">edit</a>
+    <form action=<%= "/admin/tags/#{tag['tag_id']}/delete" %> method="post">
+      <button type="submit">delete</button>
+    </form>
+  </li>
+<% end %>
+<h2>New Tag</h2>
+<%= erb :'tags/new' %>
+<h2>New Tag Purpose</h2>
+<p>Take great care, once made, it can't be removed. Not easily anyway</p>
+<form action="/admin/tag-purposes" method="post">
+  <input type="text" name="tag_purpose_name">
+  <input type="submit" value="Create tag purpose">
+</form>
