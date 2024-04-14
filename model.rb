@@ -56,7 +56,7 @@ class Model
   end
 
   def game_tags(id)
-    execute('SELECT tag as id FROM game_tag_rel WHERE game = ?', id).map { |tag| tag(tag['id']) }
+    execute('SELECT tag as id FROM game_tag_rel WHERE game = ?', id).map { |tag| select('tag', 'id', tag['id']) }
   end
 
   def add_tag(name, purpose_id)

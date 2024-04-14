@@ -36,7 +36,12 @@ get('/games') do
         tag_purposes: database.all_of('tag_purpose')
       })
 end
-get('/games/:id') { erb(:'games/show', locals: { game: database.select('game', 'id', params_id) }) }
+get('/games/:id') do
+  erb(:'games/show', locals: {
+        game: database.select('game', 'id', params_id),
+        iframe_size: database.game_iframe_sizes(params_id).first
+      })
+end
 get('/register') { erb :'users/register' }
 get('/login') { erb :'users/login' }
 # user

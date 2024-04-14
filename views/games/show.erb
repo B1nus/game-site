@@ -8,7 +8,7 @@
   </div>
 <% end %>
 
-<iframe id="iframe" src="<%= game['embedded_url']%>" style="<%= game_iframe_sizes(game['id']).first %>" frameborder="0" allow="gamepad *; fullscreen;"></iframe>
+<iframe id="iframe" src="<%= game['embedded_url']%>" style="<%= iframe_size %>" frameborder="0" allow="gamepad *; fullscreen;"></iframe>
 
 <% if game['embedded_url'].nil? %>
   <p>There is no game here</p>
