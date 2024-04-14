@@ -1,8 +1,0 @@
-<% games.each do |game| %>
-  <a href="/games/<%= game['id'] %>"><%= game %></a>
-  <a href=<%= "/admin/games/#{game['id']}/edit" %>>edit</a>
-  <form action="/admin/games/<%= game['id'] %>/delete" method="post">
-    <input type="submit" value="Delete game">
-  </form>
-<% end %>
-<%= erb :'tags/index' %>

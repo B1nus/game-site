@@ -1,3 +1,6 @@
+<%# Check for admin priveleges %>
+<% raise 'You\'re not alllowed to be here.' if !admin? %>
+
 <%# Get the current game dictionary from the database %>
 <% game = game params[:id] %>
 

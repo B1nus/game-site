@@ -1,8 +1,7 @@
-<%#
-  Endast tillgänglig för admin
-%>
+<<%# Check for admin priveleges %>
+<% raise 'You\'re not alllowed to be here.' if !admin? %>
 
-<form action=<%= "/admin/tags" %> method="post"> 
+form action=<%= "/admin/tags" %> method="post"> 
     <input type="text" name="tag_name" value=<%= @tag_name %>>
     <select name="tag_purpose_id">
         <% tag_purposes.each do |tag_purpose| %>

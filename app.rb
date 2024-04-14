@@ -63,8 +63,8 @@ before '/user*' do login_check end
 
 # Guest sites
 get '/' do redirect '/games' end
-get '/games' do admin? ? redirect('/admin/games') : erb(:'games/index') end
-get 'games/:id' do erb :'games/show' end
+get '/games' do erb :'games/index' end
+get '/games/:id' do erb :'games/show' end
 get '/register' do erb :'users/register' end
 get '/login' do erb :'users/login' end
 # User site

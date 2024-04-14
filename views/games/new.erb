@@ -1,3 +1,6 @@
+<%# Check for admin priveleges %>
+<% raise 'You\'re not alllowed to be here.' if !admin? %>
+
 <form action="/admin/games" method="post">
   <input type="text" name="name" placeholder="Game name">
   <label for="time_created">Time created</label>

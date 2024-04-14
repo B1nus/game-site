@@ -1,8 +1,13 @@
-<ul>
-  <% games.each do |game| %>
-    <li>
-      <h2><%= game['name'] %></h2>
-      <a href="/games/<%= game['id'] %>"><%= game %></a>
-    </li>
+<%# Check for admin priveleges %>
+<% raise 'You\'re not alllowed to be here.' if !admin? %>
+
+<% games.each do |game| %>
+  <a href="/games/<%= game['id'] %>"><%= game %></a>
+  <% if admin? %>
+    <a href=<%= "/admin/games/#{game['id']}/edit" %>>edit</a>
+    <form action="/admin/games/<%= game['id'] %>/delete" method="post">
+      <input type="submit" value="Delete game">
+    </form>
   <% end %>
-</ul>
+  <% end %>
+<%= erb :'tags/index' if admin? %>

@@ -1,4 +1,7 @@
-<ul>
+<<%# Check for admin priveleges %>
+<% raise 'You\'re not alllowed to be here.' if !admin? %>
+
+ul>
   <% tags.each do |tag| %>
     <li style="display: flex; flex-direction: row; gap: 10px;">
       <% @tag = tag %>
