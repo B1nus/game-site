@@ -1,3 +1,6 @@
+<%# Check for user priveleges %>
+<% raise 'You\'re not alllowed to be here.' if !logged_in? %>
+
 <form action="/user/editusername" method="post"> <%# purposeful deviation from restful routes %>
   <input type="text" name="username" value=<%= @username %>>
   <input type="submit" value="Change username">
