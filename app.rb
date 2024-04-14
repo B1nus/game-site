@@ -73,10 +73,11 @@ get('/admin/users') { erb(:'users/index', locals: { users: database.all_of('user
 
 # Updates an existing game and redirects to '/admin/games'
 post '/admin/games/:id/update' do
-  # game_id = params_id
-  #
-  # tags_selection = params[:tags_selection]
-  p params
+  # name = params[:name]
+  # tag_ids = params[:tags]
+  # fullscreen = !params[:fullscreen].nil?
+  # warning = !params[:warning].nil?
+  # time_created = ???
 
   redirect '/admin/games'
 end
