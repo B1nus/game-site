@@ -1,7 +1,7 @@
 <%# Check for admin priveleges %>
 <% raise 'You\'re not alllowed to be here.' if !admin? %>
 
-<% users.drop(1).each do |user| %>
+<% users.each do |user| %>
   <p><%= user %></p>
   <form action="/admin/users/<%= user['id'] %>/delete" method="post">
     <input type="submit" value="Delete user">

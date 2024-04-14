@@ -69,7 +69,7 @@ get('/admin/tags') do
         tag_purposes: database.all_of('tag_purpose')
       })
 end
-get('/admin/users') { erb(:'users/index', locals: { users: database.all_of('users') }) }
+get('/admin/users') { erb(:'users/index', locals: { users: database.all_of('user').drop(1) }) }
 
 # Updates an existing game and redirects to '/admin/games'
 post '/admin/games/:id/update' do
