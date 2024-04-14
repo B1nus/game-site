@@ -15,7 +15,6 @@
   <input type="checkbox" id="warning" name="warning" value="Warn for Foreign" <%= 'checked' if game['warning'] == 1 %>>
   <label for="tags[]">Tags</label>
   <select id="tags[]" name="tags[]" multiple=true>
-    <% p tags %>
     <% tags.each do |tag| %>
       <option value=<%= tag['id'] %> <%= 'selected' if game_tags.include?(tag) %>>
         <%= tag['name'] %>
