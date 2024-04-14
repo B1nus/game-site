@@ -1,84 +1,43 @@
 # frozen_string_literal: true
 
 require './model'
+require './helpers'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'sinatra/flash'
 
-# Tillåt sessions. Jag använder det endast för inloggning
+# Used for login
 enable :sessions
 
 # Yardoc
-include Model
+# include Model
 
-# Cooldown hash
-$requests = {}
-COOLDOWN_COUNT_LIMIT = 5 # Max number of requests
-COOLDOWN_COUND_RESET_TIME = 5 # Time when the count is reset
+# Database
+@database = Model.new
 
-helpers do
-  def admin?; !session[:user_id].nil? && session[:user_id].zero? && user_permission_level(session[:user_id]) == 'admin' end
+on_start; puts 'Server started as http://localhost:4567'
+on_stop; puts 'By Bye!'
 
-  def logged_in?; !session[:user_id].nil? && user_id_exists?(session[:user_id]) && session[:user_id] != 0 end
+# Protect admin and user sites
+before('/admin/*') { admin_check }
+before('/user*') { user_check }
 
-  def admin_check
-    return if admin?
+# One liner get routes.
 
-    flash[:notice] = 'No admin for you'
-    redirect '/'
-  end
-
-  def login_check
-    return if logged_in?
-
-    flash[:notice] = 'You need to login'
-    redirect '/'
-  end
-
-  def cooldown?
-    site = request.path_info
-    ip = request.ip
-
-    $requests[site] ||= { site => {} }
-    $requests[site][ip] ||= { count: 0, time: 0 }
-    $requests[site][ip][:count] += 1
-
-    $requests[site][ip][:count] = 0 if Time.now.to_i - $requests[site][ip][:time] >= COOLDOWN_COUND_RESET_TIME
-    $requests[site][ip][:time] = Time.now.to_i
-
-    $requests[site][ip][:count] >= COOLDOWN_COUNT_LIMIT
-  end
-
-  def cooldown_check redirect_url
-    return unless cooldown?
-
-    flash[:notice] = 'Calm down there, your making to many requests'
-    redirect redirect_url
-  end
-end
-
-# Meddelande vid start och stop av servern
-on_start do puts "Server started as http://localhost:4567" end
-on_stop do puts "By Bye!" end
-
-# Validate protected sites, for admin and user
-before '/admin/*' do admin_check end
-before '/user*' do login_check end
-
-# Guest sites
+# guest
 get('/') { redirect '/games' }
 get('/games') { erb :'games/index' }
 get('/games/:id') { erb :'games/show' }
 get('/register') { erb :'users/register' }
 get('/login') { erb :'users/login' }
-# User site
+# user
 get('/user') { erb :'users/edit' }
-# Admin sites
+# admin
 get('/admin/games') { erb :'games/index-admin' }
 get('/admin/games/new') { erb :'games/new' }
 get('/admin/games/:id/edit') { erb :'games/edit' }
 get('/admin/tags/new') { erb :'tags/new' }
-get('/admin/tags/:id/edit') { erb :'tags/edit', locals:{tag:tag(params[:id].to_i)} }
+get('/admin/tags/:id/edit') { erb :'tags/edit', locals: { tag: tag(params[:id].to_i) } }
 get('/admin/tags/:id') { erb :'tags/show' }
 get('/admin/tags') { erb :'tags/index' }
 get('/admin/users') { erb :'users/index' }
@@ -97,7 +56,7 @@ end
 # @param tag_name [String]
 # @param tag_purpose_id [Integer]
 post('/admin/tags') do
-  add_tag(params[:name], params[:purpose_id].to_i)
+  @database.add_tag(params[:name], params[:purpose_id].to_i)
   redirect '/admin/tags'
 end
 
@@ -109,7 +68,7 @@ end
 #
 # @see Model#database_edit_tag
 post('/admin/tags/:id/update') do
-  update_tag(params[:id], params[:name], params[:purpose_id])
+  @database.update_tag(params[:id], params[:name], params[:purpose_id])
   redirect '/admin/tags'
 end
 
@@ -117,14 +76,14 @@ end
 #
 # @param [Integer] id, The id for the tag
 post('/admin/tags/:id/delete') do
-  delete_tag(params[:id].to_i)
+  @database.delete_tag(params[:id].to_i)
   redirect '/admin/tags'
 end
 
 # Create a new tag purpose
 #
 post('/admin/tag-purposes') do
-  add_tag_purpose(params[:purpose])
+  @database.add_tag_purpose(params[:purpose])
   redirect '/admin/tags'
 end
 
@@ -138,7 +97,7 @@ end
 post '/register' do
   cooldown_check '/register'
 
-  if error = register_user(params[:username], params[:password], params[:repeat_password])
+  if error = @database.register_user(params[:username], params[:password], params[:repeat_password])
     flash[:notice] = error
     redirect '/register'
   else
@@ -156,9 +115,9 @@ end
 post '/login' do
   cooldown_check '/login'
 
-  if user_id = login(params[:username], params[:password])
+  if id = @database.login(params[:username], params[:password])
     # Successful login!
-    session[:user_id] = user_id
+    change_user_id(id)
     redirect '/'
   else
     # Login failed.
@@ -170,7 +129,7 @@ end
 # Logout a user and redirect to homepage
 #
 post '/logout' do
-  session[:user_id] = nil
+  logout
 
   redirect '/'
 end
@@ -183,7 +142,7 @@ end
 post '/user/username/edit' do
   cooldown_check '/user'
 
-  flash[:notice] = change_username(session[:user_id], params[:username]).instance_eval do |e|
+  flash[:notice] = @database.change_username(user_id, params[:username]).instance_eval do |e|
     e ? 'Username successfully changed!' : 'Username already taken'
   end
 
@@ -199,8 +158,8 @@ end
 post '/user/password/edit' do
   cooldown_check '/user'
 
-  error = change_password(
-    session[:user_id],
+  error = @database.change_password(
+    user_id,
     params[:current_password],
     params[:password],
     params[:repeat_password]
@@ -215,8 +174,8 @@ end
 #
 # @see Model#delete_user
 post '/user/delete' do
-  delete_user session[:user_id]
-  session[:user_id] = nil
+  delete_user user_id
+  logout
   flash[:notice] = 'User successfully deleted'
 
   redirect '/'
@@ -226,12 +185,7 @@ end
 #
 # @see Model#delete_user
 post '/admin/users/:id/delete' do
-  user_id = params[:id].to_i
-
-  # Oh no, the admin is suicidal.
-  raise "But sir, that's suicide" if user_id.zero?
-
-  delete_user user_id
+  @database.delete_user(params[:id].to_i)
   flash[:notice] = 'User successfully deleted'
 
   redirect '/admin/users'
