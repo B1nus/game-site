@@ -109,12 +109,11 @@ module Model
   #
   # @return [Bool] if it was successfull or not
   def change_username(id, username)
-    if user_id_exists?(user_id) && !username_exist?(username)
-      database 'UPDATE user SET username = ? WHERE id = ?', username, id
-      true
-    end
+    return if !user_id_exists?(id) || username_exists?(username)
 
-    false
+    database('UPDATE user SET username = ? WHERE id = ?', username, id)
+
+    true
   end
 
   # Change your password

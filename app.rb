@@ -136,7 +136,7 @@ end
 #
 # @see Model#register_user
 post '/register' do
-  apply_cooldown '/register' if cooldown?
+  cooldown_check '/register'
 
   if error = register_user(params[:username], params[:password], params[:repeat_password])
     flash[:notice] = error
@@ -180,17 +180,12 @@ end
 # @params [String] username, the username
 #
 # @see Model#change_username
-post '/user/editusername' do
-  apply_cooldown '/user' if cooldown?
+post '/user/username/edit' do
+  cooldown_check '/user'
 
-  user_id = session[:user_id]
-  username = params[:username]
-
-  flash[:notice] = if change_username user_id, username
-                     'Username successfully changed!'
-                   else
-                     'Username already taken'
-                   end
+  flash[:notice] = change_username(session[:user_id], params[:username]).instance_eval do |e|
+    e ? 'Username successfully changed!' : 'Username already taken'
+  end
 
   redirect '/user'
 end
@@ -201,15 +196,14 @@ end
 # @params [String] repeat_password, same password another time to make sure you remember it
 #
 # @see Model#change_password
-post '/user/editpassword' do
-  apply_cooldown '/user' if cooldown?
+post '/user/password/edit' do
+  cooldown_check '/user'
 
-  user_id = session[:user_id]
-
-  password = params[:password]
-  repeat_password = params[:repeat_password]
-
-  error = change_password user_id, password, repeat_password
+  error = change_password(
+    session[:user_id],
+    params[:password],
+    params[:repeat_password]
+  )
 
   flash[:notice] = error || 'Password successfully changed!'
 

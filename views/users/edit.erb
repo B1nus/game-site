@@ -1,12 +1,12 @@
 <%# Check for user priveleges %>
 <% raise 'You\'re not alllowed to be here.' if !logged_in? %>
 
-<form action="/user/editusername" method="post"> <%# purposeful deviation from restful routes %>
-  <input type="text" name="username" value=<%= @username %>>
+<form action="/user/username/edit" method="post"> <%# purposeful deviation from restful routes %>
+  <input type="text" name="username" value=<%= username(session[:user_id]) %>>
   <input type="submit" value="Change username">
 </form>
 
-<form action="/user/editpassword" method="post"> <%# purposeful deviation from restful routes %>
+<form action="/user/password/edit" method="post"> <%# purposeful deviation from restful routes %>
   <input type="password" name="password">
   <input type="password" name="repeat_password">
   <input type="submit" value="Change password">
