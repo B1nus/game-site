@@ -79,7 +79,7 @@ post '/admin/games/:id/update' do
   # warning = !params[:warning].nil?
   # time_created = ???
 
-  redirect '/admin/games'
+  redirect '/games'
 end
 
 # Add a new tag
@@ -89,11 +89,11 @@ end
 post('/admin/tags') do
   if params[:name].empty?
     flash[:notice] = 'The new tag name can\'t be empty'
-    redirect '/'
+    redirect '/games'
   end
 
   database.add_tag(params[:name], params[:purpose_id].to_i)
-  redirect '/'
+  redirect '/games'
 end
 
 # Update a tag
@@ -106,11 +106,11 @@ end
 post('/admin/tags/:id/update') do
   if params[:name].empty?
     flash[:notice] = 'The new tag name can\'t be empty'
-    redirect '/'
+    redirect '/games'
   end
 
   database.update_tag(params_id, params[:name], params[:purpose_id])
-  redirect '/'
+  redirect '/games'
 end
 
 # Remove a tag
@@ -118,7 +118,7 @@ end
 # @param [Integer] id, The id for the tag
 post('/admin/tags/:id/delete') do
   database.delete_tag(params_id)
-  redirect '/'
+  redirect '/games'
 end
 
 # Create a new tag purpose
@@ -126,11 +126,11 @@ end
 post('/admin/tag-purposes') do
   if params[:purpose].empty?
     flash[:notice] = 'A tag purpose name can\'t be empty'
-    redirect '/'
+    redirect '/games'
   end
 
   database.add_tag_purpose(params[:purpose])
-  redirect '/'
+  redirect '/games'
 end
 
 # Attempts to register a user
@@ -164,7 +164,7 @@ post '/login' do
   if id = database.login(params[:username], params[:password])
     # Successful login!
     change_user_id(id)
-    redirect '/'
+    redirect '/games'
   else
     # Login failed.
     flash[:notice] = 'Invalid login credentials'
@@ -177,7 +177,7 @@ end
 post '/logout' do
   logout
 
-  redirect '/'
+  redirect '/games'
 end
 
 # Attempt to change a users username
@@ -221,7 +221,7 @@ post '/user/delete' do
   delete_user user_id
   logout
 
-  redirect '/'
+  redirect '/games'
 end
 
 # Delete a user
