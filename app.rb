@@ -201,6 +201,7 @@ post '/user/password/edit' do
 
   error = change_password(
     session[:user_id],
+    params[:current_password],
     params[:password],
     params[:repeat_password]
   )

@@ -44,6 +44,7 @@ module Model
   def update_tag(id, name, purpose_id) database('UPDATE tag SET name = ?, tag_purpose_id = ? WHERE id = ?', name, purpose_id, id) end
 
   def username(id) user(id)['username'] end
+  def digest(id) user(id)['digest'] end
   def user_with_name(username) with_attribute(users, 'username', username) end
   def user_permission_level(id) user(id).instance_eval { |user| user['permission_level'] if user } end
   def username_exists?(username) !user_with_name(username).nil? end
@@ -57,6 +58,7 @@ module Model
   # @return [String] an error message, nil if no errors were encountered
   def validate_password(password, repeat_password)
     return 'You need to type a password' if password.empty?
+    return 'You need to repeat your password' if repeat_password.empty?
     return 'Your password needs to be at least 8 characters long' if password.length < 8
     return 'Your password needs a number' if password !~ /[0-9]/
     return 'Your password needs a capital letter' if password !~ /[A-Z]/
@@ -93,13 +95,10 @@ module Model
   def login(username, password)
     # Funderar på att ha felmeddelanden för olika fel. Till exempel ett för om användaren inte finns, ett om lösenordet
     # är fel. Men jag tror det är säkrare att inte ge någon extra information. Det gör hackning den lilla biten svårare.
-    user = user_with_name(username)
+    id = user_with_name(username)['id']
+    digest = digest(id)
 
-    return nil unless user
-
-    digest = user['digest']
-
-    BCrypt::Password.new(digest) != password ? nil : user['id']
+    BCrypt::Password.new(digest) != password ? nil : id
   end
 
   # Change a username
@@ -122,9 +121,16 @@ module Model
   # @param password [String] new password
   #
   # @return [String] error with password, nil if password is fine
-  def change_password(id, password, repeat_password)
-    validate_password(password, repeat_password).instance_eval do |error|
-      error || database.execute('UPDATE user SET digest = ? WHERE id = ?', BCrypt::Password.create(password), id)
-    end
+  def change_password(id, password, new_password, repeat_new_password)
+    return 'Incorrect password' unless login(username(id), password)
+    return 'Your new password can\'t be the same as old password' if password == new_password
+
+    error = validate_password(new_password, repeat_new_password)
+
+    return error if error
+
+    database('UPDATE user SET digest = ? WHERE id = ?', BCrypt::Password.create(new_password), id)
+
+    nil
   end
 end

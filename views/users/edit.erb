@@ -7,8 +7,9 @@
 </form>
 
 <form action="/user/password/edit" method="post"> <%# purposeful deviation from restful routes %>
-  <input type="password" name="password">
-  <input type="password" name="repeat_password">
+  <input type="password" name="current_password" placeholder="Current password">
+  <input type="password" name="password" placeholder="New password">
+  <input type="password" name="repeat_password" placeholder="Enter your new password again">
   <input type="submit" value="Change password">
 </form>
 
