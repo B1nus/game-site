@@ -1,7 +1,9 @@
 <%# Check for admin priveleges %>
 <% raise 'You\'re not alllowed to be here.' if !admin? %>
 
+<% p tags %>
 <% tags.each do |tag| %>
+  <% p tag %>
   <li style="display: flex; flex-direction: row; gap: 10px;">
     <%= erb(:'tags/show', locals:{tag:tag}) %>
     <a href="/admin/tags/<%= tag['id'] %>/edit">edit</a>
@@ -11,10 +13,10 @@
   </li>
 <% end %>
 <h2>New Tag</h2>
-<%= erb :'tags/new' %>
+<%= erb(:'tags/new', locals: { tag_purposes: }) %>
 <h2>New Tag Purpose</h2>
 <p>Take great care, once made, it can't be removed. Not easily anyway</p>
 <form action="/admin/tag-purposes" method="post">
-  <input type="text" name="purpose">
+  <input type="text" name="purpose" placeholder="Tag purpose name">
   <input type="submit" value="Create tag purpose">
 </form>

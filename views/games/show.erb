@@ -1,5 +1,4 @@
-<% id = params[:id].to_i %>
-<% game = game id %>
+<% id = game['id'] %>
 
 <% if game['warning'] == 1 %>
   <div id="warning" style="width: 100vw; height: 100vh;">

@@ -17,30 +17,46 @@ class Model
     @database.execute('PRAGMA foreign_keys = ON')
   end
 
-  def self.execute(instructions, *injections)
-    execute(instructions, *injections)
+  def execute(instructions, *injections)
+    @database.execute(instructions, *injections)
   end
 
-  def self.all_off(table)
-    execute("SELECT * FROM #{table}")
+  def all_of(table)
+    # Insert validation of table here. Reuse for Model#select as well, DRY
+    if table == 'tag'
+      execute('SELECT tag.id as id FROM tag').map { |tag| select('tag', 'id', tag['id']) }
+    else
+      execute("SELECT * FROM #{table}")
+    end
   end
 
-  def self.select(table, attr, val)
-    execute("SELECT * FROM #{table} WHERE #{attr} = ?", val).first
+  def select(table, attr, val)
+    # Insert validation of table, attr and val here
+    if table == 'tag'
+      execute("SELECT tag.name, tag.id, tag_purpose.name as purpose, purpose_id FROM tag LEFT JOIN
+              tag_purpose ON tag_purpose.id = tag.id WHERE tag.#{attr} = ?", val)
+    else
+      execute("SELECT * FROM #{table} WHERE #{attr} = ?", val)
+    end.first
   end
 
-  def self.tags
-    execute('SELECT tag.id as id FROM tag').map { |tag| tag(tag['id']) }
+  # Return a user dictionary
+  #
+  # @param [String or Integer] String for username, Integer for user id
+  def user(identifier)
+    if identifier.is_a? Integer
+      select('user', 'id', identifier)
+    elsif identifier.is_a? String
+      select('user', 'name', identifier)
+    end
   end
 
-  # This is the only place where I define the names od the attributes, just following DRY ya know.
-  def self.tag(id)
-    execute('SELECT tag.name, tag.id, tag_purpose.name as purpose, purpose_id FROM tag LEFT JOIN
-            tag_purpose ON tag_purpose.id = tag.id WHERE tag.id = ?', id)
+  def user_exists?(identifier)
+    !user(identifier).nil?
   end
 
-  def self.game_tags(id)
-    execute('SELECT tag_id as id FROM game_tag_rel WHERE game_id = ?', id).map { |tag| tag(tag['id']) }
+  def game_tags(id)
+    execute('SELECT tag as id FROM game_tag_rel WHERE game = ?', id).map { |tag| tag(tag['id']) }
   end
 
   def add_tag(name, purpose_id)
@@ -66,14 +82,6 @@ class Model
   # Hmmm, validering kan vara något att tänka på
   def game_iframe_sizes(id)
     game_tags(id).map { |tag| tag['purpose'] == 'iframe_size' ? tag['name'] : nil }.compact
-  end
-
-  def game_tag_purposes(id)
-    game_tags(id).map { |tag| tag['purpose_name'] }
-  end
-
-  def game_tags(id)
-    execute('SELECT tag_id as id FROM game_tag_rel WHERE game_id = ?', id).map { |e| tag(e['id']) }
   end
 
   def update_tag(id, name, purpose_id)
@@ -133,7 +141,7 @@ class Model
   # @params [String] password The password
   #
   # @return [Integer] the users id, nil if the login was unsuccessful
-  def self.login(username, password)
+  def login(username, password)
     # No user found, no other checks should be necessary since NOT NULL is enforced by the database
     return unless user = user(username)
 

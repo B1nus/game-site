@@ -7,4 +7,4 @@
     </form>
   <% end %>
 <% end %>
-<%= erb :'tags/index' if admin? %>
+<%= erb(:'tags/index', locals: { tags:, tag_purposes: }) if admin? %>

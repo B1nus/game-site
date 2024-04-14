@@ -13,10 +13,13 @@ enable :sessions
 # include Model
 
 # Database
-@database = Model.new
+database = Model.new
 
-on_start; puts 'Server started as http://localhost:4567'
-on_stop; puts 'By Bye!'
+on_start { puts 'Server started as http://localhost:4567' }
+on_stop { puts 'By Bye!' }
+
+# Needed to expose the database to my './helper.rb' file
+before('*') { @database = database }
 
 # Protect admin and user sites
 before('/admin/*') { admin_check }
@@ -26,25 +29,30 @@ before('/user*') { user_check }
 
 # guest
 get('/') { redirect '/games' }
-get('/games') { erb :'games/index' }
-get('/games/:id') { erb :'games/show' }
+get('/games') do
+  erb(:'games/index', locals: {
+        games: database.all_of('game'),
+        tags: database.all_of('tag'),
+        tag_purposes: database.all_of('tag_purpose')
+      })
+end
+get('/games/:id') { erb(:'games/show', locals: { game: database.select('game', 'id', params_id) }) }
 get('/register') { erb :'users/register' }
 get('/login') { erb :'users/login' }
 # user
-get('/user') { erb :'users/edit' }
+get('/user') { erb(:'users/edit', locals: { user: database.select('user', 'id', params_id) }) }
 # admin
-get('/admin/games') { erb :'games/index-admin' }
 get('/admin/games/new') { erb :'games/new' }
-get('/admin/games/:id/edit') { erb :'games/edit' }
-get('/admin/tags/new') { erb :'tags/new' }
-get('/admin/tags/:id/edit') { erb :'tags/edit', locals: { tag: tag(params[:id].to_i) } }
-get('/admin/tags/:id') { erb :'tags/show' }
-get('/admin/tags') { erb :'tags/index' }
-get('/admin/users') { erb :'users/index' }
+get('/admin/games/:id/edit') { erb(:'games/edit', { game: database.select('game', 'id', params_id) }) }
+get('/admin/tags/new') { erb(:'tags/new', locals: { purposes: database.all_of('tag_purpose') }) }
+get('/admin/tags/:id/edit') { erb :'tags/edit', locals: { tag: database.select('tag', 'id', params_id) } }
+get('/admin/tags/:id') { erb(:'tags/show', locals: { tag: database.select('tag', 'id', params_id) }) }
+get('/admin/tags') { erb(:'tags/index', locals: { tags: database.all_of('tag') }) }
+get('/admin/users') { erb(:'users/index', locals: { users: database.all_of('users') }) }
 
 # Updates an existing game and redirects to '/admin/games'
 post '/admin/games/:id/update' do
-  # game_id = params[:id]
+  # game_id = params_id
   #
   # tags_selection = params[:tags_selection]
 
@@ -56,7 +64,7 @@ end
 # @param tag_name [String]
 # @param tag_purpose_id [Integer]
 post('/admin/tags') do
-  @database.add_tag(params[:name], params[:purpose_id].to_i)
+  database.add_tag(params[:name], params[:purpose_id].to_i)
   redirect '/admin/tags'
 end
 
@@ -68,7 +76,7 @@ end
 #
 # @see Model#database_edit_tag
 post('/admin/tags/:id/update') do
-  @database.update_tag(params[:id], params[:name], params[:purpose_id])
+  database.update_tag(params_id, params[:name], params[:purpose_id])
   redirect '/admin/tags'
 end
 
@@ -76,14 +84,14 @@ end
 #
 # @param [Integer] id, The id for the tag
 post('/admin/tags/:id/delete') do
-  @database.delete_tag(params[:id].to_i)
+  database.delete_tag(params_id.to_i)
   redirect '/admin/tags'
 end
 
 # Create a new tag purpose
 #
 post('/admin/tag-purposes') do
-  @database.add_tag_purpose(params[:purpose])
+  database.add_tag_purpose(params[:purpose])
   redirect '/admin/tags'
 end
 
@@ -97,7 +105,7 @@ end
 post '/register' do
   cooldown_check '/register'
 
-  if error = @database.register_user(params[:username], params[:password], params[:repeat_password])
+  if error = database.register_user(params[:username], params[:password], params[:repeat_password])
     flash[:notice] = error
     redirect '/register'
   else
@@ -115,7 +123,7 @@ end
 post '/login' do
   cooldown_check '/login'
 
-  if id = @database.login(params[:username], params[:password])
+  if id = database.login(params[:username], params[:password])
     # Successful login!
     change_user_id(id)
     redirect '/'
@@ -142,7 +150,7 @@ end
 post '/user/username/edit' do
   cooldown_check '/user'
 
-  flash[:notice] = @database.change_username(user_id, params[:username]).instance_eval do |e|
+  flash[:notice] = database.change_username(user_id, params[:username]).instance_eval do |e|
     e ? 'Username successfully changed!' : 'Username already taken'
   end
 
@@ -158,7 +166,7 @@ end
 post '/user/password/edit' do
   cooldown_check '/user'
 
-  error = @database.change_password(
+  error = database.change_password(
     user_id,
     params[:current_password],
     params[:password],
@@ -185,7 +193,7 @@ end
 #
 # @see Model#delete_user
 post '/admin/users/:id/delete' do
-  @database.delete_user(params[:id].to_i)
+  database.delete_user(params_id.to_i)
   flash[:notice] = 'User successfully deleted'
 
   redirect '/admin/users'
