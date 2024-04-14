@@ -4,37 +4,54 @@ require 'bcrypt'
 
 # Model
 module Model
-  def database(instruction)
-    db = SQLite3::Database.new 'data/db.db'
+  def database(instruction, *injections)
+    db = SQLite3::Database.new('data/db.db')
     db.results_as_hash = true
-    db.execute 'PRAGMA foreign_keys=ON'
-    db.execute instruction
+    db.execute('PRAGMA foreign_keys=ON')
+    db.execute(instruction, *injections)
   end
 
-  # Hmmm, validering kan vara något att tänka på
-  def games() database('SELECT * FROM game') end
-  def game(id) games.map { |game| nil unless game['id'] == id }.compact.first end
-  def game_iframe_sizes(id) game_tags(id).map { |tag| tag['purpose'] == 'iframe_size' ? tag['name'] : nil }.compact end
-  def game_available_tags(id) tags - game_tags(id) end
-  def game_tag_purposes(id) game_tags(game_id).map { |tag| tag['purpose_name'] } end
-  def game_tags(id) database('SELECT tag_id FROM game_tag_rel WHERE game_id = ?', id).map { |e| tag(e['tag_id']) } end
+  # Lite läskigt att det inte finns någon säkerhet i model.rb, jag litar på att app.rb hanterar admin och user behörigheter.
 
-  def tags() database 'SELECT id, name, tag.purpose_id as purpose_id, tag_purpose.name as purpose FROM tag LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id' end
-  def tag(id) tags.map { |tag| nil unless tag['id'] == tag_id }.compact.first end
-  def add_tag(name, purpose_id) database('INSERT INTO tag (name, purpose_id) VALUES (?, ?)', tag_name, tag_purpose_id) end
-  def update_tag(id, name, purpose_id) database('UPDATE tag SET name = ?, purpose_id = ? WHERE id = ?', tag_name, tag_purpose_id, tag_id) end
-  def delete_tag(id) database('DELETE FROM tag WHERE id = ?', tag_id) end
+  # Maybe move these types of functions to a new utils.rb file?
+  def with_id(array, id) id.is_a? Integer ? with_attribute(array, 'id', id) : raise('Non integer id') end
+  def with_attribute(array, attribute, value) find_match(array) { |e| e[attribute] == value } end
+  def find_match(array, predicate) array.detect { |e| predicate.call(e) } end
+
+  def user(id) with_id(users, id) end
+  def game(id) with_id(games, id) end
+  def tag(id) with_id(tags, id) end
+
+  def games() database('SELECT * FROM game') end
+  def users() database('SELECT * FROM user').drop(1) end
   def tag_purposes() database('SELECT * FROM tag_purpose') end
+  def tags() database('SELECT *, tag.purpose_id as purpose_id, tag_purpose.name as purpose FROM tag LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id') end
+
+  def add_tag(name, purpose_id) database('INSERT INTO tag (name, purpose_id) VALUES (?, ?)', tag_name, tag_purpose_id) end
+  def add_user(username, digest) database('INSERT INTO user (username, digest, permission_level) VALUES (?, ?, ?)', username, digest, 'user') end
   def add_tag_purpose(purpose) database('INSERT INTO tag_purpose (name) VALUES (?)', purpose) end
 
-  def username(id) database('SELECT user.username FROM user WHERE id = ?', user_id).first['username'] end
-  def username_exists?(username) !database('SELECT id FROM user WHERE username = ?', username).empty? end
-  def user_id_exists?(id) username_exists?(username(user_id)) end
-  def user(id) users.map { |user| nil unless user['id'] = id }.compact.first end
-  def user_with_name(username) users.map { |user| nil unless user['username'] == username }.compact.first end
-  def users() database('SELECT * FROM user').drop(1) end
+  def delete_user(id) id.zero? ? raise('No you don\'t') : database('DELETE FROM user WHERE id = ?', id) end
+  def delete_tag(id) database('DELETE FROM tag WHERE id = ?', id) end
+
+  # Hmmm, validering kan vara något att tänka på
+  def game_iframe_sizes(id) game_tags(id).map { |tag| tag['purpose'] == 'iframe_size' ? tag['name'] : nil }.compact end
+  def game_available_tags(id) tags - game_tags(id) end
+  def game_tag_purposes(id) game_tags(id).map { |tag| tag['purpose_name'] } end
+  def game_tags(id) database('SELECT tag_id FROM game_tag_rel WHERE game_id = ?', id).map { |e| tag(e['tag_id']) } end
+
+  def update_tag(id, name, purpose_id) database('UPDATE tag SET name = ?, purpose_id = ? WHERE id = ?', tag_name, tag_purpose_id, tag_id) end
+
+  def username(id) user(id)['username'] end
+  def user_with_name(username) with_attribute(users, 'username', username) end
+  def user_permission_level(id) user(id).instance_eval { |user| user['permission_level'] if user } end
+  def username_exists?(username) !user_with_name(username).nil? end
+  def user_id_exists?(id) !user(id).nil? end
 
   # Checks for password problems
+  #
+  # @param password [String] the password
+  # @param repeat_password [String] the password again (hopefully) to make sure no errors were made
   #
   # @return [String] an error message, nil if no errors were encountered
   def validate_password(password, repeat_password)
@@ -48,27 +65,22 @@ module Model
 
   # Attempts to create a new user
   #
-  # @params [String] username The username
-  # @params [String] password The password
-  # @params [String] repeat_password The repeated password
+  # @param [String] username The username
+  # @param [String] password The password
+  # @param [String] repeat_password The repeated password
   #
   # @return [String] the error message, nil if no error occured
   def register_user(username, password, repeat_password)
-    if username.empty?
-      'You need to type a username'
-    elsif username == 'admin'
-      'Lmao, bro really though he could be admin'
-    elsif username_exists? username
-      'Username taken, choose another username'
-    elsif error = validate_password(password, repeat_password)
-      error
-    else
-      # No error occured. Register the user
-      password_digest = BCrypt::Password.create password
+    return 'You need to type a username' if username.empty?
+    return 'Lmao, bro really though he could be admin' if username == 'admin'
+    return 'Username taken, choose another username' if username_exists? username
+    return if validate_password(password, repeat_password)
 
-      # Add the user to the database
-      database 'INSERT INTO user (username, digest, permission_level) VALUES (?, ?, ?)', username, password_digest, 'user'
-    end
+    # No error occured. Register the user
+    digest = BCrypt::Password.create password
+
+    # Add the user to the database
+    add_user(username, digest)
   end
 
   # Attempts to login
@@ -82,32 +94,11 @@ module Model
     # är fel. Men jag tror det är säkrare att inte ge någon extra information. Det gör hackning den lilla biten svårare.
     user = user_with_name(username)
 
-    # Username not found
-    return nil if user.nil?
+    return nil unless user
 
-    password_digest = user['digest']
+    digest = user['digest']
 
-    # Wrong password
-    return nil if BCrypt::Password.new password_digest != password
-
-    user['id'].to_i
-  end
-
-  # Attempts to fetch the users permission level
-  #
-  # @params [Integer] user_id, The users id
-  #
-  # @return [String] the users permission level (admin/user/guest), nil if the user wasn't found
-  def user_permission_level(id)
-    # Det kan vara ett säkerhetshål att vem som helst kan komma åt vem som helst permission_level.
-    # Borde inte gå i och med hur app.rb hanterar det. Men något at tänka på.
-    user = user(id)
-
-    # No user found
-    return nil if user.nil?
-
-    # Borde inte kunna vara nil eftersom NN ("Not Null") är checkad i sqlite3 databasen
-    user['permission_level']
+    BCrypt::Password.new(digest) != password ? nil : user['id']
   end
 
   # Change a username
@@ -117,11 +108,12 @@ module Model
   #
   # @return [Bool] if it was successfull or not
   def change_username(id, username)
-    return false if !user_id_exists?(user_id) || username_exist?(username)
+    if user_id_exists?(user_id) && !username_exist?(username)
+      database 'UPDATE user SET username = ? WHERE id = ?', username, id
+      true
+    end
 
-    database 'UPDATE user SET username = ? WHERE id = ?', username, id
-
-    true
+    false
   end
 
   # Change your password
@@ -131,18 +123,8 @@ module Model
   #
   # @return [String] error with password, nil if password is fine
   def change_password(id, password, repeat_password)
-    if error = validate_password(password, repeat_password)
-      error
-    else
-      database.execute('UPDATE user SET digest = ? WHERE id = ?', BCrypt::Password.create(password), id)
+    validate_password(password, repeat_password).instance_eval do |error|
+      error || database.execute('UPDATE user SET digest = ? WHERE id = ?', BCrypt::Password.create(password), id)
     end
-  end
-
-  # Remove a user
-  #
-  def delete_user(id)
-    raise "No you don't" if id.zero?
-
-    database 'DELETE FROM user WHERE id = ?', id
   end
 end
