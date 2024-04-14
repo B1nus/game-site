@@ -75,13 +75,13 @@ module Model
     return 'You need to type a username' if username.empty?
     return 'Lmao, bro really though he could be admin' if username == 'admin'
     return 'Username taken, choose another username' if username_exists? username
-    return if validate_password(password, repeat_password)
+    return unless validate_password(password, repeat_password)
 
     # No error occured. Register the user
     digest = BCrypt::Password.create password
 
     # Add the user to the database
-    add_user(username, digest)
+    nil if add_user(username, digest)
   end
 
   # Attempts to login
