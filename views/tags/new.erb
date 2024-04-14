@@ -3,7 +3,7 @@
 
 <form action="/admin/tags" method="post"> 
     <input type="text" name="name" placeholder="Tag name">
-    <select name="tag_purpose_id">
+    <select name="purpose_id">
         <% tag_purposes.each do |purpose| %>
             <option value=<%= purpose['id'] %> <%= purpose['id'] == 1 ? "selected" : "" %>>
                 <%= purpose['name'] %>

@@ -62,8 +62,6 @@ class Model
   def add_tag(name, purpose_id)
     raise 'Your tag purpose id is not an integer' unless purpose_id.is_a? Integer
 
-    p purpose_id
-
     execute('INSERT INTO tag (name, purpose_id) VALUES (?, ?)', name, purpose_id)
   end
 
