@@ -57,6 +57,10 @@ helpers do
   end
 end
 
+# Meddelande vid start och stop av servern
+on_start do puts "Server started as http://localhost:4567" end
+on_stop do puts "By Bye!" end
+
 # Validate protected sites, for admin and user
 before '/admin/*' do admin_check end
 before '/user*' do login_check end
