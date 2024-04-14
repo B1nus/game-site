@@ -76,6 +76,7 @@ post '/admin/games/:id/update' do
   # game_id = params_id
   #
   # tags_selection = params[:tags_selection]
+  p params
 
   redirect '/admin/games'
 end
@@ -183,7 +184,7 @@ end
 # @params [String] username, the username
 #
 # @see Model#change_username
-post '/user/username/edit' do
+post '/user/username/update' do
   cooldown_check '/user'
 
   flash[:notice] = database.change_username(user_id, params[:username]) || 'Username successfully changed!'
@@ -197,7 +198,7 @@ end
 # @params [String] repeat_password, same password another time to make sure you remember it
 #
 # @see Model#change_password
-post '/user/password/edit' do
+post '/user/password/update' do
   cooldown_check '/user'
 
   error = database.change_password(
