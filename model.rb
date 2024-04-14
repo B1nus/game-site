@@ -34,7 +34,7 @@ class Model
     # Insert validation of table, attr and val here
     if table == 'tag'
       execute("SELECT tag.name, tag.id, tag_purpose.name as purpose, purpose_id FROM tag LEFT JOIN
-              tag_purpose ON tag_purpose.id = tag.id WHERE tag.#{attr} = ?", val)
+              tag_purpose ON tag_purpose.id = tag.purpose_id WHERE tag.#{attr} = ?", val)
     else
       execute("SELECT * FROM #{table} WHERE #{attr} = ?", val)
     end.first
