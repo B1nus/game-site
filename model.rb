@@ -11,7 +11,7 @@ module Model
     db.execute(instruction, *injections)
   end
 
-  # Lite läskigt att det inte finns någon säkerhet i model.rb, jag litar på att app.rb hanterar admin och user behörigheter.
+  # Läskigt att det inte finns någon säkerhet i model.rb, jag måste lita på att app.rb hanterar behörigheter.
 
   # Maybe move these types of functions to a new utils.rb file?
   def with_id(array, id) id.is_a?(Integer) ? with_attribute(array, 'id', id) : raise('Non integer id') end
@@ -95,7 +95,10 @@ module Model
   def login(username, password)
     # Funderar på att ha felmeddelanden för olika fel. Till exempel ett för om användaren inte finns, ett om lösenordet
     # är fel. Men jag tror det är säkrare att inte ge någon extra information. Det gör hackning den lilla biten svårare.
-    id = user_with_name(username)['id']
+    user = user_with_name(username)
+    return nil unless user
+
+    id = user['id']
     digest = digest(id)
 
     BCrypt::Password.new(digest) != password ? nil : id
