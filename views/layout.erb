@@ -15,7 +15,9 @@
             <a href="/login">login</a>
             <a href="/register">register</a>
             <% if session[:user_id] %>
-              <a href="/logout">logout</a>
+              <form action="/logout" method="post">
+                <input type="submit" value="Logout">
+              </form>
               <% if !admin? %>
                 <a href="/user">profile</a>
               <% end %>
