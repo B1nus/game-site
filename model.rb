@@ -4,121 +4,46 @@ require 'bcrypt'
 
 # Model
 module Model
-  def database
-    db = SQLite3::Database.new('data/db.db')
+  def database(instruction)
+    db = SQLite3::Database.new 'data/db.db'
     db.results_as_hash = true
-    db.execute('PRAGMA foreign_keys=ON')
-    db
+    db.execute 'PRAGMA foreign_keys=ON'
+    db.execute instruction
   end
 
-  def games
-    database.execute('SELECT * FROM game')
-  end
+  # Hmmm, validering kan vara något att tänka på
+  def games() database('SELECT * FROM game') end
+  def game(id) games.map { |game| nil unless game['id'] == id }.compact.first end
+  def game_iframe_sizes(id) game_tags(id).map { |tag| tag['purpose'] == 'iframe_size' ? tag['name'] : nil }.compact end
+  def game_available_tags(id) tags - game_tags(id) end
+  def game_tag_purposes(id) game_tags(game_id).map { |tag| tag['purpose_name'] } end
+  def game_tags(id) database('SELECT tag_id FROM game_tag_rel WHERE game_id = ?', id).map { |e| tag(e['tag_id']) } end
 
-  # Dictionary for a game
-  #
-  # @return [Dictionary] the game attributes for the specified id
-  def game(game_id)
-    database.execute('SELECT * FROM game WHERE id = ?', game_id).first
-  end
+  def tags() database 'SELECT id, name, tag.purpose_id as purpose_id, tag_purpose.name as purpose FROM tag LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id' end
+  def tag(id) tags.map { |tag| nil unless tag['id'] == tag_id }.compact.first end
+  def add_tag(name, purpose_id) database('INSERT INTO tag (name, purpose_id) VALUES (?, ?)', tag_name, tag_purpose_id) end
+  def update_tag(id, name, purpose_id) database('UPDATE tag SET name = ?, purpose_id = ? WHERE id = ?', tag_name, tag_purpose_id, tag_id) end
+  def delete_tag(id) database('DELETE FROM tag WHERE id = ?', tag_id) end
+  def tag_purposes() database('SELECT * FROM tag_purpose') end
+  def add_tag_purpose(purpose) database('INSERT INTO tag_purpose (name) VALUES (?)', purpose) end
 
-  # Fetch all iframe sizes for a game
-  #
-  # @param game_id [Integer]
-  # @return [Array] a list of all game sizes
-  def game_iframe_sizes(game_id)
-    database.execute(
-      'SELECT tag.name as tag_name FROM game_tag_rel INNER JOIN tag ON tag.id = tag_id INNER JOIN tag_purpose ON
-      tag_purpose_id = tag_purpose.id WHERE game_id = ? AND tag_purpose.name = \'iframe_size\'', game_id
-    ).map { |e| e['tag_name'] }
-  end
-
-  # Tags applied to a game
-  def game_tags(game_id)
-    database.execute(
-      'SELECT tag.id as tag_id, tag.name as tag_name, tag.tag_purpose_id, tag_purpose.name as tag_purpose_name FROM
-      game_tag_rel RIGHT JOIN tag ON game_tag_rel.tag_id = tag.id LEFT JOIN tag_purpose ON tag_purpose.id =
-      tag_purpose_id WHERE game_id = ?', game_id
-    )
-  end
-
-  # Tags not applied to a game
-  def game_available_tags(game_id)
-    database.execute(
-      'SELECT tag.id as tag_id, tag.name as tag_name, tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag LEFT
-      JOIN game_tag_rel gtr ON tag.id = gtr.tag_id AND gtr.game_id = ? LEFT JOIN tag_purpose ON tag_purpose.id =
-      tag_purpose_id WHERE gtr.game_id IS NULL;', game_id
-    )
-  end
-
-  # Tag purposes for a game
-  def game_tag_purposes(game_id)
-    database.execute(
-      'SELECT tag_purpose.name FROM game_tag_rel INNER JOIN tag ON game_tag_rel.tag_id = tag.id INNER JOIN tag_purpose
-      ON tag.tag_purpose_id = tag_purpose.id WHERE game_id = ?', game_id
-    ).map { |e| e['name'] }
-  end
-
-  # All tags
-  def tags
-    database.execute(
-      'SELECT tag.id as tag_id, tag.name as tag_name, tag.tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag
-      LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id'
-    )
-  end
-
-  def tag(tag_id)
-    database.execute(
-      'SELECT tag.id as id, tag.name as tag_name, tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag
-      LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id WHERE tag.id = ?',
-      tag_id
-    ).first
-  end
-
-  def database_create_tag(tag_name, tag_purpose_id)
-    database.execute('INSERT INTO tag (name, tag_purpose_id) VALUES (?, ?)', tag_name, tag_purpose_id)
-  end
-
-  def database_edit_tag(tag_id, tag_name, tag_purpose_id)
-    database.execute('UPDATE tag SET name = ?, tag_purpose_id = ? WHERE id = ?', tag_name, tag_purpose_id, tag_id)
-  end
-
-  def delete_tag(tag_id)
-    database.execute('DELETE FROM tag WHERE id = ?', tag_id)
-  end
-
-  # Lista över alla tag syften
-  def tag_purposes
-    database.execute('SELECT * FROM tag_purpose')
-  end
-
-  # Lägg till ett tag syfte
-  def database_create_tag_purpose(tag_purpose_name)
-    database.execute('INSERT INTO tag_purpose (name) VALUES (?)', tag_purpose_name)
-  end
-
-  # Kolla om användaren existerar
-  def database_does_user_exist?(username)
-    !database.execute('SELECT username FROM user where user.username = ?', username).empty?
-  end
+  def username(id) database('SELECT user.username FROM user WHERE id = ?', user_id).first['username'] end
+  def username_exists?(username) !database('SELECT id FROM user WHERE username = ?', username).empty? end
+  def user_id_exists?(id) username_exists?(username(user_id)) end
+  def user(id) users.map { |user| nil unless user['id'] = id }.compact.first end
+  def user_with_name(username) users.map { |user| nil unless user['username'] == username }.compact.first end
+  def users() database('SELECT * FROM user').drop(1) end
 
   # Checks for password problems
   #
-  # @retutn [String] an error message, nil if no errors were encountered
+  # @return [String] an error message, nil if no errors were encountered
   def validate_password(password, repeat_password)
-    if password.empty?
-      'You need to type a password'
-    elsif password.length < 8
-      'Your password needs to be at least 8 characters long'
-    elsif password !~ /[A-Z]/
-      'Your password needs a capital letter'
-    elsif password !~ /[0-9]/
-      'Your password needs a number'
-    elsif password !~ /[#?!@$ %^&*-]/
-      'Your password needs at least one special character: #?!@$%^&*-'
-    elsif password != repeat_password
-      'Your password\'s don\'t match'
-    end
+    return 'You need to type a password' if password.empty?
+    return 'Your password needs to be at least 8 characters long' if password.length < 8
+    return 'Your password needs a number' if password !~ /[0-9]/
+    return 'Your password needs a capital letter' if password !~ /[A-Z]/
+    return 'Your password needs at least one special character: #?!@$%^&*-' if password !~ /[#?!@$ %^&*-]/
+    return 'Your password\'s don\'t match' if password != repeat_password
   end
 
   # Attempts to create a new user
@@ -133,19 +58,16 @@ module Model
       'You need to type a username'
     elsif username == 'admin'
       'Lmao, bro really though he could be admin'
-    elsif database_does_user_exist?(username)
+    elsif username_exists? username
       'Username taken, choose another username'
-    elsif validate_password(password, repeat_password)
-      validate_password(password, repeat_password)
+    elsif error = validate_password(password, repeat_password)
+      error
     else
       # No error occured. Register the user
-      password_digest = BCrypt::Password.create(password)
+      password_digest = BCrypt::Password.create password
 
       # Add the user to the database
-      database.execute('INSERT INTO user (username, digest, permission_level) VALUES (?, ?, ?)', username,
-                       password_digest, 'user')
-
-      nil
+      database 'INSERT INTO user (username, digest, permission_level) VALUES (?, ?, ?)', username, password_digest, 'user'
     end
   end
 
@@ -158,8 +80,7 @@ module Model
   def login(username, password)
     # Funderar på att ha felmeddelanden för olika fel. Till exempel ett för om användaren inte finns, ett om lösenordet
     # är fel. Men jag tror det är säkrare att inte ge någon extra information. Det gör hackning den lilla biten svårare.
-
-    user = database.execute('SELECT digest, id FROM user WHERE username = ?', username).first
+    user = user_with_name(username)
 
     # Username not found
     return nil if user.nil?
@@ -167,7 +88,7 @@ module Model
     password_digest = user['digest']
 
     # Wrong password
-    return nil if BCrypt::Password.new(password_digest) != password
+    return nil if BCrypt::Password.new password_digest != password
 
     user['id'].to_i
   end
@@ -177,10 +98,10 @@ module Model
   # @params [Integer] user_id, The users id
   #
   # @return [String] the users permission level (admin/user/guest), nil if the user wasn't found
-  def user_permission_level(user_id)
+  def user_permission_level(id)
     # Det kan vara ett säkerhetshål att vem som helst kan komma åt vem som helst permission_level.
     # Borde inte gå i och med hur app.rb hanterar det. Men något at tänka på.
-    user = database.execute('SELECT permission_level FROM user WHERE id = ?', user_id).first
+    user = user(id)
 
     # No user found
     return nil if user.nil?
@@ -189,24 +110,16 @@ module Model
     user['permission_level']
   end
 
-  # Fetch a users name
-  #
-  # @param user_id [Integer] the users id
-  # @return [String] the username
-  def database_username(user_id)
-    database.execute('SELECT user.username FROM user WHERE id = ?', user_id).first['username']
-  end
-
   # Change a username
   #
   # @param user_id [Integer] the users id
   # @param username [String] the new username
   #
   # @return [Bool] if it was successfull or not
-  def change_username(user_id, username)
-    return false if !user_id_exists?(user_id) || database_does_user_exist?(username)
+  def change_username(id, username)
+    return false if !user_id_exists?(user_id) || username_exist?(username)
 
-    database.execute('UPDATE user SET username = ? WHERE id = ?', username, user_id)
+    database 'UPDATE user SET username = ? WHERE id = ?', username, id
 
     true
   end
@@ -217,34 +130,19 @@ module Model
   # @param password [String] new password
   #
   # @return [String] error with password, nil if password is fine
-  def change_password(user_id, password, repeat_password)
-    if validate_password(password, repeat_password)
-      validate_password(password, repeat_password)
+  def change_password(id, password, repeat_password)
+    if error = validate_password(password, repeat_password)
+      error
     else
-      database.execute('UPDATE user SET digest = ? WHERE id = ?', BCrypt::Password.create(password), user_id)
-
-      nil
+      database.execute('UPDATE user SET digest = ? WHERE id = ?', BCrypt::Password.create(password), id)
     end
-  end
-
-  # Check if a user_id exists
-  #
-  # @param user_id [Integer]
-  def user_id_exists?(user_id)
-    database.execute('SELECT id FROM user WHERE id = ?', user_id).length >= 1
   end
 
   # Remove a user
   #
-  def delete_user(user_id)
-    raise "No you don't" if user_id.zero?
+  def delete_user(id)
+    raise "No you don't" if id.zero?
 
-    database.execute('DELETE FROM user WHERE id = ?', user_id)
-  end
-
-  # Return all users in an array excluding the admin
-  #
-  def users
-    database.execute('SELECT * FROM user').drop(1)
+    database 'DELETE FROM user WHERE id = ?', id
   end
 end
