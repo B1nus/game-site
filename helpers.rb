@@ -16,6 +16,11 @@ def change_user_id(id)
   session[:user_id] = id
 end
 
+def delete_user(id)
+  @database.delete_user(id)
+  flash[:notice] = 'User successfully deleted'
+end
+
 def logout
   session[:user_id] = nil
 end

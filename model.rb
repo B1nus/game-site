@@ -126,7 +126,7 @@ class Model
     return 'You need to type a username' if username.empty?
     return 'Lmao, bro really though he could be admin' if username == 'admin'
     return 'Username taken, choose another username' if username_exists? username
-    return unless validate_password(password, repeat_password)
+    return unless validate_passwords(password, repeat_password)
 
     # No error occured. Register the user
     digest = BCrypt::Password.create password
@@ -155,8 +155,10 @@ class Model
   #
   # @return [String] error or nil if nothing went wrong
   def change_username(id, username)
+    # Insert id validation here
+
     # return 'You don\'t exist' unless user_exists?(id)
-    return 'Username taken' if user_exists?(username)
+    return 'Username is already taken' if user_exists?(username)
 
     execute('UPDATE user SET name = ? WHERE id = ?', username, id)
 
@@ -173,7 +175,7 @@ class Model
     return 'Incorrect password' unless login(user(id)['name'], password)
     return 'Your new password can\'t be the same as old password' if password == new_password
 
-    error = validate_password(new_password, repeat_new_password)
+    error = validate_passwords(new_password, repeat_new_password)
 
     return error if error
 

@@ -40,7 +40,7 @@ get('/games/:id') { erb(:'games/show', locals: { game: database.select('game', '
 get('/register') { erb :'users/register' }
 get('/login') { erb :'users/login' }
 # user
-get('/user') { erb(:'users/edit', locals: { user: database.select('user', 'id', params_id) }) }
+get('/user') { erb(:'users/edit', locals: { user: database.select('user', 'id', user_id) }) }
 # admin
 get('/admin/games/new') { erb :'games/new' }
 get('/admin/games/:id/edit') { erb(:'games/edit', { game: database.select('game', 'id', params_id) }) }
@@ -64,6 +64,11 @@ end
 # @param tag_name [String]
 # @param tag_purpose_id [Integer]
 post('/admin/tags') do
+  if params[:name].empty?
+    flash[:notice] = 'The new tag name can\'t be empty'
+    redirect '/'
+  end
+
   database.add_tag(params[:name], params[:purpose_id].to_i)
   redirect '/admin/tags'
 end
@@ -76,6 +81,11 @@ end
 #
 # @see Model#database_edit_tag
 post('/admin/tags/:id/update') do
+  if params[:name].empty?
+    flash[:notice] = 'The new tag name can\'t be empty'
+    redirect '/'
+  end
+
   database.update_tag(params_id, params[:name], params[:purpose_id])
   redirect '/admin/tags'
 end
@@ -91,6 +101,11 @@ end
 # Create a new tag purpose
 #
 post('/admin/tag-purposes') do
+  if params[:purpose].empty?
+    flash[:notice] = 'A tag purpose name can\'t be empty'
+    redirect '/'
+  end
+
   database.add_tag_purpose(params[:purpose])
   redirect '/admin/tags'
 end
@@ -150,9 +165,7 @@ end
 post '/user/username/edit' do
   cooldown_check '/user'
 
-  flash[:notice] = database.change_username(user_id, params[:username]).instance_eval do |e|
-    e ? 'Username successfully changed!' : 'Username already taken'
-  end
+  flash[:notice] = database.change_username(user_id, params[:username]) || 'Username successfully changed!'
 
   redirect '/user'
 end
@@ -184,7 +197,6 @@ end
 post '/user/delete' do
   delete_user user_id
   logout
-  flash[:notice] = 'User successfully deleted'
 
   redirect '/'
 end
@@ -193,8 +205,7 @@ end
 #
 # @see Model#delete_user
 post '/admin/users/:id/delete' do
-  database.delete_user(params_id.to_i)
-  flash[:notice] = 'User successfully deleted'
+  delete_user params_id
 
   redirect '/admin/users'
 end

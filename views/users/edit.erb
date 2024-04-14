@@ -2,7 +2,7 @@
 <% raise 'You\'re not alllowed to be here.' if !user? %>
 
 <form action="/user/username/edit" method="post"> <%# purposeful deviation from restful routes %>
-  <input type="text" name="username" value=<%= username(session[:user_id]) %>>
+  <input type="text" name="username" value=<%= user['name'] %>>
   <input type="submit" value="Change username">
 </form>
 
