@@ -60,6 +60,10 @@ class Model
   end
 
   def add_tag(name, purpose_id)
+    raise 'Your tag purpose id is not an integer' unless purpose_id.is_a? Integer
+
+    p purpose_id
+
     execute('INSERT INTO tag (name, purpose_id) VALUES (?, ?)', name, purpose_id)
   end
 
@@ -179,7 +183,7 @@ class Model
   # @return [String] error with password, nil if password is fine
   def change_password(id, password, new_password, repeat_new_password)
     return 'Incorrect password' unless login(user(id)['name'], password)
-    return 'Your new password can\'t be the same as old password' if password == new_password
+    return 'Your new password can\'t be the same as your old password' if password == new_password
 
     error = validate_passwords(new_password, repeat_new_password)
 

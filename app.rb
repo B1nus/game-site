@@ -88,7 +88,7 @@ end
 # @param tag_purpose_id [Integer]
 post('/admin/tags') do
   if params[:name].empty?
-    flash[:notice] = 'The new tag name can\'t be empty'
+    flash[:notice] = 'The tag name can\'t be empty'
     redirect '/games'
   end
 
@@ -125,7 +125,7 @@ end
 #
 post('/admin/tag-purposes') do
   if params[:purpose].empty?
-    flash[:notice] = 'A tag purpose name can\'t be empty'
+    flash[:notice] = 'The tag purpose name can\'t be empty'
     redirect '/games'
   end
 
