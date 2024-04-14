@@ -48,7 +48,13 @@ get('/login') { erb :'users/login' }
 get('/user') { erb(:'users/edit', locals: { user: database.select('user', 'id', user_id) }) }
 # admin
 get('/admin/games/new') { erb :'games/new' }
-get('/admin/games/:id/edit') { erb(:'games/edit', { game: database.select('game', 'id', params_id) }) }
+get('/admin/games/:id/edit') do
+  erb(:'games/edit', locals: {
+        game: database.select('game', 'id', params_id),
+        game_tags: database.game_tags(params_id),
+        tags: database.all_of('tag')
+      })
+end
 get('/admin/tags/new') { erb(:'tags/new', locals: { purposes: database.all_of('tag_purpose') }) }
 get('/admin/tags/:id/edit') do
   erb(:'tags/edit', locals: {

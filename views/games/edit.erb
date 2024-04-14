@@ -1,9 +1,6 @@
 <%# Check for admin priveleges %>
 <% raise 'You\'re not alllowed to be here.' if !admin? %>
 
-<%# Get the current game dictionary from the database %>
-<% game = game params[:id] %>
-
 <form action="/admin/games/<%= game['id'] %>/update" method="post">
   <input type="text" name="name" value="<%= game['name'] %>">
   <label for="time_created">Time created</label>
@@ -18,9 +15,10 @@
   <input type="checkbox" id="warning" name="warning" value="Warn for Foreign">
   <label for="tags[]">Tags</label>
   <select id="tags[]" name="tags[]" multiple=true>
+    <% p tags %>
     <% tags.each do |tag| %>
-      <option value=<%= tag['tag_id'] %> <%= 'selected' if game_tags(game['id']).include?(tag) %>>
-        <%= tag['tag_name'] %>
+      <option value=<%= tag['id'] %> <%= 'selected' if game_tags.include?(tag) %>>
+        <%= tag['name'] %>
       </option>
     <% end %>
   </select>
