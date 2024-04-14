@@ -64,7 +64,7 @@ class Model
   end
 
   def add_user(username, digest)
-    execute('INSERT INTO user (username, digest, domain) VALUES (?, ?, ?)', username, digest, 'user')
+    execute('INSERT INTO user (name, digest, domain) VALUES (?, ?, ?)', username, digest, 'user')
   end
 
   def add_tag_purpose(purpose)
@@ -125,8 +125,8 @@ class Model
   def register_user(username, password, repeat_password)
     return 'You need to type a username' if username.empty?
     return 'Lmao, bro really though he could be admin' if username == 'admin'
-    return 'Username taken, choose another username' if username_exists? username
-    return unless validate_passwords(password, repeat_password)
+    return 'Username taken, choose another username' if user_exists? username
+    return if validate_passwords(password, repeat_password)
 
     # No error occured. Register the user
     digest = BCrypt::Password.create password
