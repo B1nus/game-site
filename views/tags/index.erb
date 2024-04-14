@@ -1,10 +1,8 @@
 <%# Check for admin priveleges %>
 <% raise 'You\'re not alllowed to be here.' if !admin? %>
 
-<% p tags %>
 <% tags.each do |tag| %>
-  <% p tag %>
-  <li style="display: flex; flex-direction: row; gap: 10px;">
+  <li>
     <%= erb(:'tags/show', locals:{tag:tag}) %>
     <a href="/admin/tags/<%= tag['id'] %>/edit">edit</a>
     <form action="/admin/tags/<%= tag['id'] %>/delete" method="post">

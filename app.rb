@@ -45,9 +45,19 @@ get('/user') { erb(:'users/edit', locals: { user: database.select('user', 'id', 
 get('/admin/games/new') { erb :'games/new' }
 get('/admin/games/:id/edit') { erb(:'games/edit', { game: database.select('game', 'id', params_id) }) }
 get('/admin/tags/new') { erb(:'tags/new', locals: { purposes: database.all_of('tag_purpose') }) }
-get('/admin/tags/:id/edit') { erb :'tags/edit', locals: { tag: database.select('tag', 'id', params_id) } }
+get('/admin/tags/:id/edit') do
+  erb(:'tags/edit', locals: {
+        tag: database.select('tag', 'id', params_id),
+        tag_purposes: database.all_of('tag_purpose')
+      })
+end
 get('/admin/tags/:id') { erb(:'tags/show', locals: { tag: database.select('tag', 'id', params_id) }) }
-get('/admin/tags') { erb(:'tags/index', locals: { tags: database.all_of('tag') }) }
+get('/admin/tags') do
+  erb(:'tags/index', locals: {
+        tags: database.all_of('tag'),
+        tag_purposes: database.all_of('tag_purpose')
+      })
+end
 get('/admin/users') { erb(:'users/index', locals: { users: database.all_of('users') }) }
 
 # Updates an existing game and redirects to '/admin/games'
@@ -70,7 +80,7 @@ post('/admin/tags') do
   end
 
   database.add_tag(params[:name], params[:purpose_id].to_i)
-  redirect '/admin/tags'
+  redirect '/'
 end
 
 # Update a tag
@@ -87,15 +97,15 @@ post('/admin/tags/:id/update') do
   end
 
   database.update_tag(params_id, params[:name], params[:purpose_id])
-  redirect '/admin/tags'
+  redirect '/'
 end
 
 # Remove a tag
 #
 # @param [Integer] id, The id for the tag
 post('/admin/tags/:id/delete') do
-  database.delete_tag(params_id.to_i)
-  redirect '/admin/tags'
+  database.delete_tag(params_id)
+  redirect '/'
 end
 
 # Create a new tag purpose
@@ -107,7 +117,7 @@ post('/admin/tag-purposes') do
   end
 
   database.add_tag_purpose(params[:purpose])
-  redirect '/admin/tags'
+  redirect '/'
 end
 
 # Attempts to register a user

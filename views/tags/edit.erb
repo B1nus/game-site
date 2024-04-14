@@ -1,14 +1,11 @@
 <%# Check for admin priveleges %>
 <% raise 'You\'re not alllowed to be here.' if !admin? %>
 
-<% id = params[:id].to_i %>
-<% tag = tag(id) %>
-
-<form action="/admin/tags/<%= id %>/update" method="post"> 
-    <input type="text" name="name" value=<%= tag['name'] %>>
+<form action="/admin/tags/<%= tag['id'] %>/update" method="post"> 
+    <input type="text" name="name" value="<%= tag['name'] %>">
     <select name="purpose_id">
         <% tag_purposes.each do |purpose| %>
-            <option value=<%= purpose['id'] %> <%= 'selected' if purpose['id'] == tag['purpose_id'] %>>
+            <option value="<%= purpose['id'] %>" <%= 'selected' if purpose['id'] == tag['purpose_id'] %>>
                 <%= purpose['name'] %>
             </option>
         <% end %>
