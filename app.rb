@@ -6,10 +6,10 @@ require 'sinatra/reloader'
 require 'sinatra/flash'
 
 # Tillåt sessions. Jag använder det endast för inloggning
-enable(:sessions)
+enable :sessions
 
 # Yardoc
-include(Model)
+include Model
 
 # Cooldown hash
 $requests = {}
@@ -17,22 +17,22 @@ COOLDOWN_COUNT_LIMIT = 5 # Max number of requests
 COOLDOWN_COUND_RESET_TIME = 5 # Time when the count is reset
 
 helpers do
-  def admin?
-    if !session[:user_id].nil? && session[:user_id].zero? && user_permission_level(session[:user_id]) == 'admin'
-      true
-    else
-      flash[:notice] = 'No admin for you'
-      false
-    end
+  def admin?; !session[:user_id].nil? && session[:user_id].zero? && user_permission_level(session[:user_id]) == 'admin' end
+
+  def logged_in?; !session[:user_id].nil? && user_id_exists?(session[:user_id]) && session[:user_id] != 0 end
+
+  def admin_check
+    return if admin?
+
+    flash[:notice] = 'No admin for you'
+    redirect '/'
   end
 
-  def logged_in?
-    if !session[:user_id].nil? && user_id_exists?(session[:user_id]) && session[:user_id] != 0
-      true
-    else
-      flash[:notice] = 'You need to login'
-      false
-    end
+  def login_check
+    return if logged_in?
+
+    flash[:notice] = 'You need to login'
+    redirect '/'
   end
 
   def cooldown?
@@ -49,64 +49,38 @@ helpers do
     $requests[site][ip][:count] >= COOLDOWN_COUNT_LIMIT
   end
 
-  def apply_cooldown(redirect_url)
-    flash[:notice] = 'Calm down there, your making to many requests'
+  def cooldown_check redirect_url
+    return unless cooldown?
 
-    redirect(redirect_url)
+    flash[:notice] = 'Calm down there, your making to many requests'
+    redirect redirect_url
   end
 end
 
-# Validate admin sites
-#
-before('/admin/*') do
-  redirect('/') unless admin?
-end
+# Validate protected sites, for admin and user
+before '/admin/*' do admin_check end
+before '/user*' do login_check end
 
-# Validate user sites
-#
-before('/user*') do
-  redirect '/' unless logged_in?
-end
-
-# Display Landing Page
-#
-get('/') do
-  admin? ? redirect('/admin/games') : redirect('/games')
-end
-
-# Displays games
-#
-get('/games') do
-  erb :'games/index'
-end
-
-# Spela ett spel
-get('/games/:game_id') do
-  @game = game params[:game_id]
-
-  erb :'games/show'
-end
-
-# Display all games with edit and delete buttons
-#
-# @see Model#database_games
-get('/admin/games') do
-  erb :'games/index-admin'
-end
-
-# Displays a form for adding a game
-#
-get('/admin/games/new') do
-  erb :'games/new'
-end
-
-# Displays a form for editing a game
-#
-# @param [Integer] id, The id of the game
+# Guest sites
+get '/' do redirect '/games' end
+get '/games' do admin? ? redirect('/admin/games') : erb(:'games/index') end
+get 'games/:id' do erb :'games/show' end
+get '/register' do erb :'users/register' end
+get '/login' do erb :'users/login' end
+# User site
+get '/user' do erb :'users/edit' end
+# Admin sites
+get '/admin/games' do erb :'games/index-admin' end
+get '/admin/games/new' do erb :'games/new' end
 get '/admin/games/:id/edit' do erb :'games/edit' end
+get '/admin/tags/new' do erb :'tags/new' end
+get '/admin/tags/:id/edit' do erb :'tags/edit' end
+get '/admin/tags/:id' do erb :'tags/show' end
+get '/admin/tags' do erb :'tags/index' end
+get '/admin/users' do erb :'users/index' end
 
 # Updates an existing game and redirects to '/admin/games'
-post('/admin/games/:id/update') do
+post '/admin/games/:id/update' do
   # game_id = params[:id]
   #
   # tags_selection = params[:tags_selection]
@@ -114,30 +88,14 @@ post('/admin/games/:id/update') do
   redirect '/admin/games'
 end
 
-# Displays a form for creating tags
+# Add a new tag
 #
-get('/admin/tags/new') do
-  erb :'tags/new'
-end
-
-post('/admin/tags') do
-  tag_name = params[:tag_name]
-  tag_purpose_id = params[:tag_purpose_id]
-
-  database_create_tag(tag_name, tag_purpose_id)
+# @param tag_name [String]
+# @param tag_purpose_id [Integer]
+post '/admin/tags' do
+  add_tag params[:tag_name], params[:tag_purpose_id]
 
   redirect '/admin/tags'
-end
-
-# Displays a form for editing a tag
-#
-# @param [Integer] tag_id, the id for the tag
-#
-# @see Model#database_tag_with_id
-get('/admin/tags/:id/edit') do
-  @tag = tag params[:id]
-
-  erb :'tags/edit'
 end
 
 # Update a tag
@@ -147,55 +105,27 @@ end
 # @param [Integer] tag_purpose_id, the new tag purpose id
 #
 # @see Model#database_edit_tag
-post('/admin/tags/:id/update') do
-  tag_id = params[:id]
-  tag_name = params[:tag_name]
-  tag_purpose_id = params[:tag_purpose_id]
-
-  database_edit_tag(tag_id, tag_name, tag_purpose_id)
+post '/admin/tags/:id/update' do
+  update_tag params[:tag_id], params[:tag_name], params[:tag_purpose_id]
 
   redirect '/admin/tags'
-end
-
-# Display all tags
-#
-get('/admin/tags') do
-  erb :'tags/index'
-end
-
-# Display a tag
-#
-get('/admin/tags/:id') do
-  @tag = database_tag_with_id(params[:id])
-
-  erb :'tags/show'
 end
 
 # Remove a tag
 #
 # @param [Integer] id, The id for the tag
-post('/admin/tags/:id/delete') do
-  tag_id = params[:id]
-
-  delete_tag(tag_id)
+post '/admin/tags/:id/delete' do
+  remove_tag params[:id]
 
   redirect '/admin/tags'
 end
 
 # Create a new tag purpose
 #
-post('/admin/tag-purposes') do
-  tag_purpose_name = params[:tag_purpose_name]
-
-  database_create_tag_purpose(tag_purpose_name)
+post '/admin/tag-purposes' do
+  add_tag_purpose params[:tag_purpose_name]
 
   redirect '/admin/tags'
-end
-
-# Displays a register form. This deviates from RESTFUL ROUTES by design
-#
-get('/register') do
-  erb :'users/register'
 end
 
 # Attempts to register a user
@@ -205,16 +135,10 @@ end
 # @param [String] repeat-password, The repeated password
 #
 # @see Model#register_user
-post('/register') do
-  apply_cooldown('/register') if cooldown?
+post '/register' do
+  apply_cooldown '/register' if cooldown?
 
-  username = params[:username]
-  password = params[:password]
-  repeat_password = params[:password_validation]
-
-  error = register_user(username, password, repeat_password)
-
-  if error
+  if error = register_user(params[:username], params[:password], params[:repeat_password])
     flash[:notice] = error
     redirect '/register'
   else
@@ -223,27 +147,16 @@ post('/register') do
   end
 end
 
-# Displays a login form
-#
-get('/login') do
-  erb :'users/login'
-end
-
 # Attempts to login
 #
 # @params [String] username, The username
 # @params [String] password, The password
 #
 # @see Model#login
-post('/login') do
-  apply_cooldown '/login' if cooldown?
+post '/login' do
+  cooldown_check '/login'
 
-  username = params[:username]
-  password = params[:password]
-
-  user_id = login(username, password)
-
-  if user_id
+  if user_id = login(params[:username], params[:password])
     # Successful login!
     session[:user_id] = user_id
     redirect '/'
@@ -256,35 +169,24 @@ end
 
 # Logout a user and redirect to homepage
 #
-get('/logout') do
+post '/logout' do
   session[:user_id] = nil
 
   redirect '/'
 end
-
-# Displays a form for editing user info
-#
-get('/user') do
-  @user_id = session[:user_id]
-  @username = database_username(@user_id)
-
-  erb :'users/edit'
-end
-
-# Observera att detta är en medveten avvikelse från restful routes
 
 # Attempt to change a users username
 #
 # @params [String] username, the username
 #
 # @see Model#change_username
-post('/user/editusername') do
-  apply_cooldown('/user') if cooldown?
+post '/user/editusername' do
+  apply_cooldown '/user' if cooldown?
 
   user_id = session[:user_id]
   username = params[:username]
 
-  flash[:notice] = if change_username(user_id, username)
+  flash[:notice] = if change_username user_id, username
                      'Username successfully changed!'
                    else
                      'Username already taken'
@@ -293,15 +195,13 @@ post('/user/editusername') do
   redirect '/user'
 end
 
-# Observera att detta är en medveten avvikelse från restful routes
-
 # Attempt to change your password
 #
 # @params [String] password, your new password
 # @params [String] repeat_password, same password another time to make sure you remember it
 #
 # @see Model#change_password
-post('/user/editpassword') do
+post '/user/editpassword' do
   apply_cooldown '/user' if cooldown?
 
   user_id = session[:user_id]
@@ -309,7 +209,7 @@ post('/user/editpassword') do
   password = params[:password]
   repeat_password = params[:repeat_password]
 
-  error = change_password(user_id, password, repeat_password)
+  error = change_password user_id, password, repeat_password
 
   flash[:notice] = error || 'Password successfully changed!'
 
@@ -319,35 +219,24 @@ end
 # Delete the current user
 #
 # @see Model#delete_user
-post('/user/delete') do
-  delete_user(session[:user_id])
-
+post '/user/delete' do
+  delete_user session[:user_id]
   session[:user_id] = nil
   flash[:notice] = 'User successfully deleted'
 
   redirect '/'
 end
 
-# Display all users
-#
-# @see Model#users
-get('/admin/users') do
-  @users = users
-
-  erb :'users/index'
-end
-
 # Delete a user
 #
 # @see Model#delete_user
-post('/admin/users/:user_id/delete') do
-  user_id = params[:user_id].to_i
+post '/admin/users/:id/delete' do
+  user_id = params[:id].to_i
 
   # Oh no, the admin is suicidal.
   raise "But sir, that's suicide" if user_id.zero?
 
   delete_user user_id
-
   flash[:notice] = 'User successfully deleted'
 
   redirect '/admin/users'
