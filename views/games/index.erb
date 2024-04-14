@@ -1,5 +1,5 @@
 <% games.each do |game| %>
-  <a href="/games/<%= game['id'] %>"><%= game %></a>
+  <a href="/games/<%= game['id'] %>"><%= game['name'] %></a>
   <% if admin? %>
     <a href=<%= "/admin/games/#{game['id']}/edit" %>>edit</a>
     <form action="/admin/games/<%= game['id'] %>/delete" method="post">

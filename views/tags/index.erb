@@ -4,8 +4,7 @@
 ul>
   <% tags.each do |tag| %>
     <li style="display: flex; flex-direction: row; gap: 10px;">
-      <% @tag = tag %>
-      <%= erb(:'tags/show') %>
+      <%= erb(:'tags/show', locals:{tag:tag}) %>
       <a href=<%= "/admin/tags/#{tag['tag_id']}/edit" %>>edit</a>
       <form action=<%= "/admin/tags/#{tag['tag_id']}/delete" %> method="post">
         <button type="submit">delete</button>

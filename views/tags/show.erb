@@ -1,9 +1,9 @@
 <div class="game-tags">
   <%# Let regex för stil poäng. wink wink %>
-  <% if tag['tag_purpose_name'] == 'iframe_size' %>
-    <b><%= tag['tag_name'].scan(/\d+/).join('x') %></b>
+  <% if tag['purpose'] == 'iframe_size' %>
+    <b><%= tag['name'].scan(/\d+/).join('x') %></b>
   <% else %>
-    <b><%= tag['tag_name'] %></b>
+    <b><%= tag['name'] %></b>
   <% end %>
-  <i><%= tag['tag_purpose_name'] %></i>
+  <i><%= tag['purpose'] %></i>
 </div>

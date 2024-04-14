@@ -1,4 +1,5 @@
-<% game = game params[:id].to_i %>
+<% id = params[:id].to_i %>
+<% game = game id %>
 
 <% if game['warning'] == 1 %>
   <div id="warning" style="width: 100vw; height: 100vh;">
@@ -15,13 +16,13 @@
 <% end %>
 
 <% if game["foreign_url"] %>
-  <button onclick="window.open('<%= @game["foreign_url"] %>','_blank');" title="Go to the original website" class="game-icon-buttons">
+  <button onclick="window.open('<%= game["foreign_url"] %>','_blank');" title="Go to the original website" class="game-icon-buttons">
     <img src="/img/link.png" alt="Link to the original website" width="100%">
   </button>
 <% end %>
 
 <% if game["source_code_url"] %>
-  <button onclick="window.open('<%= @game["source_code_url"] %>','_blank');" title="Look at the source code" class="game-icon-buttons">
+  <button onclick="window.open('<%= game["source_code_url"] %>','_blank');" title="Look at the source code" class="game-icon-buttons">
     <img src="/img/coding.png" alt="Link to the source code" width="100%">
   </button>
 <% end %>
