@@ -95,7 +95,10 @@ class Model
   #
   # @return [String] an error message, nil if no errors were encountered
   def validate_passwords(password, repeat_password)
-    return if validate_password(password)
+    if error = validate_password(password)
+      return error
+    end
+
     return 'You need to repeat your password' if repeat_password.empty?
 
     'Your password\'s don\'t match' if password != repeat_password
@@ -126,7 +129,10 @@ class Model
     return 'You need to type a username' if username.empty?
     return 'Lmao, bro really though he could be admin' if username == 'admin'
     return 'Username taken, choose another username' if user_exists? username
-    return if validate_passwords(password, repeat_password)
+
+    if error = validate_passwords(password, repeat_password)
+      return error
+    end
 
     # No error occured. Register the user
     digest = BCrypt::Password.create password
