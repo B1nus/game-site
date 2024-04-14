@@ -1,32 +1,32 @@
-<%# Spela ett spel. Tillgänglig för alla (Play a game. Available to all) %>
+<% game = game params[:id].to_i %>
 
-<% if @game['warning'] == 1 %>
+<% if game['warning'] == 1 %>
   <div id="warning" style="width: 100vw; height: 100vh;">
-    <p>WARNING! I did not make this game. Play the original game <a href=<%= @game['foreign_url'] %>>here</a>.</p>
+    <p>WARNING! I did not make this game. Play the original game <a href=<%= game['foreign_url'] %>>here</a>.</p>
 
     <button onclick="document.querySelector('#warning').remove()" title="Ignore warning and play here anyway">Play here anyway</button>
   </div>
 <% end %>
 
-<iframe id="iframe" src="<%= @game['embedded_url']%>" style="<%= game_iframe_sizes(@game['id']).first %>" frameborder="0" allow="gamepad *; fullscreen;"></iframe>
+<iframe id="iframe" src="<%= game['embedded_url']%>" style="<%= game_iframe_sizes(game['id']).first %>" frameborder="0" allow="gamepad *; fullscreen;"></iframe>
 
-<% if @game['embedded_url'].nil? %>
+<% if game['embedded_url'].nil? %>
   <p>There is no game here</p>
 <% end %>
 
-<% if @game["foreign_url"] %>
+<% if game["foreign_url"] %>
   <button onclick="window.open('<%= @game["foreign_url"] %>','_blank');" title="Go to the original website" class="game-icon-buttons">
     <img src="/img/link.png" alt="Link to the original website" width="100%">
   </button>
 <% end %>
 
-<% if @game["source_code_url"] %>
+<% if game["source_code_url"] %>
   <button onclick="window.open('<%= @game["source_code_url"] %>','_blank');" title="Look at the source code" class="game-icon-buttons">
     <img src="/img/coding.png" alt="Link to the source code" width="100%">
   </button>
 <% end %>
 
-<% if @game['fullscreen'] == 1 %>
+<% if game['fullscreen'] == 1 %>
   <button onclick="document.querySelector('iframe').requestFullscreen();" title="Look at the source code" class="game-icon-buttons">
     <img src="/img/fullscreen.png" alt="Put the game in fullscreen" width="100%">
   </button>
