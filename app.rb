@@ -21,26 +21,34 @@ enable :sessions
 # Database
 database = Model.new
 
+# Print a link with the website address upon startup
+#
 on_start do
   puts 'Server started as http://localhost:4567'
 end
 
-on_stop do
-  puts 'By Bye!'
-end
-
-# Needed to expose the database to my './helper.rb' file
+# Exposes the database to other files, such as helpers.rb, or routes/*.rb
+#
 before('*') do
   @database = database
 end
 
-# Protect admin and user sites
+# Display a message and redirect if user doesn't have admin privileges
+#
 before('/admin/*') do
-  admin_check
+  unless admin?
+    flash[:notice] = 'You do not have admin privileges'
+    redirect '/'
+  end
 end
 
+# Displays a message and redirects if user is not logged into it's account
+#
 before('/user*') do
-  user_check
+  unless user?
+    flash[:notice] = 'You need to login to do that'
+    redirect '/'
+  end
 end
 
 # Användare crud, Kolla rätt user_id först

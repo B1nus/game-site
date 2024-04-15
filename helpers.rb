@@ -32,20 +32,6 @@ def user?
   logged_in? && user_id != 0 && @database.user(user_id)['domain']  == 'user'
 end
 
-def admin_check
-  return if admin?
-
-  flash[:notice] = 'No admin for you'
-  redirect '/'
-end
-
-def user_check
-  return if logged_in?
-
-  flash[:notice] = 'You need to login'
-  redirect '/'
-end
-
 # Cooldown hash
 $requests = {}
 COOLDOWN_COUNT_LIMIT = 5 # Max number of requests
