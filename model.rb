@@ -60,24 +60,46 @@ class Model
   end
 
   def add_tag(name, purpose_id)
-    raise 'Your tag purpose id is not an integer' unless purpose_id.is_a? Integer
+    return 'Tag purpose_id must be an integer' unless purpose_id.is_a? Integer
+    return 'Tag purpose does not exist!!!' unless select('tag_purpose', 'id', purpose_id)
+    return 'Tag name can\'t be empty' if name.empty?
 
-    execute('INSERT INTO tag (name, purpose_id) VALUES (?, ?)', name, purpose_id)
+    nil if execute('INSERT INTO tag (name, purpose_id) VALUES (?, ?)', name, purpose_id)
   end
 
-  def add_user(username, digest)
-    execute('INSERT INTO user (name, digest, domain) VALUES (?, ?, ?)', username, digest, 'user')
+  def add_user(username, password)
+    return 'Username must be a string' unless username.is_a? String
+    return 'Password must be a string' unless password.is_a? String
+    return 'Username can\'t be empty' if username.empty?
+    return 'Password can\'t be empty' if password.empty?
+    return 'Username is already taken' if user_exists? username
+
+    # No error occured. Register the user
+    digest = BCrypt::Password.create(password)
+
+    nil if execute('INSERT INTO user (name, digest, domain) VALUES (?, ?, ?)', username, digest, 'user')
   end
 
   def add_tag_purpose(purpose)
-    execute('INSERT INTO tag_purpose (name) VALUES (?)', purpose)
+    return 'Tag purpose name must be a string' if purpose.is_a? String
+    return 'Tag purpose name can\'t be empty' if purpose.empty?
+
+    nil if execute('INSERT INTO tag_purpose (name) VALUES (?)', purpose)
   end
 
   def delete_user(id)
+    return 'Non integer user id is not allowed' unless id.is_a? Integer
+    return 'Can\'t delete a non existent user' unless user_exists?(id)
+
     id.zero? ? raise('No you don\'t') : execute('DELETE FROM user WHERE id = ?', id)
+
+    nil
   end
 
   def delete_tag(id)
+    return 'Non integer tag id is not allowed' unless id.is_a? Integer
+    return 'Can\'t delete a non existent tag' unless select('tag', 'id', id)
+
     execute('DELETE FROM tag WHERE id = ?', id)
   end
 
@@ -87,7 +109,14 @@ class Model
   end
 
   def update_tag(id, name, purpose_id)
-    execute('UPDATE tag SET name = ?, purpose_id = ? WHERE id = ?', name, purpose_id, id)
+    return 'Non integer tag id is not allowed' unless id.is_a? Integer
+    return 'Can\'t update a non existent tag' unless select('tag', 'id', id)
+    return 'Tag name must be a string' unless name.is_a? String
+    return 'Can\'t give a tag a empty name' if name.empty?
+    return 'Purpose id must be a integer' unless purpose_id.is_a? Integer
+    return 'Can\'t add a non existent tag purpose' unless select('tag_purpose', 'id', purpose_id)
+
+    nil if execute('UPDATE tag SET name = ?, purpose_id = ? WHERE id = ?', name, purpose_id, id)
   end
 
   # Checks for password problems with a repeated password
@@ -102,8 +131,9 @@ class Model
     end
 
     return 'You need to repeat your password' if repeat_password.empty?
+    return 'Your password\'s don\'t match' if password != repeat_password
 
-    'Your password\'s don\'t match' if password != repeat_password
+    nil
   end
 
   # Checks for password problems for a single password
@@ -116,8 +146,9 @@ class Model
     return 'Your password needs to be at least 8 characters long' if password.length < 8
     return 'Your password needs a number' if password !~ /[0-9]/
     return 'Your password needs a capital letter' if password !~ /[A-Z]/
+    return 'Your password needs at least one special character: #?!@$%^&*-' if password !~ /[#?!@$ %^&*-]/
 
-    'Your password needs at least one special character: #?!@$%^&*-' if password !~ /[#?!@$ %^&*-]/
+    nil
   end
 
   # Attempts to create a new user
@@ -127,20 +158,8 @@ class Model
   # @param [String] repeat_password The repeated password
   #
   # @return [String] the error message, nil if no error occured
-  def register_user(username, password, repeat_password)
-    return 'You need to type a username' if username.empty?
-    return 'Lmao, bro really though he could be admin' if username == 'admin'
-    return 'Username taken, choose another username' if user_exists? username
-
-    if error = validate_passwords(password, repeat_password)
-      return error
-    end
-
-    # No error occured. Register the user
-    digest = BCrypt::Password.create password
-
-    # Add the user to the database
-    nil if add_user(username, digest)
+  def register(username, password, repeat_password)
+    add_user(username, password) || validate_passwords(password, repeat_password)
   end
 
   # Attempts to login

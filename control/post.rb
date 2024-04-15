@@ -18,12 +18,10 @@ end
 # @param tag_name [String]
 # @param tag_purpose_id [Integer]
 post('/admin/tags') do
-  if params[:name].empty?
-    flash[:notice] = 'The tag name can\'t be empty'
-    redirect '/games'
+  if error = @database.add_tag(params[:name], params[:purpose_id].to_i)
+    flash[:notice] = error
   end
 
-  database.add_tag(params[:name], params[:purpose_id].to_i)
   redirect '/games'
 end
 
@@ -35,12 +33,10 @@ end
 #
 # @see Model#database_edit_tag
 post('/admin/tags/:id/update') do
-  if params[:name].empty?
-    flash[:notice] = 'The new tag name can\'t be empty'
-    redirect '/games'
+  if error = @database.update_tag(params_id, params[:name], params[:purpose_id])
+    flash[:notice] = error
   end
 
-  database.update_tag(params_id, params[:name], params[:purpose_id])
   redirect '/games'
 end
 
@@ -48,19 +44,17 @@ end
 #
 # @param [Integer] id, The id for the tag
 post('/admin/tags/:id/delete') do
-  database.delete_tag(params_id)
+  @database.delete_tag(params_id)
   redirect '/games'
 end
 
 # Create a new tag purpose
 #
 post('/admin/tag-purposes') do
-  if params[:purpose].empty?
-    flash[:notice] = 'The tag purpose name can\'t be empty'
-    redirect '/games'
+  if error = @database.add_tag_purpose(params[:purpose])
+    flash[:notice] = error
   end
 
-  database.add_tag_purpose(params[:purpose])
   redirect '/games'
 end
 
@@ -74,7 +68,7 @@ end
 post '/register' do
   cooldown_check '/register'
 
-  if error = database.register_user(params[:username], params[:password], params[:repeat_password])
+  if error = @database.register(params[:username], params[:password], params[:repeat_password])
     flash[:notice] = error
     redirect '/register'
   else
