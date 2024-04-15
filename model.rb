@@ -10,6 +10,8 @@ require 'bcrypt'
 # Funderar på noggrann validering på login, kan vara bättre utan det så man ger hackare så lite information som möjligt
 
 # Model class, this is where interaction with the database takes place
+#
+# Methods default to returning nil upon no errors, the exceptions are commented appropriately
 class Model
   def initialize
     @database = SQLite3::Database.new('data/db.db')
@@ -21,8 +23,31 @@ class Model
     @database.execute(instructions, *injections)
   end
 
+  def table_check(table)
+    raise 'Table name must be a string' unless table.is_a? String
+    raise 'Table name can\'t be empty' if table.empty?
+    raise "Table #{table} does not exist" if execute(
+      "SELECT name FROM sqlite_master WHERE type=\'table\' AND name=?", table
+    ).empty?
+  end
+
+  def column_exists?(table, column)
+    table_check table
+    !execute("SELECT * FROM pragma_table_info('#{table}') WHERE name = ?", column).empty?
+  end
+
+  def validate_tag(name, purpose_id)
+    return 'Tag name must be a string' unless name.is_a? String
+    return 'Can\'t give a tag a empty name' if name.empty?
+    return 'Purpose id must be a integer' unless purpose_id.is_a? Integer
+    return 'Can\'t add a non existent tag purpose' unless select('tag_purpose', 'id', purpose_id)
+
+    nil
+  end
+
   def all_of(table)
-    # Insert validation of table here. Reuse for Model#select as well, DRY
+    table_check table
+
     if table == 'tag'
       execute('SELECT tag.id as id FROM tag').map { |tag| select('tag', 'id', tag['id']) }
     else
@@ -30,13 +55,14 @@ class Model
     end
   end
 
-  def select(table, attr, val)
-    # Insert validation of table, attr and val here
+  def select(table, attribute, value)
+    raise "#{attribute} is not a column of the #{table} table" unless column_exists?(table, attribute)
+
     if table == 'tag'
       execute("SELECT tag.name, tag.id, tag_purpose.name as purpose, purpose_id FROM tag LEFT JOIN
-              tag_purpose ON tag_purpose.id = tag.purpose_id WHERE tag.#{attr} = ?", val)
+              tag_purpose ON tag_purpose.id = tag.purpose_id WHERE tag.#{attribute} = ?", value)
     else
-      execute("SELECT * FROM #{table} WHERE #{attr} = ?", val)
+      execute("SELECT * FROM #{table} WHERE #{attribute} = ?", value)
     end.first
   end
 
@@ -56,13 +82,14 @@ class Model
   end
 
   def game_tags(id)
+    return nil unless id.is_a? Integer
+    return nil if select('game', 'id', id).nil?
+
     execute('SELECT tag as id FROM game_tag_rel WHERE game = ?', id).map { |tag| select('tag', 'id', tag['id']) }
   end
 
   def add_tag(name, purpose_id)
-    return 'Tag purpose_id must be an integer' unless purpose_id.is_a? Integer
-    return 'Tag purpose does not exist!!!' unless select('tag_purpose', 'id', purpose_id)
-    return 'Tag name can\'t be empty' if name.empty?
+    return validate_tag(name, purpose_id) if validate_tag(name, purpose_id)
 
     nil if execute('INSERT INTO tag (name, purpose_id) VALUES (?, ?)', name, purpose_id)
   end
@@ -81,7 +108,7 @@ class Model
   end
 
   def add_tag_purpose(purpose)
-    return 'Tag purpose name must be a string' if purpose.is_a? String
+    return 'Tag purpose name must be a string' unless purpose.is_a? String
     return 'Tag purpose name can\'t be empty' if purpose.empty?
 
     nil if execute('INSERT INTO tag_purpose (name) VALUES (?)', purpose)
@@ -100,10 +127,9 @@ class Model
     return 'Non integer tag id is not allowed' unless id.is_a? Integer
     return 'Can\'t delete a non existent tag' unless select('tag', 'id', id)
 
-    execute('DELETE FROM tag WHERE id = ?', id)
+    nil if execute('DELETE FROM tag WHERE id = ?', id)
   end
 
-  # Hmmm, validering kan vara något att tänka på
   def game_iframe_sizes(id)
     game_tags(id).map { |tag| tag['purpose'] == 'iframe_size' ? tag['name'] : nil }.compact
   end
@@ -111,10 +137,7 @@ class Model
   def update_tag(id, name, purpose_id)
     return 'Non integer tag id is not allowed' unless id.is_a? Integer
     return 'Can\'t update a non existent tag' unless select('tag', 'id', id)
-    return 'Tag name must be a string' unless name.is_a? String
-    return 'Can\'t give a tag a empty name' if name.empty?
-    return 'Purpose id must be a integer' unless purpose_id.is_a? Integer
-    return 'Can\'t add a non existent tag purpose' unless select('tag_purpose', 'id', purpose_id)
+    return validate_tag(name, purpose_id) if validate_tag(name, purpose_id)
 
     nil if execute('UPDATE tag SET name = ?, purpose_id = ? WHERE id = ?', name, purpose_id, id)
   end
@@ -126,10 +149,7 @@ class Model
   #
   # @return [String] an error message, nil if no errors were encountered
   def validate_passwords(password, repeat_password)
-    if error = validate_password(password)
-      return error
-    end
-
+    return validate_password(password) if validate_password(password)
     return 'You need to repeat your password' if repeat_password.empty?
     return 'Your password\'s don\'t match' if password != repeat_password
 
@@ -159,7 +179,11 @@ class Model
   #
   # @return [String] the error message, nil if no error occured
   def register(username, password, repeat_password)
-    add_user(username, password) || validate_passwords(password, repeat_password)
+    return 'You need to type a username' if username.empty?
+    return 'Username is already taken' if user username
+    return validate_passwords(password, repeat_password) if validate_passwords(password, repeat_password)
+
+    add_user(username, password)
   end
 
   # Attempts to login
@@ -167,12 +191,13 @@ class Model
   # @params [String] username The username
   # @params [String] password The password
   #
-  # @return [Integer] the users id, nil if the login was unsuccessful
+  # @return [Integer] user id if successful, nil if not
   def login(username, password)
-    # No user found, no other checks should be necessary since NOT NULL is enforced by the database
-    return unless user = user(username)
+    user = user username
 
-    BCrypt::Password.new(user['digest']) != password ? nil : user['id']
+    return nil if user.nil? || BCrypt::Password.new(user['digest']) != password
+
+    user['id']
   end
 
   # Change a username
