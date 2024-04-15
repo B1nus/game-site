@@ -222,16 +222,14 @@ class Model
   # @param password [String] new password
   #
   # @return [String] error with password, nil if password is fine
-  def change_password(id, password, new_password, repeat_new_password)
-    return 'Incorrect password' unless login(user(id)['name'], password)
-    return 'Your new password can\'t be the same as your old password' if password == new_password
+  def change_password(id, password, repeat_password)
+    return "Can't find user with id #{id}" unless user = user(id)
+    return 'Your new password can\'t be the same as your old password' if BCrypt::Password.new(
+      user['digest']
+    ) == password
 
-    error = validate_passwords(new_password, repeat_new_password)
+    return validate_passwords(password, repeat_password) if validate_passwords(password, repeat_password)
 
-    return error if error
-
-    execute('UPDATE user SET digest = ? WHERE id = ?', BCrypt::Password.create(new_password), id)
-
-    nil
+    nil if execute('UPDATE user SET digest = ? WHERE id = ?', BCrypt::Password.create(password), id)
   end
 end

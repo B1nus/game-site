@@ -92,9 +92,16 @@ end
 post '/user/password/update' do
   cooldown_check '/user'
 
+  unless @database.login(
+    @database.user(user_id)['name'],
+    params[:current_password]
+  )
+    flash[:notice] = 'Wrong password'
+    redirect '/user'
+  end
+
   error = @database.change_password(
     user_id,
-    params[:current_password],
     params[:password],
     params[:repeat_password]
   )
