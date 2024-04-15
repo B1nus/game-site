@@ -1,58 +1,24 @@
 # frozen_string_literal: true
 
-require_relative '../helpers'
-
-# Updates an existing game and redirects to '/admin/games'
-post '/admin/games/:id/update' do
-  # name = params[:name]
-  # tag_ids = params[:tags]
-  # fullscreen = !params[:fullscreen].nil?
-  # warning = !params[:warning].nil?
-  # time_created = ???
-
-  redirect '/games'
+get('/register') do
+  erb :'users/register'
 end
 
-# Add a new tag
-#
-# @param tag_name [String]
-# @param tag_purpose_id [Integer]
-post('/admin/tags') do
-  flash[:notice] = @database.add_tag(params[:name], params[:purpose_id].to_i)
-  redirect '/games'
+get('/login') do
+  erb :'users/login'
 end
 
-# Update a tag
-#
-# @param [Integer] id, the id of the tag
-# @param [String] tag_name, the new name of the tag
-# @param [Integer] tag_purpose_id, the new tag purpose id
-#
-# @see Model#database_edit_tag
-post('/admin/tags/:id/update') do
-  redirect "/admin/tags/#{params_id}/edit" if flash[:notice] = @database.update_tag(
-    params_id,
-    params[:name],
-    params[:purpose_id].to_i
-  )
-
-  redirect '/games'
+# user routes
+get('/user') do
+  erb(:'users/edit', locals: {
+        user: @database.select('user', 'id', user_id)
+      })
 end
 
-# Remove a tag
-#
-# @param [Integer] id, The id for the tag
-post('/admin/tags/:id/delete') do
-  flash[:notice] = @database.delete_tag(params_id)
-
-  redirect '/games'
-end
-
-# Create a new tag purpose
-#
-post('/admin/tag-purposes') do
-  flash[:notice] = @database.add_tag_purpose(params[:purpose])
-  redirect '/games'
+get('/admin/users') do
+  erb(:'users/index', locals: {
+        users: @database.all_of('user').drop(1)
+      })
 end
 
 # Attempts to register a user
@@ -99,7 +65,7 @@ end
 # Logout a user and redirect to homepage
 #
 post '/logout' do
-  logout
+  session[:user_id] = nil
 
   redirect '/games'
 end
@@ -146,7 +112,7 @@ post '/user/delete' do
     redirect '/user'
   else
     flash[:notice] = 'User successfully deleted'
-    logout
+    session[:user_id] = nil
     redirect '/games'
   end
 end
