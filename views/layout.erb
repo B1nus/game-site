@@ -10,8 +10,10 @@
     <body>
         <header>
             <a href="/">home</a>
-            <input type="text" name="search_bar" placeholder="Search for games..."/>
-            <input type="button" value="search"/>
+            <form action="/games/search" method="post" class="search-form">
+              <input type="text" name="search_bar" placeholder="Search for games..."/>
+              <input type="button" value="search"/>
+            </form>
             <a href="/login">login</a>
             <a href="/register">register</a>
             <% if session[:user_id] %>
