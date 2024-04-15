@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require 'sinatra'
-require 'sinatra/reloader'
 require 'sinatra/flash'
-require_relative 'model'
+require 'sinatra/reloader'
 require_relative 'helpers'
-require_relative 'control/routes'
+require_relative 'model'
+require_relative 'routes/games'
+require_relative 'routes/tags'
+require_relative 'routes/tag_purposes'
+require_relative 'routes/users'
 
 # Validering i model, inte app
 
@@ -18,15 +21,27 @@ enable :sessions
 # Database
 database = Model.new
 
-on_start { puts 'Server started as http://localhost:4567' }
-on_stop { puts 'By Bye!' }
+on_start do
+  puts 'Server started as http://localhost:4567'
+end
+
+on_stop do
+  puts 'By Bye!'
+end
 
 # Needed to expose the database to my './helper.rb' file
-before('*') { @database = database }
+before('*') do
+  @database = database
+end
 
 # Protect admin and user sites
-before('/admin/*') { admin_check }
-before('/user*') { user_check }
+before('/admin/*') do
+  admin_check
+end
+
+before('/user*') do
+  user_check
+end
 
 # Användare crud, Kolla rätt user_id först
 # Gillning av spel, kolla för inloggad, annars error, kolla även rätt user_id
