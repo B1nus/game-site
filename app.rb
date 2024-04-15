@@ -3,9 +3,9 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'sinatra/flash'
-require_relative 'model/model'
+require_relative 'model'
 require_relative 'helpers'
-require_relative 'controller/routes'
+require_relative 'control/routes'
 
 # Validering i model, inte app
 
