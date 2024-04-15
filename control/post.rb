@@ -18,10 +18,7 @@ end
 # @param tag_name [String]
 # @param tag_purpose_id [Integer]
 post('/admin/tags') do
-  if error = @database.add_tag(params[:name], params[:purpose_id].to_i)
-    flash[:notice] = error
-  end
-
+  flash[:notice] = @database.add_tag(params[:name], params[:purpose_id].to_i)
   redirect '/games'
 end
 
@@ -33,9 +30,11 @@ end
 #
 # @see Model#database_edit_tag
 post('/admin/tags/:id/update') do
-  if error = @database.update_tag(params_id, params[:name], params[:purpose_id])
-    flash[:notice] = error
-  end
+  redirect "/admin/tags/#{params_id}/edit" if flash[:notice] = @database.update_tag(
+    params_id,
+    params[:name],
+    params[:purpose_id].to_i
+  )
 
   redirect '/games'
 end
@@ -44,17 +43,15 @@ end
 #
 # @param [Integer] id, The id for the tag
 post('/admin/tags/:id/delete') do
-  @database.delete_tag(params_id)
+  flash[:notice] = @database.delete_tag(params_id)
+
   redirect '/games'
 end
 
 # Create a new tag purpose
 #
 post('/admin/tag-purposes') do
-  if error = @database.add_tag_purpose(params[:purpose])
-    flash[:notice] = error
-  end
-
+  flash[:notice] = @database.add_tag_purpose(params[:purpose])
   redirect '/games'
 end
 
@@ -68,7 +65,11 @@ end
 post '/register' do
   cooldown_check '/register'
 
-  if error = @database.register(params[:username], params[:password], params[:repeat_password])
+  if error = @database.register(
+    params[:username],
+    params[:password],
+    params[:repeat_password]
+  )
     flash[:notice] = error
     redirect '/register'
   else
@@ -87,11 +88,9 @@ post '/login' do
   cooldown_check '/login'
 
   if id = @database.login(params[:username], params[:password])
-    # Successful login!
     change_user_id(id)
     redirect '/games'
   else
-    # Login failed.
     flash[:notice] = 'Invalid login credentials'
     redirect '/login'
   end
@@ -143,17 +142,20 @@ end
 #
 # @see Model#delete_user
 post '/user/delete' do
-  delete_user user_id
-  logout
-
-  redirect '/games'
+  if flash[:notice] = @database.delete_user(user_id)
+    redirect '/user'
+  else
+    flash[:notice] = 'User successfully deleted'
+    logout
+    redirect '/games'
+  end
 end
 
 # Delete a user
 #
 # @see Model#delete_user
 post '/admin/users/:id/delete' do
-  delete_user params_id
+  flash[:notice] = 'User successfully deleted' unless flash[:notice] = @databse.delete_user(params_id)
 
   redirect '/admin/users'
 end
