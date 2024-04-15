@@ -117,10 +117,9 @@ class Model
   def delete_user(id)
     return 'Non integer user id is not allowed' unless id.is_a? Integer
     return 'Can\'t delete a non existent user' unless user_exists?(id)
+    return 'No you don\'t' if id.zero?
 
-    id.zero? ? raise('No you don\'t') : execute('DELETE FROM user WHERE id = ?', id)
-
-    nil
+    nil if execute('DELETE FROM user WHERE id = ?', id)
   end
 
   def delete_tag(id)
