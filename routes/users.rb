@@ -53,7 +53,7 @@ end
 post '/login' do
   cooldown_check '/login'
 
-  if id = @database.login(params[:username], params[:password])
+  case @database.login(params[:username], params[:password])
     change_user_id(id)
     redirect '/games'
   else
