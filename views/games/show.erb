@@ -1,5 +1,3 @@
-<% id = game['id'] %>
-
 <% if game['warning'] == 1 %>
   <div id="warning" style="width: 100vw; height: 100vh;">
     <p>WARNING! I did not make this game. Play the original game <a href=<%= game['foreign_url'] %>>here</a>.</p>
@@ -8,7 +6,7 @@
   </div>
 <% end %>
 
-<iframe id="iframe" src="<%= game['embedded_url']%>" style="<%= iframe_size %>" frameborder="0" allow="gamepad *; fullscreen;"></iframe>
+<iframe id="iframe" src="<%= game['embedded_url']%>" style="<%= game_size %>" frameborder="0" allow="gamepad *; fullscreen;"></iframe>
 
 <% if game['embedded_url'].nil? %>
   <p>There is no game here</p>

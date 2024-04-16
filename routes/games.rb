@@ -19,7 +19,7 @@ end
 get('/games/:id') do
   erb(:'games/show', locals: {
         game: @database.select('game', 'id', params_id),
-        iframe_size: @database.game_iframe_sizes(params_id).first
+        game_size: @database.game_sizes(params_id)[:sizes].first
       })
 end
 
@@ -30,7 +30,7 @@ end
 get('/admin/games/:id/edit') do
   erb(:'games/edit', locals: {
         game: @database.select('game', 'id', params_id),
-        game_tags: @database.game_tags(params_id),
+        game_tags: @database.game_tags(params_id)[:tags],
         tags: @database.all_of('tag')
       })
 end
