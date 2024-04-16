@@ -11,12 +11,13 @@ require_relative 'routes/tag_purposes'
 require_relative 'routes/users'
 
 # Validering i model, inte app
+# Gillning av spel, kolla för inloggad, annars error, kolla även rätt user_id
+# Crud och RESTFUL är inte smidig alls. Prova något annat. Typ slim filer i views, någon enstaka
+# Likes å lista av gillade spel i /user
+# Ta bort länken till scratch see inside. Gör så det är till servern istället
 
 # Used for login
 enable :sessions
-
-# Yardoc
-# include Model
 
 # Database
 database = Model.new
@@ -50,22 +51,3 @@ before('/user*') do
     redirect '/'
   end
 end
-
-# Användare crud, Kolla rätt user_id först
-# Gillning av spel, kolla för inloggad, annars error, kolla även rätt user_id
-# kanske abtrahera user_id check som med helpers::admin?
-# /admin/games, edit å delete knapp
-# flash för lyckad loggin? flash for om du inte är inloggad istället för redirect?
-
-# Restful routes viktigt? Strunta i det för likes, men gör det för tags och spel
-# Domän check i app.rb.
-# Ta bort länken till scratch see inside. Gör så det är till servern istället
-# Cooldown för inloggningsförsök. request.ip
-#
-# Regex validering på några fält. Även med tid för A nivå.
-#
-# before /admin/* . Gör så för alla admin routes
-# gör en separat /admin/games/ index sida med edit och delete knappar
-# login ip sparning
-# login validering
-# login autentisering i model.rb
