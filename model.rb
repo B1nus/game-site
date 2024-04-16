@@ -1,17 +1,14 @@
 # frozen_string_literal: true
 
-require './helpers'
+require_relative 'helpers'
 require 'sqlite3'
 require 'sinatra/reloader'
 require 'bcrypt'
 
-# Läskigt att det inte finns någon säkerhet i model.rb, jag måste lita på att app.rb hanterar behörigheter.
+# Model class, this is where interaction with the database takes place.
+# By default, methods return nil upon success and error upon failure.
 #
-# Funderar på noggrann validering på login, kan vara bättre utan det så man ger hackare så lite information som möjligt
-
-# Model class, this is where interaction with the database takes place
-#
-# Methods default to returning nil upon no errors, the exceptions are commented appropriately
+# There is no authorization here, the caller is trusted with that responsibility
 class Model
   def initialize
     @database = SQLite3::Database.new('data/db.db')
@@ -68,7 +65,7 @@ class Model
 
   # Return a user dictionary
   #
-  # @param [String or Integer] String for username, Integer for user id
+  # @param identifier [String or Integer] the name of the user or Integer for user id
   def user(identifier)
     if identifier.is_a? Integer
       select('user', 'id', identifier)
@@ -187,8 +184,8 @@ class Model
 
   # Attempts to login
   #
-  # @params [String] username The username
-  # @params [String] password The password
+  # @param [String] username The username
+  # @param [String] password The password
   #
   # @return [Integer] user id if successful, nil if not
   def login(username, password)
@@ -201,7 +198,7 @@ class Model
 
   # Change a username
   #
-  # @param user_id [Integer] the users id
+  # @param id [Integer] the users id
   # @param username [String] the new username
   #
   # @return [String] error or nil if nothing went wrong
@@ -218,7 +215,7 @@ class Model
 
   # Change your password
   #
-  # @param user_id [Integer] the users id
+  # @param id [Integer] the users id
   # @param password [String] new password
   #
   # @return [String] error with password, nil if password is fine
