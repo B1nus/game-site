@@ -141,9 +141,20 @@ h1{
 
 
 
+main {
+  min-height: calc(100vh - 295px);
+  width: 100%;
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+}
 /* FOOTER */
 footer {
-    padding: 10px 10px 200px 10px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+
+  padding: 10px 10px 200px 10px;
 }
 
 
