@@ -10,7 +10,6 @@ require_relative 'routes/tags'
 require_relative 'routes/tag_purposes'
 require_relative 'routes/users'
 
-# Validering i model, inte app
 # Gillning av spel, kolla för inloggad, annars error, kolla även rätt user_id
 # Crud och RESTFUL är inte smidig alls. Prova något annat. Typ slim filer i views, någon enstaka
 # Likes å lista av gillade spel i /user
