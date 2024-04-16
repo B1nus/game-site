@@ -104,9 +104,9 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Model class, this is where interaction with the database takes place</p>
+<p>Model class, this is where interaction with the database takes place. By default, methods return nil upon success and error upon failure.</p>
 
-<p>Methods default to returning nil upon no errors, the exceptions are commented appropriately</p>
+<p>There is no authorization here, the caller is trusted with that responsibility</p>
 
 
   </div>
@@ -689,14 +689,14 @@
       <pre class="lines">
 
 
+13
+14
+15
 16
-17
-18
-19
-20</pre>
+17</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 13</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='ivar'>@database</span> <span class='op'>=</span> <span class='const'>SQLite3</span><span class='op'>::</span><span class='const'>Database</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>data/db.db</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -730,14 +730,14 @@
       <pre class="lines">
 
 
+88
+89
+90
 91
-92
-93
-94
-95</pre>
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 91</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 88</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_tag'>add_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_validate_tag'>validate_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_validate_tag'>validate_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span>
@@ -764,15 +764,15 @@
       <pre class="lines">
 
 
+107
+108
+109
 110
 111
-112
-113
-114
-115</pre>
+112</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 107</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_tag_purpose'>add_tag_purpose</span><span class='lparen'>(</span><span class='id identifier rubyid_purpose'>purpose</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Tag purpose name must be a string</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_purpose'>purpose</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>String</span>
@@ -800,6 +800,9 @@
       <pre class="lines">
 
 
+94
+95
+96
 97
 98
 99
@@ -808,13 +811,10 @@
 102
 103
 104
-105
-106
-107
-108</pre>
+105</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 94</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_user'>add_user</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Username must be a string</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_username'>username</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>String</span>
@@ -848,18 +848,18 @@
       <pre class="lines">
 
 
+45
+46
+47
 48
 49
 50
 51
 52
-53
-54
-55
-56</pre>
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_all_of'>all_of</span><span class='lparen'>(</span><span class='id identifier rubyid_table'>table</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_table_check'>table_check</span> <span class='id identifier rubyid_table'>table</span>
@@ -898,7 +898,7 @@
   
     <li>
       
-        <span class='name'>user_id</span>
+        <span class='name'>id</span>
       
       
         <span class='type'>(<tt>Integer</tt>)</span>
@@ -957,19 +957,19 @@
       <pre class="lines">
 
 
+222
+223
+224
 225
 226
 227
 228
 229
 230
-231
-232
-233
-234</pre>
+231</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 225</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 222</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_change_password'>change_password</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='comma'>,</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Can&#39;t find user with id </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_id'>id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
@@ -1009,7 +1009,7 @@
   
     <li>
       
-        <span class='name'>user_id</span>
+        <span class='name'>id</span>
       
       
         <span class='type'>(<tt>Integer</tt>)</span>
@@ -1068,19 +1068,19 @@
       <pre class="lines">
 
 
+205
+206
+207
 208
 209
 210
 211
 212
 213
-214
-215
-216
-217</pre>
+214</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 208</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 205</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_change_username'>change_username</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_username'>username</span><span class='rparen'>)</span>
   <span class='comment'># Insert id validation here
@@ -1136,13 +1136,13 @@
       <pre class="lines">
 
 
-34
-35
-36
-37</pre>
+31
+32
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_column_exists?'>column_exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_table'>table</span><span class='comma'>,</span> <span class='id identifier rubyid_column'>column</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_table_check'>table_check</span> <span class='id identifier rubyid_table'>table</span>
@@ -1168,15 +1168,15 @@
       <pre class="lines">
 
 
+122
+123
+124
 125
 126
-127
-128
-129
-130</pre>
+127</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 125</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 122</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_delete_tag'>delete_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Non integer tag id is not allowed</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Integer</span>
@@ -1204,16 +1204,16 @@
       <pre class="lines">
 
 
+114
+115
+116
 117
 118
 119
-120
-121
-122
-123</pre>
+120</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 117</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 114</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_delete_user'>delete_user</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Non integer user id is not allowed</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Integer</span>
@@ -1242,12 +1242,12 @@
       <pre class="lines">
 
 
-22
-23
-24</pre>
+19
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='id identifier rubyid_instructions'>instructions</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_injections'>injections</span><span class='rparen'>)</span>
   <span class='ivar'>@database</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='id identifier rubyid_instructions'>instructions</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_injections'>injections</span><span class='rparen'>)</span>
@@ -1272,12 +1272,12 @@
       <pre class="lines">
 
 
-132
-133
-134</pre>
+129
+130
+131</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 132</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 129</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_game_iframe_sizes'>game_iframe_sizes</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_game_tags'>game_tags</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_tag'>tag</span><span class='op'>|</span> <span class='id identifier rubyid_tag'>tag</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>purpose</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>iframe_size</span><span class='tstring_end'>&#39;</span></span> <span class='op'>?</span> <span class='id identifier rubyid_tag'>tag</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='kw'>nil</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span>
@@ -1302,15 +1302,15 @@
       <pre class="lines">
 
 
+81
+82
+83
 84
 85
-86
-87
-88
-89</pre>
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 84</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_game_tags'>game_tags</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Integer</span>
@@ -1341,7 +1341,43 @@
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>username</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The username</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The password</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -1369,16 +1405,16 @@
       <pre class="lines">
 
 
+191
+192
+193
 194
 195
 196
-197
-198
-199
-200</pre>
+197</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 194</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 191</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_login'>login</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span> <span class='id identifier rubyid_username'>username</span>
@@ -1490,16 +1526,16 @@
       <pre class="lines">
 
 
+177
+178
+179
 180
 181
 182
-183
-184
-185
-186</pre>
+183</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 180</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 177</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_register'>register</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='comma'>,</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>You need to type a username</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_username'>username</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
@@ -1528,19 +1564,19 @@
       <pre class="lines">
 
 
+55
+56
+57
 58
 59
 60
 61
 62
 63
-64
-65
-66
-67</pre>
+64</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='id identifier rubyid_table'>table</span><span class='comma'>,</span> <span class='id identifier rubyid_attribute'>attribute</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_attribute'>attribute</span><span class='embexpr_end'>}</span><span class='tstring_content'> is not a column of the </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_table'>table</span><span class='embexpr_end'>}</span><span class='tstring_content'> table</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_column_exists?'>column_exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_table'>table</span><span class='comma'>,</span> <span class='id identifier rubyid_attribute'>attribute</span><span class='rparen'>)</span>
@@ -1572,16 +1608,16 @@
       <pre class="lines">
 
 
+23
+24
+25
 26
 27
 28
-29
-30
-31
-32</pre>
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 23</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_table_check'>table_check</span><span class='lparen'>(</span><span class='id identifier rubyid_table'>table</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Table name must be a string</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>String</span>
@@ -1610,16 +1646,16 @@
       <pre class="lines">
 
 
+133
+134
+135
 136
 137
 138
-139
-140
-141
-142</pre>
+139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 136</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 133</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update_tag'>update_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Non integer tag id is not allowed</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Integer</span>
@@ -1656,7 +1692,7 @@
   
     <li>
       
-        <span class='name'>String</span>
+        <span class='name'>identifier</span>
       
       
         <span class='type'>(<tt>String or Integer</tt>)</span>
@@ -1665,7 +1701,7 @@
       
         &mdash;
         <div class='inline'>
-<p>for username, Integer for user id</p>
+<p>the name of the user or Integer for user id</p>
 </div>
       
     </li>
@@ -1681,16 +1717,16 @@
       <pre class="lines">
 
 
+69
+70
+71
 72
 73
 74
-75
-76
-77
-78</pre>
+75</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 72</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 69</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_user'>user</span><span class='lparen'>(</span><span class='id identifier rubyid_identifier'>identifier</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_identifier'>identifier</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Integer</span>
@@ -1743,12 +1779,12 @@
       <pre class="lines">
 
 
-80
-81
-82</pre>
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 80</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_user_exists?'>user_exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_identifier'>identifier</span><span class='rparen'>)</span>
   <span class='op'>!</span><span class='id identifier rubyid_user'>user</span><span class='lparen'>(</span><span class='id identifier rubyid_identifier'>identifier</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -1819,18 +1855,18 @@
       <pre class="lines">
 
 
+160
+161
+162
 163
 164
 165
 166
 167
-168
-169
-170
-171</pre>
+168</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 163</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 160</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_validate_password'>validate_password</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>You need to type a password</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_password'>password</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
@@ -1928,16 +1964,16 @@
       <pre class="lines">
 
 
+147
+148
+149
 150
 151
 152
-153
-154
-155
-156</pre>
+153</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 150</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 147</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_validate_passwords'>validate_passwords</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='comma'>,</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_validate_password'>validate_password</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_validate_password'>validate_password</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
@@ -1966,17 +2002,17 @@
       <pre class="lines">
 
 
+36
+37
+38
 39
 40
 41
 42
-43
-44
-45
-46</pre>
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_validate_tag'>validate_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Tag name must be a string</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>String</span>
@@ -1996,7 +2032,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Apr 16 08:46:11 2024 by
+  Generated on Tue Apr 16 08:59:03 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.36 (ruby-3.3.0).
 </div>
