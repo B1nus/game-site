@@ -7,7 +7,6 @@
   <meta name="description" content="Linus Spel is a game website. Here you can play games made by Linus.">
   <title>Linus Spel</title>
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/script.js"></script>
 </head>
 <body>
   <header>
@@ -29,48 +28,16 @@
     </nav>
   </header>
 
+  <%# Sinatra Flash för felmeddelanden %>
+  <% if flash[:notice] %>
+    <p class="notice">
+      <%= flash[:notice] %>
+    </p>
+  <% end %>
+
   <%= yield %>
 
   <footer>
     <p>© 2023 Linus</p>
   </footer>
 </body>
-<!-- </html> -->
-<!-- <!DOCTYPE html> -->
-<!-- <html lang="en"> -->
-<!--   <head> -->
-<!--     <meta charset="UTF-8"> -->
-<!--     <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-<!--     <link rel="stylesheet" href="/css/style.css"> -->
-<!--     <script src="https://kit.fontawesome.com/04908740ae.js" crossorigin="anonymous"></script> -->
-<!--     <title>Spel hemsida</title> -->
-<!--   </head> -->
-<!--   <body> -->
-<!--     <header> -->
-<!--       <a href="/">home</a> -->
-<!--       <form action="/games/search" method="post" class="search-form"> -->
-<!--         <input type="text" name="search_bar" placeholder="Search for games..."/> -->
-<!--         <input type="button" value="search"/> -->
-<!--       </form> -->
-<!--       <a href="/login">login</a> -->
-<!--       <a href="/register">register</a> -->
-<!--       <% if session[:user_id] %> -->
-<!--         <form action="/logout" method="post"> -->
-<!--           <input type="submit" value="Logout"> -->
-<!--         </form> -->
-<!--         <% if !admin? %> -->
-<!--           <a href="/user">profile</a> -->
-<!--         <% end %> -->
-<!--       <% end %> -->
-<!--     </header> -->
-<!---->
-<!--     <%# Sinatra Flash för felmeddelanden %> -->
-<!--     <% if flash[:notice] %> -->
-<!--       <p class="notice"> -->
-<!--       <%= flash[:notice] %> -->
-<!--       </p> -->
-<!--     <% end %> -->
-<!---->
-<!--     <%= yield %> -->
-<!--   </body> -->
-<!-- </html> -->
