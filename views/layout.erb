@@ -1,38 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/css/style.css">
-        <script src="https://kit.fontawesome.com/04908740ae.js" crossorigin="anonymous"></script>
-        <title>Spel hemsida</title>
-    </head>
-    <body>
-        <header>
-            <a href="/">home</a>
-            <form action="/games/search" method="post" class="search-form">
-              <input type="text" name="search_bar" placeholder="Search for games..."/>
-              <input type="button" value="search"/>
-            </form>
-            <a href="/login">login</a>
-            <a href="/register">register</a>
-            <% if session[:user_id] %>
-              <form action="/logout" method="post">
-                <input type="submit" value="Logout">
-              </form>
-              <% if !admin? %>
-                <a href="/user">profile</a>
-              <% end %>
-            <% end %>
-        </header>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Linus Spel is a game website. Here you can play games made by Linus.">
+  <title>Linus Spel</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/script.js"></script>
+</head>
+<body>
+  <header>
+    <nav class="header-nav">
+      <h1>
+        <a href="/">Linus Spel</a>
+      </h1>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <form class="search-form" action="search">
+        <button type="submit">
+          <img src="img/search.png" alt="search">
+        </button>
+        <input type="text" placeholder="Search" name="search">
+      </form>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+      <% if user? %>
+        <a href="/user">Profile</a>
+      <% end %>
+    </nav>
+  </header>
 
-        <%# Sinatra Flash för felmeddelanden %>
-        <% if flash[:notice] %>
-          <p class="notice">
-          <%= flash[:notice] %>
-          </p>
-        <% end %>
+  <%= yield %>
 
-        <%= yield %>
-    </body>
-</html>
+  <footer>
+    <p>© 2023 Linus</p>
+  </footer>
+</body>
+<!-- </html> -->
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="en"> -->
+<!--   <head> -->
+<!--     <meta charset="UTF-8"> -->
+<!--     <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<!--     <link rel="stylesheet" href="/css/style.css"> -->
+<!--     <script src="https://kit.fontawesome.com/04908740ae.js" crossorigin="anonymous"></script> -->
+<!--     <title>Spel hemsida</title> -->
+<!--   </head> -->
+<!--   <body> -->
+<!--     <header> -->
+<!--       <a href="/">home</a> -->
+<!--       <form action="/games/search" method="post" class="search-form"> -->
+<!--         <input type="text" name="search_bar" placeholder="Search for games..."/> -->
+<!--         <input type="button" value="search"/> -->
+<!--       </form> -->
+<!--       <a href="/login">login</a> -->
+<!--       <a href="/register">register</a> -->
+<!--       <% if session[:user_id] %> -->
+<!--         <form action="/logout" method="post"> -->
+<!--           <input type="submit" value="Logout"> -->
+<!--         </form> -->
+<!--         <% if !admin? %> -->
+<!--           <a href="/user">profile</a> -->
+<!--         <% end %> -->
+<!--       <% end %> -->
+<!--     </header> -->
+<!---->
+<!--     <%# Sinatra Flash för felmeddelanden %> -->
+<!--     <% if flash[:notice] %> -->
+<!--       <p class="notice"> -->
+<!--       <%= flash[:notice] %> -->
+<!--       </p> -->
+<!--     <% end %> -->
+<!---->
+<!--     <%= yield %> -->
+<!--   </body> -->
+<!-- </html> -->

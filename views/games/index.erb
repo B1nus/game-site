@@ -1,10 +1,50 @@
-<% games.each do |game| %>
-  <a href="/games/<%= game['id'] %>"><%= game['name'] %></a>
-  <% if admin? %>
-    <a href=<%= "/admin/games/#{game['id']}/edit" %>>edit</a>
-    <form action="/admin/games/<%= game['id'] %>/delete" method="post">
-      <input type="submit" value="Delete game">
-    </form>
-  <% end %>
-<% end %>
-<%= erb(:'tags/index', locals: { tags:, tag_purposes: }) if admin? %>
+<div class="games-wrapper">
+  <section class="games-search-section">
+    <div class="search-filter-binder">
+      <button class="search-filter" value="true" name="scratch">Scratch</button>
+      <button class="search-filter" value="true" name="unity">Unity</button>
+      <button class="search-filter" value="true" name="finnished">Finnished</button>
+      <button class="search-filter" value="false" name="unfinnished">Unfinnished</button>
+      <button class="search-filter" value="false" name="test">Test</button>
+      <button class="search-filter" value="false" name="bad">Bad</button>
+    </div>
+    <select class="search-sort-by">
+      <option class="search-option" value="new">New</option>
+      <option class="search-option" value="old">Old</option>
+    </select>
+  </section>
+
+  <section class="games-link-section">
+    <!-- Spel länk element -->
+    <% games.each do |game| %>
+      <a href="/games/<%= game['id'] %>" class="game">
+        <img class="game-thumb" src="img/thumb.webp" alt="mog">
+        <div class="game-text-binder">
+          <div class="game-header">
+            <h2 class="game-name">
+              <%= game['name'] %>
+            </h2>
+            <h3 class="game-time">just now</h3>
+          </div>
+          <p class="game-info">This is a very good game which is very fun to play and also very good please play now and have a good time.</p>
+          <div class="game-tag-binder">
+            <h4 class="game-tag">Engine</h4>
+            <h4 class="game-tag">Players</h4>
+            <h4 class="game-tag">Online</h4>
+            <h4 class="game-tag">CPU</h4>
+            <h4 class="game-tag">Coltroc</h4>
+          </div>
+        </div>
+      </a>
+
+      <% if admin? %>
+        <a href=<%= "/admin/games/#{game['id']}/edit" %>>edit</a>
+        <form action="/admin/games/<%= game['id'] %>/delete" method="post">
+          <input type="submit" value="Delete game">
+        </form>
+      <% end %>
+    <% end %>
+  </section>
+
+  <button class="load-more">Load more</button>
+</div>
