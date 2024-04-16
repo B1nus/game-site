@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Module: Model
+  Class: Model
   
     &mdash; Documentation by YARD 0.9.36
   
@@ -61,12 +61,28 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Module: Model
+      <div id="content"><h1>Class: Model
   
   
   
 </h1>
 <div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Model</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+    </dd>
+  </dl>
   
 
   
@@ -85,7 +101,22 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Model class, this is where interaction with the database takes place</p>
 
+<p>Methods default to returning nil upon no errors, the exceptions are commented appropriately</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+
+
+</div>
 
 
 
@@ -103,7 +134,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#connect_to_database-instance_method" title="#connect_to_database (instance method)">#<strong>connect_to_database</strong>(path)  &#x21d2; Object </a>
+      <a href="#add_tag-instance_method" title="#add_tag (instance method)">#<strong>add_tag</strong>(name, purpose_id)  &#x21d2; Object </a>
     
 
     
@@ -125,7 +156,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#connect_to_default_database-instance_method" title="#connect_to_default_database (instance method)">#<strong>connect_to_default_database</strong>  &#x21d2; Object </a>
+      <a href="#add_tag_purpose-instance_method" title="#add_tag_purpose (instance method)">#<strong>add_tag_purpose</strong>(purpose)  &#x21d2; Object </a>
     
 
     
@@ -147,7 +178,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_create_tag-instance_method" title="#database_create_tag (instance method)">#<strong>database_create_tag</strong>(tag_name, tag_purpose_id)  &#x21d2; Object </a>
+      <a href="#add_user-instance_method" title="#add_user (instance method)">#<strong>add_user</strong>(username, password)  &#x21d2; Object </a>
     
 
     
@@ -169,7 +200,29 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_create_tag_purpose-instance_method" title="#database_create_tag_purpose (instance method)">#<strong>database_create_tag_purpose</strong>(tag_purpose_name)  &#x21d2; Object </a>
+      <a href="#all_of-instance_method" title="#all_of (instance method)">#<strong>all_of</strong>(table)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#change_password-instance_method" title="#change_password (instance method)">#<strong>change_password</strong>(id, password, repeat_password)  &#x21d2; String </a>
     
 
     
@@ -184,7 +237,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Lägg till ett tag syfte.</p>
+<p>Change your password.</p>
 </div></span>
   
 </li>
@@ -193,7 +246,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_does_user_exist%3F-instance_method" title="#database_does_user_exist? (instance method)">#<strong>database_does_user_exist?</strong>(username)  &#x21d2; Boolean </a>
+      <a href="#change_username-instance_method" title="#change_username (instance method)">#<strong>change_username</strong>(id, username)  &#x21d2; String </a>
     
 
     
@@ -208,7 +261,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Kolla om användaren existerar.</p>
+<p>Change a username.</p>
 </div></span>
   
 </li>
@@ -217,7 +270,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_edit_tag-instance_method" title="#database_edit_tag (instance method)">#<strong>database_edit_tag</strong>(tag_id, tag_name, tag_purpose_id)  &#x21d2; Object </a>
+      <a href="#column_exists%3F-instance_method" title="#column_exists? (instance method)">#<strong>column_exists?</strong>(table, column)  &#x21d2; Boolean </a>
     
 
     
@@ -239,7 +292,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_game_applied_tags-instance_method" title="#database_game_applied_tags (instance method)">#<strong>database_game_applied_tags</strong>(game_id)  &#x21d2; Object </a>
+      <a href="#delete_tag-instance_method" title="#delete_tag (instance method)">#<strong>delete_tag</strong>(id)  &#x21d2; Object </a>
     
 
     
@@ -261,7 +314,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_game_available_tags-instance_method" title="#database_game_available_tags (instance method)">#<strong>database_game_available_tags</strong>(game_id)  &#x21d2; Object </a>
+      <a href="#delete_user-instance_method" title="#delete_user (instance method)">#<strong>delete_user</strong>(id)  &#x21d2; Object </a>
     
 
     
@@ -283,7 +336,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_game_iframe_size-instance_method" title="#database_game_iframe_size (instance method)">#<strong>database_game_iframe_size</strong>(game_id)  &#x21d2; Object </a>
+      <a href="#execute-instance_method" title="#execute (instance method)">#<strong>execute</strong>(instructions, *injections)  &#x21d2; Object </a>
     
 
     
@@ -305,7 +358,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_game_tag_purposes-instance_method" title="#database_game_tag_purposes (instance method)">#<strong>database_game_tag_purposes</strong>(game_id)  &#x21d2; Object </a>
+      <a href="#game_iframe_sizes-instance_method" title="#game_iframe_sizes (instance method)">#<strong>game_iframe_sizes</strong>(id)  &#x21d2; Object </a>
     
 
     
@@ -327,7 +380,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_game_with_id-instance_method" title="#database_game_with_id (instance method)">#<strong>database_game_with_id</strong>(game_id)  &#x21d2; Object </a>
+      <a href="#game_tags-instance_method" title="#game_tags (instance method)">#<strong>game_tags</strong>(id)  &#x21d2; Object </a>
     
 
     
@@ -349,13 +402,15 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_games-instance_method" title="#database_games (instance method)">#<strong>database_games</strong>  &#x21d2; Object </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>  &#x21d2; Model </a>
     
 
     
   </span>
   
   
+    <span class="note title constructor">constructor</span>
+  
   
   
   
@@ -363,7 +418,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of Model.</p>
+</div></span>
   
 </li>
 
@@ -371,7 +428,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_tag_purposes-instance_method" title="#database_tag_purposes (instance method)">#<strong>database_tag_purposes</strong>  &#x21d2; Object </a>
+      <a href="#login-instance_method" title="#login (instance method)">#<strong>login</strong>(username, password)  &#x21d2; Integer </a>
     
 
     
@@ -386,7 +443,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Lista över alla tag syften.</p>
+<p>Attempts to login.</p>
 </div></span>
   
 </li>
@@ -395,7 +452,31 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_tag_with_id-instance_method" title="#database_tag_with_id (instance method)">#<strong>database_tag_with_id</strong>(tag_id)  &#x21d2; Object </a>
+      <a href="#register-instance_method" title="#register (instance method)">#<strong>register</strong>(username, password, repeat_password)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Attempts to create a new user.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#select-instance_method" title="#select (instance method)">#<strong>select</strong>(table, attribute, value)  &#x21d2; Object </a>
     
 
     
@@ -417,7 +498,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#database_tags-instance_method" title="#database_tags (instance method)">#<strong>database_tags</strong>  &#x21d2; Object </a>
+      <a href="#table_check-instance_method" title="#table_check (instance method)">#<strong>table_check</strong>(table)  &#x21d2; Object </a>
     
 
     
@@ -439,7 +520,123 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#delete_tag-instance_method" title="#delete_tag (instance method)">#<strong>delete_tag</strong>(tag_id)  &#x21d2; Object </a>
+      <a href="#update_tag-instance_method" title="#update_tag (instance method)">#<strong>update_tag</strong>(id, name, purpose_id)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user-instance_method" title="#user (instance method)">#<strong>user</strong>(identifier)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return a user dictionary.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_exists%3F-instance_method" title="#user_exists? (instance method)">#<strong>user_exists?</strong>(identifier)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#validate_password-instance_method" title="#validate_password (instance method)">#<strong>validate_password</strong>(password)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Checks for password problems for a single password.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#validate_passwords-instance_method" title="#validate_passwords (instance method)">#<strong>validate_passwords</strong>(password, repeat_password)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Checks for password problems with a repeated password.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#validate_tag-instance_method" title="#validate_tag (instance method)">#<strong>validate_tag</strong>(name, purpose_id)  &#x21d2; Object </a>
     
 
     
@@ -461,114 +658,13 @@
     </ul>
   
 
-
-
-  <div id="instance_method_details" class="method_details_list">
-    <h2>Instance Method Details</h2>
-
-    
-      <div class="method_details first">
-  <h3 class="signature first" id="connect_to_database-instance_method">
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
   
-    #<strong>connect_to_database</strong>(path)  &#x21d2; <tt>Object</tt> 
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
   
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-6
-7
-8
-9
-10</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 6</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_connect_to_database'>connect_to_database</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='const'>SQLite3</span><span class='op'>::</span><span class='const'>Database</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_results_as_hash'>results_as_hash</span> <span class='op'>=</span> <span class='kw'>true</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_db'>db</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="connect_to_default_database-instance_method">
-  
-    #<strong>connect_to_default_database</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-12
-13
-14</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 12</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_connect_to_default_database'>connect_to_default_database</span><span class='lparen'>(</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_connect_to_database'><span class='object_link'><a href="#connect_to_database-instance_method" title="Model#connect_to_database (method)">connect_to_database</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>data/db.db</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="database_create_tag-instance_method">
-  
-    #<strong>database_create_tag</strong>(tag_name, tag_purpose_id)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-81
-82
-83
-84
-85</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 81</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_database_create_tag'>database_create_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_tag_name'>tag_name</span><span class='comma'>,</span> <span class='id identifier rubyid_tag_purpose_id'>tag_purpose_id</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
-
-    <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>INSERT INTO tag (name, tag_purpose_id) VALUES (?, ?)</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_tag_name'>tag_name</span><span class='comma'>,</span> <span class='id identifier rubyid_tag_purpose_id'>tag_purpose_id</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="database_create_tag_purpose-instance_method">
-  
-    #<strong>database_create_tag_purpose</strong>(tag_purpose_name)  &#x21d2; <tt>Object</tt> 
+    #<strong>initialize</strong>  &#x21d2; <tt><span class='object_link'><a href="" title="Model (class)">Model</a></span></tt> 
   
 
   
@@ -577,7 +673,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Lägg till ett tag syfte</p>
+<p>Returns a new instance of Model.</p>
 
 
   </div>
@@ -593,19 +689,60 @@
       <pre class="lines">
 
 
-109
-110
-111
-112
-113</pre>
+16
+17
+18
+19
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 109</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 16</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_database_create_tag_purpose'>database_create_tag_purpose</span><span class='lparen'>(</span><span class='id identifier rubyid_tag_purpose_name'>tag_purpose_name</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
+  <span class='ivar'>@database</span> <span class='op'>=</span> <span class='const'>SQLite3</span><span class='op'>::</span><span class='const'>Database</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>data/db.db</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='ivar'>@database</span><span class='period'>.</span><span class='id identifier rubyid_results_as_hash'>results_as_hash</span> <span class='op'>=</span> <span class='kw'>true</span>
+  <span class='ivar'>@database</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PRAGMA foreign_keys = ON</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
 
-    <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>INSERT INTO tag_purpose (name) VALUES (?)</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_tag_purpose_name'>tag_purpose_name</span><span class='rparen'>)</span>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="add_tag-instance_method">
+  
+    #<strong>add_tag</strong>(name, purpose_id)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+91
+92
+93
+94
+95</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 91</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_add_tag'>add_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_validate_tag'>validate_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_validate_tag'>validate_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span>
+
+  <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>INSERT INTO tag (name, purpose_id) VALUES (?, ?)</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -613,9 +750,135 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="database_does_user_exist?-instance_method">
+  <h3 class="signature " id="add_tag_purpose-instance_method">
   
-    #<strong>database_does_user_exist?</strong>(username)  &#x21d2; <tt>Boolean</tt> 
+    #<strong>add_tag_purpose</strong>(purpose)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+110
+111
+112
+113
+114
+115</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 110</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_add_tag_purpose'>add_tag_purpose</span><span class='lparen'>(</span><span class='id identifier rubyid_purpose'>purpose</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Tag purpose name must be a string</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_purpose'>purpose</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>String</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Tag purpose name can\&#39;t be empty</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_purpose'>purpose</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+
+  <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>INSERT INTO tag_purpose (name) VALUES (?)</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_purpose'>purpose</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="add_user-instance_method">
+  
+    #<strong>add_user</strong>(username, password)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 97</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_add_user'>add_user</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Username must be a string</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_username'>username</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>String</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Password must be a string</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_password'>password</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>String</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Username can\&#39;t be empty</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_username'>username</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Password can\&#39;t be empty</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_password'>password</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Username is already taken</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_user_exists?'>user_exists?</span> <span class='id identifier rubyid_username'>username</span>
+
+  <span class='comment'># No error occured. Register the user
+</span>  <span class='id identifier rubyid_digest'>digest</span> <span class='op'>=</span> <span class='const'>BCrypt</span><span class='op'>::</span><span class='const'>Password</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
+
+  <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>INSERT INTO user (name, digest, domain) VALUES (?, ?, ?)</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_digest'>digest</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>user</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="all_of-instance_method">
+  
+    #<strong>all_of</strong>(table)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+48
+49
+50
+51
+52
+53
+54
+55
+56</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 48</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_all_of'>all_of</span><span class='lparen'>(</span><span class='id identifier rubyid_table'>table</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_table_check'>table_check</span> <span class='id identifier rubyid_table'>table</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_table'>table</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tag</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>SELECT tag.id as id FROM tag</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_tag'>tag</span><span class='op'>|</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tag</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_tag'>tag</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT * FROM </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_table'>table</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="change_password-instance_method">
+  
+    #<strong>change_password</strong>(id, password, repeat_password)  &#x21d2; <tt>String</tt> 
   
 
   
@@ -624,8 +887,228 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Kolla om användaren existerar</p>
+<p>Change your password</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user_id</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the users id</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>new password</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>error with password, nil if password is fine</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 225</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_change_password'>change_password</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='comma'>,</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Can&#39;t find user with id </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_id'>id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Your new password can\&#39;t be the same as your old password</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='const'>BCrypt</span><span class='op'>::</span><span class='const'>Password</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
+    <span class='id identifier rubyid_user'>user</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>digest</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+  <span class='rparen'>)</span> <span class='op'>==</span> <span class='id identifier rubyid_password'>password</span>
+
+  <span class='kw'>return</span> <span class='id identifier rubyid_validate_passwords'>validate_passwords</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='comma'>,</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_validate_passwords'>validate_passwords</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='comma'>,</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span><span class='rparen'>)</span>
+
+  <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>UPDATE user SET digest = ? WHERE id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='const'>BCrypt</span><span class='op'>::</span><span class='const'>Password</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="change_username-instance_method">
+  
+    #<strong>change_username</strong>(id, username)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Change a username</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user_id</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the users id</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>username</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the new username</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>error or nil if nothing went wrong</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 208</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_change_username'>change_username</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_username'>username</span><span class='rparen'>)</span>
+  <span class='comment'># Insert id validation here
+</span>
+  <span class='comment'># return &#39;You don\&#39;t exist&#39; unless user_exists?(id)
+</span>  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Username is already taken</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_user_exists?'>user_exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>UPDATE user SET name = ? WHERE id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+
+  <span class='kw'>nil</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="column_exists?-instance_method">
+  
+    #<strong>column_exists?</strong>(table, column)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
 
   </div>
 </div>
@@ -653,23 +1136,91 @@
       <pre class="lines">
 
 
-116
+34
+35
+36
+37</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 34</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_column_exists?'>column_exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_table'>table</span><span class='comma'>,</span> <span class='id identifier rubyid_column'>column</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_table_check'>table_check</span> <span class='id identifier rubyid_table'>table</span>
+  <span class='op'>!</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT * FROM pragma_table_info(&#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_table'>table</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;) WHERE name = ?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_column'>column</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="delete_tag-instance_method">
+  
+    #<strong>delete_tag</strong>(id)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+125
+126
+127
+128
+129
+130</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 125</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_delete_tag'>delete_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Non integer tag id is not allowed</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Integer</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Can\&#39;t delete a non existent tag</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tag</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+
+  <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>DELETE FROM tag WHERE id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="delete_user-instance_method">
+  
+    #<strong>delete_user</strong>(id)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
 117
 118
 119
 120
 121
-122</pre>
+122
+123</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 116</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 117</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_database_does_user_exist?'>database_does_user_exist?</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_delete_user'>delete_user</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Non integer user id is not allowed</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Integer</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Can\&#39;t delete a non existent user</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_user_exists?'>user_exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>No you don\&#39;t</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_zero?'>zero?</span>
 
-    <span class='id identifier rubyid_count'>count</span> <span class='op'>=</span>  <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT count(username) FROM user where user.username = ?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_username'>username</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>count(username)</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-
-    <span class='kw'>return</span> <span class='id identifier rubyid_count'>count</span> <span class='op'>&gt;=</span> <span class='int'>1</span>
+  <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>DELETE FROM user WHERE id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -677,211 +1228,9 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="database_edit_tag-instance_method">
+  <h3 class="signature " id="execute-instance_method">
   
-    #<strong>database_edit_tag</strong>(tag_id, tag_name, tag_purpose_id)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-87
-88
-89
-90
-91
-92
-93</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 87</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_database_edit_tag'>database_edit_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_tag_id'>tag_id</span><span class='comma'>,</span> <span class='id identifier rubyid_tag_name'>tag_name</span><span class='comma'>,</span> <span class='id identifier rubyid_tag_purpose_id'>tag_purpose_id</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
-
-    <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>UPDATE tag 
-    SET name = ?, tag_purpose_id = ? 
-    WHERE id = ?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_tag_name'>tag_name</span><span class='comma'>,</span> <span class='id identifier rubyid_tag_purpose_id'>tag_purpose_id</span><span class='comma'>,</span> <span class='id identifier rubyid_tag_id'>tag_id</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="database_game_applied_tags-instance_method">
-  
-    #<strong>database_game_applied_tags</strong>(game_id)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-38
-39
-40
-41
-42
-43
-44
-45</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 38</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_database_game_applied_tags'>database_game_applied_tags</span><span class='lparen'>(</span><span class='id identifier rubyid_game_id'>game_id</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
-
-    <span class='kw'>return</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT tag.id as tag_id, tag.name as tag_name, tag.tag_purpose_id, tag_purpose.name as tag_purpose_name FROM game_tag_rel
-    RIGHT JOIN tag ON game_tag_rel.tag_id = tag.id
-    LEFT JOIN tag_purpose ON tag_purpose.id = tag_purpose_id
-    WHERE game_id = ?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_game_id'>game_id</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="database_game_available_tags-instance_method">
-  
-    #<strong>database_game_available_tags</strong>(game_id)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-47
-48
-49
-50
-51
-52
-53
-54
-55</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 47</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_database_game_available_tags'>database_game_available_tags</span><span class='lparen'>(</span><span class='id identifier rubyid_game_id'>game_id</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
-
-    <span class='kw'>return</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT t.id as tag_id, t.name as tag_name, tag_purpose_id, tag_purpose.name as tag_purpose_name
-    FROM tag t
-    LEFT JOIN game_tag_rel gtr ON t.id = gtr.tag_id AND gtr.game_id = ?
-    LEFT JOIN tag_purpose ON tag_purpose.id = tag_purpose_id
-    WHERE gtr.game_id IS NULL;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_game_id'>game_id</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="database_game_iframe_size-instance_method">
-  
-    #<strong>database_game_iframe_size</strong>(game_id)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-28
-29
-30
-31
-32
-33
-34
-35
-36</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 28</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_database_game_iframe_size'>database_game_iframe_size</span><span class='lparen'>(</span><span class='id identifier rubyid_game_id'>game_id</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
-
-    <span class='kw'>return</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>SELECT tag.name as tag_name
-    FROM game_tag_rel
-    INNER JOIN tag ON tag.id = tag_id
-    INNER JOIN tag_purpose ON tag_purpose_id = tag_purpose.id
-    WHERE game_id = ? AND tag_purpose.name = &quot;iframe_size&quot;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_game_id'>game_id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_e'>e</span><span class='op'>|</span> <span class='id identifier rubyid_e'>e</span> <span class='op'>=</span> <span class='id identifier rubyid_e'>e</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>tag_name</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="database_game_tag_purposes-instance_method">
-  
-    #<strong>database_game_tag_purposes</strong>(game_id)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-57
-58
-59
-60
-61
-62
-63
-64</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 57</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_database_game_tag_purposes'>database_game_tag_purposes</span><span class='lparen'>(</span><span class='id identifier rubyid_game_id'>game_id</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
-
-    <span class='kw'>return</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT tag_purpose.name FROM game_tag_rel
-    INNER JOIN tag ON game_tag_rel.tag_id = tag.id
-    INNER JOIN tag_purpose ON tag.tag_purpose_id = tag_purpose.id
-    WHERE game_id = ?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_game_id'>game_id</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="database_game_with_id-instance_method">
-  
-    #<strong>database_game_with_id</strong>(game_id)  &#x21d2; <tt>Object</tt> 
+    #<strong>execute</strong>(instructions, *injections)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -895,17 +1244,13 @@
 
 22
 23
-24
-25
-26</pre>
+24</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'model.rb', line 22</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_database_game_with_id'>database_game_with_id</span><span class='lparen'>(</span><span class='id identifier rubyid_game_id'>game_id</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
-
-    <span class='kw'>return</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT * FROM game WHERE id = ?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_game_id'>game_id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='id identifier rubyid_instructions'>instructions</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_injections'>injections</span><span class='rparen'>)</span>
+  <span class='ivar'>@database</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='id identifier rubyid_instructions'>instructions</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_injections'>injections</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -913,9 +1258,9 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="database_games-instance_method">
+  <h3 class="signature " id="game_iframe_sizes-instance_method">
   
-    #<strong>database_games</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>game_iframe_sizes</strong>(id)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -927,19 +1272,15 @@
       <pre class="lines">
 
 
-16
-17
-18
-19
-20</pre>
+132
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 132</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_database_games'>database_games</span><span class='lparen'>(</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
-
-    <span class='kw'>return</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT * FROM game</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_game_iframe_sizes'>game_iframe_sizes</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_game_tags'>game_tags</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_tag'>tag</span><span class='op'>|</span> <span class='id identifier rubyid_tag'>tag</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>purpose</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>iframe_size</span><span class='tstring_end'>&#39;</span></span> <span class='op'>?</span> <span class='id identifier rubyid_tag'>tag</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='kw'>nil</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -947,9 +1288,45 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="database_tag_purposes-instance_method">
+  <h3 class="signature " id="game_tags-instance_method">
   
-    #<strong>database_tag_purposes</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>game_tags</strong>(id)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+84
+85
+86
+87
+88
+89</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 84</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_game_tags'>game_tags</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Integer</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>game</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+
+  <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>SELECT tag as id FROM game_tag_rel WHERE game = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_tag'>tag</span><span class='op'>|</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tag</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_tag'>tag</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="login-instance_method">
+  
+    #<strong>login</strong>(username, password)  &#x21d2; <tt>Integer</tt> 
   
 
   
@@ -958,13 +1335,31 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Lista över alla tag syften</p>
+<p>Attempts to login</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>user id if successful, nil if not</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 
 
@@ -974,19 +1369,23 @@
       <pre class="lines">
 
 
-102
-103
-104
-105
-106</pre>
+194
+195
+196
+197
+198
+199
+200</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 194</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_database_tag_purposes'>database_tag_purposes</span><span class='lparen'>(</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_login'>login</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span> <span class='id identifier rubyid_username'>username</span>
 
-    <span class='kw'>return</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT * FROM tag_purpose</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='const'>BCrypt</span><span class='op'>::</span><span class='const'>Password</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>digest</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='op'>!=</span> <span class='id identifier rubyid_password'>password</span>
+
+  <span class='id identifier rubyid_user'>user</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -994,9 +1393,130 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="database_tag_with_id-instance_method">
+  <h3 class="signature " id="register-instance_method">
   
-    #<strong>database_tag_with_id</strong>(tag_id)  &#x21d2; <tt>Object</tt> 
+    #<strong>register</strong>(username, password, repeat_password)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Attempts to create a new user</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>username</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The username</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The password</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>repeat_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The repeated password</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the error message, nil if no error occured</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+180
+181
+182
+183
+184
+185
+186</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 180</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_register'>register</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='comma'>,</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>You need to type a username</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_username'>username</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Username is already taken</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_user'>user</span> <span class='id identifier rubyid_username'>username</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_validate_passwords'>validate_passwords</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='comma'>,</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_validate_passwords'>validate_passwords</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='comma'>,</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_add_user'>add_user</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="select-instance_method">
+  
+    #<strong>select</strong>(table, attribute, value)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1008,23 +1528,176 @@
       <pre class="lines">
 
 
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 58</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='id identifier rubyid_table'>table</span><span class='comma'>,</span> <span class='id identifier rubyid_attribute'>attribute</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_attribute'>attribute</span><span class='embexpr_end'>}</span><span class='tstring_content'> is not a column of the </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_table'>table</span><span class='embexpr_end'>}</span><span class='tstring_content'> table</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_column_exists?'>column_exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_table'>table</span><span class='comma'>,</span> <span class='id identifier rubyid_attribute'>attribute</span><span class='rparen'>)</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_table'>table</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tag</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT tag.name, tag.id, tag_purpose.name as purpose, purpose_id FROM tag LEFT JOIN
+            tag_purpose ON tag_purpose.id = tag.purpose_id WHERE tag.</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_attribute'>attribute</span><span class='embexpr_end'>}</span><span class='tstring_content'> = ?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT * FROM </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_table'>table</span><span class='embexpr_end'>}</span><span class='tstring_content'> WHERE </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_attribute'>attribute</span><span class='embexpr_end'>}</span><span class='tstring_content'> = ?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>end</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="table_check-instance_method">
+  
+    #<strong>table_check</strong>(table)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+26
+27
+28
+29
+30
+31
+32</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 26</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_table_check'>table_check</span><span class='lparen'>(</span><span class='id identifier rubyid_table'>table</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Table name must be a string</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>String</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Table name can\&#39;t be empty</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Table </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_table'>table</span><span class='embexpr_end'>}</span><span class='tstring_content'> does not exist</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT name FROM sqlite_master WHERE type=\&#39;table\&#39; AND name=?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_table'>table</span>
+  <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="update_tag-instance_method">
+  
+    #<strong>update_tag</strong>(id, name, purpose_id)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+136
+137
+138
+139
+140
+141
+142</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 136</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_update_tag'>update_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Non integer tag id is not allowed</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Integer</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Can\&#39;t update a non existent tag</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tag</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_validate_tag'>validate_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_validate_tag'>validate_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span>
+
+  <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>UPDATE tag SET name = ?, purpose_id = ? WHERE id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="user-instance_method">
+  
+    #<strong>user</strong>(identifier)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return a user dictionary</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>String</span>
+      
+      
+        <span class='type'>(<tt>String or Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>for username, Integer for user id</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+72
 73
 74
 75
 76
 77
-78
-79</pre>
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 72</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_database_tag_with_id'>database_tag_with_id</span><span class='lparen'>(</span><span class='id identifier rubyid_tag_id'>tag_id</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
-
-    <span class='kw'>return</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT tag.id as id, tag.name as tag_name, tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag
-    LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id
-    WHERE tag.id = ?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_tag_id'>tag_id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_user'>user</span><span class='lparen'>(</span><span class='id identifier rubyid_identifier'>identifier</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_identifier'>identifier</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Integer</span>
+    <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>user</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_identifier'>identifier</span><span class='rparen'>)</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_identifier'>identifier</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>String</span>
+    <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>user</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_identifier'>identifier</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1032,9 +1705,256 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="database_tags-instance_method">
+  <h3 class="signature " id="user_exists?-instance_method">
   
-    #<strong>database_tags</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>user_exists?</strong>(identifier)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+80
+81
+82</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 80</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_user_exists?'>user_exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_identifier'>identifier</span><span class='rparen'>)</span>
+  <span class='op'>!</span><span class='id identifier rubyid_user'>user</span><span class='lparen'>(</span><span class='id identifier rubyid_identifier'>identifier</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="validate_password-instance_method">
+  
+    #<strong>validate_password</strong>(password)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Checks for password problems for a single password</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>error or nil if no error</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+163
+164
+165
+166
+167
+168
+169
+170
+171</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 163</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_validate_password'>validate_password</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>You need to type a password</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_password'>password</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Your password needs to be at least 8 characters long</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_password'>password</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&lt;</span> <span class='int'>8</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Your password needs a number</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_password'>password</span> <span class='op'>!~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>[0-9]</span><span class='regexp_end'>/</span></span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Your password needs a capital letter</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_password'>password</span> <span class='op'>!~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>[A-Z]</span><span class='regexp_end'>/</span></span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Your password needs at least one special character: #?!@$%^&amp;*-</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_password'>password</span> <span class='op'>!~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>[#?!@$ %^&amp;*-]</span><span class='regexp_end'>/</span></span>
+
+  <span class='kw'>nil</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="validate_passwords-instance_method">
+  
+    #<strong>validate_passwords</strong>(password, repeat_password)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Checks for password problems with a repeated password</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the password</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>repeat_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the password again (hopefully) to make sure no errors were made</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>an error message, nil if no errors were encountered</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+150
+151
+152
+153
+154
+155
+156</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'model.rb', line 150</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_validate_passwords'>validate_passwords</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='comma'>,</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_validate_password'>validate_password</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_validate_password'>validate_password</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>You need to repeat your password</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Your password\&#39;s don\&#39;t match</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_password'>password</span> <span class='op'>!=</span> <span class='id identifier rubyid_repeat_password'>repeat_password</span>
+
+  <span class='kw'>nil</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="validate_tag-instance_method">
+  
+    #<strong>validate_tag</strong>(name, purpose_id)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1046,55 +1966,25 @@
       <pre class="lines">
 
 
-66
-67
-68
-69
-70
-71</pre>
+39
+40
+41
+42
+43
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'model.rb', line 39</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_database_tags'>database_tags</span><span class='lparen'>(</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_validate_tag'>validate_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Tag name must be a string</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>String</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Can\&#39;t give a tag a empty name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Purpose id must be a integer</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Integer</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Can\&#39;t add a non existent tag purpose</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tag_purpose</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_purpose_id'>purpose_id</span><span class='rparen'>)</span>
 
-    <span class='kw'>return</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT tag.id as tag_id, tag.name as tag_name, tag.tag_purpose_id, tag_purpose.name as tag_purpose_name FROM tag
-    LEFT JOIN tag_purpose ON tag_purpose.id = tag.tag_purpose_id</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="delete_tag-instance_method">
-  
-    #<strong>delete_tag</strong>(tag_id)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-95
-96
-97
-98
-99</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'model.rb', line 95</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_delete_tag'>delete_tag</span><span class='lparen'>(</span><span class='id identifier rubyid_tag_id'>tag_id</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='id identifier rubyid_connect_to_default_database'><span class='object_link'><a href="#connect_to_default_database-instance_method" title="Model#connect_to_default_database (method)">connect_to_default_database</a></span></span><span class='lparen'>(</span><span class='rparen'>)</span>
-
-    <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DELETE FROM tag WHERE id = ?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_tag_id'>tag_id</span><span class='rparen'>)</span>
+  <span class='kw'>nil</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1106,7 +1996,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Mar 18 14:12:46 2024 by
+  Generated on Tue Apr 16 08:46:11 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.36 (ruby-3.3.0).
 </div>
