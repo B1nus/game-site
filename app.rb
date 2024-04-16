@@ -14,6 +14,7 @@ require_relative 'routes/users'
 # Crud och RESTFUL är inte smidig alls. Prova något annat. Typ slim filer i views, någon enstaka
 # Likes å lista av gillade spel i /user
 # Ta bort länken till scratch see inside. Gör så det är till servern istället
+# Ingen load more knapp, automatisk laddning av fler spel
 
 # Used for login
 enable :sessions
