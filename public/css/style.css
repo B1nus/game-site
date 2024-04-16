@@ -46,6 +46,7 @@ a {font-size: 0.90rem; font-weight: 700; color: rgb(255, 255, 255);}
 
 body {background-color: rgb(28, 33, 41);}
 header, footer {background-color: rgb(34, 41, 52);}
+input {background-color: rgb(28, 33, 41);}
 .game {background-color: rgb(34, 40, 51);}
 .search-form {background-color: rgb(28, 33, 41);}
 .search-filter {background-color: rgb(62, 84, 112);}
