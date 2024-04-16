@@ -18,7 +18,7 @@
     <!-- Spel länk element -->
     <% games.each do |game| %>
       <a href="/games/<%= game['id'] %>" class="game">
-        <img class="game-thumb" src="img/thumb.webp" alt="mog">
+        <img class="game-thumb" src="<%= game['thumb_url'] %>" alt="Thumbnail for <%= game['name'] %>">
         <div class="game-text-binder">
           <div class="game-header">
             <h2 class="game-name">
