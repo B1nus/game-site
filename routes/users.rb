@@ -54,11 +54,12 @@ post '/login' do
   cooldown_check '/login'
 
   case @database.login(params[:username], params[:password])
+  in { error: String => error }
+    flash[:notice] = error
+    redirect '/login'
+  in { id: Integer => id }
     change_user_id(id)
     redirect '/games'
-  else
-    flash[:notice] = 'Invalid login credentials'
-    redirect '/login'
   end
 end
 
