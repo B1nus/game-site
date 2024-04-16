@@ -144,9 +144,9 @@ class Model
     return tags if tags[:error]
     return { error: 'Unknown error, report this so I can fix it!' } unless tags[:tags]
 
-    tags = [:tags].map { |tag| tag['purpose'] == 'size' ? tag['name'] : nil }.compact
+    sizes = tags[:tags].map { |tag| tag['purpose'] == 'size' ? tag['name'] : nil }.compact
 
-    { sizes: tags }
+    { sizes: }
   end
 
   def update_tag(id, name, purpose_id)
