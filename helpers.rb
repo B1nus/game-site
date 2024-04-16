@@ -3,33 +3,19 @@
 def params_id
   id = params[:id].to_i
 
-  raise 'That id is not an integer' if id.zero? || id.nil?
-
-  id
-end
-
-def user_id
-  session[:user_id]
-end
-
-def change_user_id(id)
-  session[:user_id] = id
-end
-
-def logout
-  session[:user_id] = nil
+  id.positive? ? id : raise('That id is not an integer')
 end
 
 def logged_in?
-  !user_id.nil? && @database.user_exists?(user_id)
+  !session[:user_id].nil? && @database.user_exists?(session[:user_id])
 end
 
 def admin?
-  logged_in? && user_id.zero? && @database.user(user_id)['domain'] == 'admin'
+  logged_in? && session[:user_id].zero? && @database.user(session[:user_id])['domain'] == 'admin'
 end
 
 def user?
-  logged_in? && user_id != 0 && @database.user(user_id)['domain']  == 'user'
+  logged_in? && session[:user_id] != 0 && @database.user(session[:user_id])['domain']  == 'user'
 end
 
 # Cooldown hash

@@ -11,7 +11,7 @@ end
 # user routes
 get('/user') do
   erb(:'users/edit', locals: {
-        user: @database.select('user', 'id', user_id)
+        user: @database.select('user', 'id', session[:user_id])
       })
 end
 
@@ -58,7 +58,7 @@ post '/login' do
     flash[:notice] = error
     redirect '/login'
   in { id: Integer => id }
-    change_user_id(id)
+    session[:user_id] = id
     redirect '/games'
   end
 end
@@ -79,7 +79,7 @@ end
 post '/user/username/update' do
   cooldown_check '/user'
 
-  flash[:notice] = @database.change_username(user_id, params[:username]) || 'Username successfully changed!'
+  flash[:notice] = @database.change_username(session[:user_id], params[:username]) || 'Username successfully changed!'
 
   redirect '/user'
 end
@@ -94,7 +94,7 @@ post '/user/password/update' do
   cooldown_check '/user'
 
   unless @database.login(
-    @database.user(user_id)['name'],
+    @database.user(session[:user_id])['name'],
     params[:current_password]
   )
     flash[:notice] = 'Wrong password'
@@ -102,7 +102,7 @@ post '/user/password/update' do
   end
 
   error = @database.change_password(
-    user_id,
+    session[:user_id],
     params[:password],
     params[:repeat_password]
   )
@@ -116,7 +116,7 @@ end
 #
 # @see Model#delete_user
 post '/user/delete' do
-  if flash[:notice] = @database.delete_user(user_id)
+  if flash[:notice] = @database.delete_user(session[:user_id])
     redirect '/user'
   else
     flash[:notice] = 'User successfully deleted'
