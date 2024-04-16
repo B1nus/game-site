@@ -78,11 +78,18 @@ class Model
     !user(identifier).nil?
   end
 
+  # All tags for a game
+  #
+  # @param id [Integer] the id for the game
+  #
+  # @return [Hash] key :error for a error message, nil if no error, key :tags for array of tags, nil if error
   def game_tags(id)
-    return nil unless id.is_a? Integer
-    return nil if select('game', 'id', id).nil?
+    return { error: 'Non integer game id is not allowed' } unless id.is_a? Integer
+    return { error: 'Can\'t find tags for non existent game' } if select('game', 'id', id).nil?
 
-    execute('SELECT tag as id FROM game_tag_rel WHERE game = ?', id).map { |tag| select('tag', 'id', tag['id']) }
+    tags = execute('SELECT tag as id FROM game_tag_rel WHERE game = ?', id).map { |tag| select('tag', 'id', tag['id']) }
+
+    { tags: }
   end
 
   def add_tag(name, purpose_id)
@@ -126,8 +133,18 @@ class Model
     nil if execute('DELETE FROM tag WHERE id = ?', id)
   end
 
-  def game_iframe_sizes(id)
-    game_tags(id).map { |tag| tag['purpose'] == 'iframe_size' ? tag['name'] : nil }.compact
+  # All iframe sizes for a game
+  #
+  # @param id [Integer] the id for the game
+  #
+  # @return [Hash] key :error for a error message, nil if no error, key :sizes for size array, nil if error
+  def game_sizes(id)
+    tags = game_tags(id)
+
+    return tags if tags[:error]
+    return { error: 'Unknown error, report this so I can fix it!' } unless tags[:tags]
+
+    tags[:tags].map { |tag| tag['purpose'] == 'size' ? tag['name'] : nil }.compact
   end
 
   def update_tag(id, name, purpose_id)
@@ -184,16 +201,19 @@ class Model
 
   # Attempts to login
   #
-  # @param [String] username The username
-  # @param [String] password The password
+  # @param [String] name, the username
+  # @param [String] password
   #
-  # @return [Integer] user id if successful, nil if not
-  def login(username, password)
-    user = user username
+  # @return [Hash] key :id for the users id, nil if error. Key :error for a error message, nil for success
+  def login(name, password)
+    return { error: 'Username and password must be strings' } if !name.is_a?(String) || !password.is_a?(String)
 
-    return nil if user.nil? || BCrypt::Password.new(user['digest']) != password
+    user = user name
 
-    user['id']
+    return { error: 'Invalid login credentials' } if user.nil?
+    return { error: 'Invalid login credentials' } if BCrypt::Password.new(user['digest']) != password
+
+    { id: user['id'] }
   end
 
   # Change a username
